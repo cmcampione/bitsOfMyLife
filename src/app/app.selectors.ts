@@ -12,12 +12,12 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: AppStat
     timelineMainDate: new Date(),
     bitsOfMyLife: new Array<BitOfMyLife>()
   };
-  console.log(state.selectedMileStones);
-  let mileStones = state.mileStonesMngr.get(state.selectedMileStones);
+  
+  let mileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
   if (!mileStones)
     return emptyBitsOfMyLife;
 
-  let timeline = state.timelinesMngr.get(state.selectedTimeline);
+  let timeline = state.timelinesMngr.get(state.selectedTimelineId);
   if (!timeline)
     return {
       mailStonesName: mileStones.name,
@@ -27,8 +27,7 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: AppStat
         return {
           mileStone: mileStone,
           diff: 0
-        }
-      })
+        }})
     }
   
   return {
@@ -38,8 +37,7 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: AppStat
       bitsOfMyLife: mileStones.mileStones.map(( mileStone: MileStone ) => {
         return {
         mileStone: mileStone,
-        diff: 1 // ToDo: Compute diff
-      }
-    })
+        diff: 1 // ToDo: To Compute diff
+      }})
   }
 })

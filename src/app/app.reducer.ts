@@ -11,7 +11,7 @@ export const defaultTimelineName = 'Default';
 let defaultMileStones: MileStones = {
     name: defaultMileStonesName,
     mileStones: [{
-        note: 'Default',// Info: It is Ok
+        note: 'I was born',
         date: new Date
     }]
 }
@@ -32,8 +32,8 @@ export const initialAppState: AppState = {
         [defaultTimelineId, defaultTimeline]
     ]),
     
-    selectedMileStones: defaultMileStonesId,
-    selectedTimeline: defaultTimelineId
+    selectedMileStonesId: defaultMileStonesId,
+    selectedTimelineId: defaultTimelineId
 }
 
 export const appReducer = createReducer(

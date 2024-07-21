@@ -8,7 +8,7 @@ import { appReducer } from './app.reducer';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }), 
-    provideRouter(routes), provideStore(),
+    provideRouter(routes),
     provideStore(),
     provideState({ name: 'AppState', reducer: appReducer })
   ]

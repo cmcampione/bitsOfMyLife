@@ -4,6 +4,6 @@ export type AppState = {
     mileStonesMngr: MileStonesMngr;
     timelinesMngr: TimelinesMngr;
     
-    selectedMileStones: number;
-    selectedTimeline: number;
+    selectedMileStonesId: number;
+    selectedTimelineId: number;
 }

@@ -18,8 +18,7 @@ import { BitsOfMyLife } from './app.models';
 export class AppComponent {
 
   title = 'bitsOfMyLife';
-
-  name: string = '';
+  
   bitsOfMyLife$: Observable<BitsOfMyLife> = this.store.select(selectBitsOfMyLife);
   
   events: NgxTimelineEvent[];
@@ -44,8 +43,6 @@ export class AppComponent {
       { id: 3, description: 'This is the description of the event 3', timestamp: tomorrow, title: 'title 3' },
       { id: 4, description: 'This is the description of the event 4', timestamp: nextMonth, title: 'title 4', /*itemPosition: NgxTimelineItemPosition.ON_RIGHT */},
     ];
-
-    this.bitsOfMyLife$.subscribe(v => this.name = v.mailStonesName);
   }
 }
 

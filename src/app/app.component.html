@@ -169,7 +169,7 @@
 </style>
 
 <main class="main">
-  <div>Current: {{ name }}</div>
+  <div>Current: {{ ( bitsOfMyLife$| async )?.mailStonesName }}</div>
 <!--
   <div class="content">
     <ngx-timeline [events]="events"></ngx-timeline>

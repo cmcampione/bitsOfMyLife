@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import {NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
+import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
 import { selectBitsOfMyLife } from './app.selectors';
 import { AppState } from './app.state';

@@ -4,7 +4,7 @@ import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
 import { selectBitsOfMyLife } from './app.selectors';
-import { AppState } from './app.state';
+import { BitsOfMyLifeState } from './app.state';
 import { Observable } from 'rxjs';
 import { BitsOfMyLife } from './app.models';
 
@@ -23,7 +23,7 @@ export class AppComponent {
   
   events: NgxTimelineEvent[];
 
-  constructor(private store: Store<AppState>) {
+  constructor(private store: Store<BitsOfMyLifeState>) {
     const today = new Date();
     const tomorrow = new Date();
     tomorrow.setDate(today.getDate() + 1);

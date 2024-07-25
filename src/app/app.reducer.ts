@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { MileStone, MileStones, MileStonesMngr,  Timeline } from "./app.models";
-import { AppState } from "./app.state";
+import { BitsOfMyLifeState } from "./app.state";
 
 export const defaultMileStonesId = 1;
 export const defaultMileStonesName = 'Default';
@@ -21,7 +21,7 @@ let defaultTimeline: Timeline = {
     mainDate: new Date
 }
 
-export const initialAppState: AppState = {
+export const initialAppState: BitsOfMyLifeState = {
 
     // Why: I can't do "mileStonesMngr: MileStonesMngr([['default', new Array<MileStone>]])" ?
     mileStonesMngr: new Map<number, MileStones>([

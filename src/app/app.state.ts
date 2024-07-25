@@ -1,6 +1,6 @@
 import { MileStonesMngr, TimelinesMngr } from './app.models';
 
-export type AppState = {    
+export type BitsOfMyLifeState = {    
     mileStonesMngr: MileStonesMngr;
     timelinesMngr: TimelinesMngr;
     

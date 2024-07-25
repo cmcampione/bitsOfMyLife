@@ -15,9 +15,14 @@ export type Timeline = {
 }
 export type TimelinesMngr = Map<number, Timeline>;
 
+export type Elapse = {
+    years: number;
+    mounths: number;
+    days: number;
+}
 export type BitOfMyLife = {
     mileStone: MileStone;
-    diff: number
+    diff: Elapse
 }
 export type BitsOfMyLife = {
     mailStonesName: string;

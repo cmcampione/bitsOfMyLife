@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
-import { appReducer, bitsOfMyLifeReducer } from './app.reducers';
+import { appReducer, bitsOfMyLifeReducer } from './stateManagement/app.reducers';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 

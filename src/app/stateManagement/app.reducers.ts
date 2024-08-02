@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 import { MileStone, MileStones, MileStonesMngr, Timeline } from "./app.models";
-import { BitsOfMyLifeState } from "./app.state";
+import { BitsOfMyLifeState } from "./app.states";
 import * as BitsOfMyLifeActions from './app.actions';
 
 export const initialAppState = {
@@ -21,11 +21,11 @@ let defaultMileStones: MileStones = {
     name: defaultMileStonesName,
     mileStones: [{
         note: 'I was born',
-        date: new Date
+        date: new Date("1962-08-19")
     },
     {        
         note: 'I married',
-        date: new Date
+        date: new Date("1988-07-27")
     }]
 }
 
@@ -59,7 +59,12 @@ export const bitsOfMyLifeReducer = createReducer(
         let mileStonesMngr: MileStonesMngr = state.mileStonesMngr;
         let selectMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
         if (selectMileStones) {
-            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone]
+            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone];
+            selectMileStones.mileStones.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        )
+        } else
+        {
+            //ToDo: To manage error
         }
         return {
             ...state

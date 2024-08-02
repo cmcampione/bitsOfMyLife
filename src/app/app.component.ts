@@ -3,11 +3,11 @@ import { AsyncPipe, NgFor } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
-import { selectBitsOfMyLife } from './app.selectors';
-import { BitsOfMyLifeState } from './app.state';
+import { selectBitsOfMyLife } from './stateManagement/app.selectors';
+import { BitsOfMyLifeState } from './stateManagement/app.states';
 import { Observable } from 'rxjs';
-import { BitOfMyLifeToAdd, BitsOfMyLife } from './app.models';
-import * as BitsOfMyLifeActions from './app.actions';
+import { BitOfMyLifeToAdd, BitsOfMyLife } from './stateManagement/app.models';
+import * as BitsOfMyLifeActions from './stateManagement/app.actions';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',

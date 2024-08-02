@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import {BitOfMyLife, BitsOfMyLife, Elapse, MileStone } from './app.models';
-import { BitsOfMyLifeState as BitsOfMyLifeState } from './app.state';
+import { BitsOfMyLifeState as BitsOfMyLifeState } from './app.states';
 import { defaultMileStonesName, defaultTimelineName } from './app.reducers';
 
 function diffDate(data1: Date, data2: Date): Elapse {
@@ -36,7 +36,7 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: BitsOfM
     return emptyBitsOfMyLife;
 
   let timeline = state.timelinesMngr.get(state.selectedTimelineId);
-  if (!timeline)
+  if (!timeline) {
     return {
       mileStonesName: mileStones.name,
       timelineMainDate: new Date(),
@@ -46,7 +46,7 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: BitsOfM
           mileStone: mileStone,
           diff: diffDate(new Date(), mileStone.date)
       }})
-    }
+    }}
   
   return {
       mileStonesName: mileStones.name,

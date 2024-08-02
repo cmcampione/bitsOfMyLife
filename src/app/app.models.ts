@@ -1,7 +1,7 @@
 
 export type MileStone = {
-    note: string;
-    date: Date
+    date: Date;
+    note: string
 }
 export type MileStones = {
     name: string;
@@ -25,9 +25,14 @@ export type BitOfMyLife = {
     diff: Elapse
 }
 export type BitsOfMyLife = {
-    mailStonesName: string;
+    mileStonesName: string;
     timelineName: string;
     timelineMainDate: Date;
-    bitsOfMyLife: Array<BitOfMyLife>
+    bits: Array<BitOfMyLife>
+}
+
+export type BitOfMyLifeToAdd = {
+    date: Date;
+    note: string
 }
 

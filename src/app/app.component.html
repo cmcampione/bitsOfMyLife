@@ -1,24 +1,26 @@
 <style>
-  main {
-    width: 100%;
-    min-height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 1rem;
-    box-sizing: inherit;
-    position: relative;
-  }
-
 </style>
 
-<main class="main">
-  <div>Current: {{ ( bitsOfMyLife$ | async )?.mailStonesName }}</div>
-<!--
-  <div class="content">
-    <ngx-timeline [events]="events"></ngx-timeline>
+<main>
+  <p>Mile Stones name: {{ ( bitsOfMyLife$ | async )?.mileStonesName }}</p>
+  <p>Timeline name: {{ ( bitsOfMyLife$ | async )?.timelineName }}</p>
+  <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate }}</p>
+
+  <ul *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">   
+    <li> {{ bit.mileStone.note }} </li>
+  </ul>
+
+  <div>
+    <label for="date">Date:</label>
+    <input id="date" type="date" [(ngModel)]="newBit.date">
+  
+    <label for="note">Note:</label>
+    <input id="note" type="text" [(ngModel)]="newBit.note">
+  
+    <button (click)="addBitOfMyLife(newBit)">Add</button>
   </div>
--->
 </main>
 
 <router-outlet />
+
+

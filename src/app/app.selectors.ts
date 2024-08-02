@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import {BitOfMyLife, BitsOfMyLife, Elapse, MileStone } from './app.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState } from './app.state';
-import { defaultMileStonesName, defaultTimelineName } from './app.reducer';
+import { defaultMileStonesName, defaultTimelineName } from './app.reducers';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Crea oggetti moment per le due date
@@ -21,14 +21,14 @@ function diffDate(data1: Date, data2: Date): Elapse {
   return { years: years, mounths: months, days: days };
 }
 
-const selectAppState = createFeatureSelector<BitsOfMyLifeState>('AppState');
+const selectAppState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
 export const selectBitsOfMyLife = createSelector(selectAppState, (state: BitsOfMyLifeState) : BitsOfMyLife => {
   let emptyBitsOfMyLife: BitsOfMyLife = {
-    mailStonesName: defaultMileStonesName,
+    mileStonesName: defaultMileStonesName,
     timelineName: defaultTimelineName,
     timelineMainDate: new Date(),
-    bitsOfMyLife: new Array<BitOfMyLife>()
+    bits: new Array<BitOfMyLife>()
   };
   
   let mileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
@@ -38,10 +38,10 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: BitsOfM
   let timeline = state.timelinesMngr.get(state.selectedTimelineId);
   if (!timeline)
     return {
-      mailStonesName: mileStones.name,
+      mileStonesName: mileStones.name,
       timelineMainDate: new Date(),
       timelineName: defaultTimelineName,
-      bitsOfMyLife: mileStones.mileStones.map((mileStone: MileStone) => {
+      bits: mileStones.mileStones.map((mileStone: MileStone) => {
         return {
           mileStone: mileStone,
           diff: diffDate(new Date(), mileStone.date)
@@ -49,10 +49,10 @@ export const selectBitsOfMyLife = createSelector(selectAppState, (state: BitsOfM
     }
   
   return {
-      mailStonesName: mileStones.name,
+      mileStonesName: mileStones.name,
       timelineMainDate: timeline.mainDate,
       timelineName: timeline.name,
-      bitsOfMyLife: mileStones.mileStones.map(( mileStone: MileStone ) => {
+      bits: mileStones.mileStones.map(( mileStone: MileStone ) => {
         return {
         mileStone: mileStone,
         diff: diffDate(timeline.mainDate, mileStone.date)

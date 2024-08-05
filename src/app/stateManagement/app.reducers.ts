@@ -37,7 +37,7 @@ let defaultTimeline: Timeline = {
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 
     // Why: I can't do "mileStonesMngr: MileStonesMngr([['default', new Array<MileStone>]])" ?
-    mileStonesMngr: new Map<number, MileStones>([
+    mileStonesMngr: new Map([
         [defaultMileStonesId, defaultMileStones]
     ]),
 
@@ -59,9 +59,7 @@ export const bitsOfMyLifeReducer = createReducer(
         let mileStonesMngr: MileStonesMngr = state.mileStonesMngr;
         let selectMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
         if (selectMileStones) {
-            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone];
-            selectMileStones.mileStones.sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-        )
+            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         } else
         {
             //ToDo: To manage error

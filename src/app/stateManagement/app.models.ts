@@ -5,15 +5,15 @@ export type MileStone = {
 }
 export type MileStones = {
     name: string;
-    mileStones: Array<MileStone>;
+    mileStones: ReadonlyArray<MileStone>;
 }
-export type MileStonesMngr = Map<number, MileStones>;
+export type MileStonesMngr = ReadonlyMap<number, MileStones>;
 
 export type Timeline = {
     name: string;
     mainDate: Date;
 }
-export type TimelinesMngr = Map<number, Timeline>;
+export type TimelinesMngr = ReadonlyMap<number, Timeline>;
 
 export type Elapse = {
     years: number;
@@ -28,7 +28,7 @@ export type BitsOfMyLife = {
     mileStonesName: string;
     timelineName: string;
     timelineMainDate: Date;
-    bits: Array<BitOfMyLife>
+    bits: ReadonlyArray<BitOfMyLife>
 }
 
 export type BitOfMyLifeToAdd = {

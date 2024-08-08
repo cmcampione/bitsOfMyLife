@@ -1,8 +1,8 @@
 import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import {BitOfMyLife, BitsOfMyLife, Elapse, MileStone } from './app.models';
-import { BitsOfMyLifeState as BitsOfMyLifeState } from './app.states';
-import { defaultMileStonesName, defaultTimelineName } from './app.reducers';
+import {BitOfMyLife, BitsOfMyLife, Elapse, MileStone } from './bits-of-my-life.models';
+import { BitsOfMyLifeState as BitsOfMyLifeState } from './bits-of-my-life.state';
+import { defaultMileStonesName, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Crea oggetti moment per le due date
@@ -21,9 +21,9 @@ function diffDate(data1: Date, data2: Date): Elapse {
   return { years: years, mounths: months, days: days };
 }
 
-const selectAppState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
+const selectBitsOfMyLifeStateState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
-export const selectBitsOfMyLife = createSelector(selectAppState, (state: BitsOfMyLifeState) : BitsOfMyLife => {
+export const selectBitsOfMyLife = createSelector(selectBitsOfMyLifeStateState, (state: BitsOfMyLifeState) : BitsOfMyLife => {
   let emptyBitsOfMyLife: BitsOfMyLife = {
     mileStonesName: defaultMileStonesName,
     timelineName: defaultTimelineName,

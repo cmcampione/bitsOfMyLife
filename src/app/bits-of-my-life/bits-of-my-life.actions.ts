@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { BitOfMyLifeToAdd } from './app.models';
+import { BitOfMyLifeToAdd } from './bits-of-my-life.models';
 /*
 export const loadEvents = createAction('[Event] Load Events');
 export const loadEventsSuccess = createAction('[Event] Load Events Success', props<{ events: Event[] }>());

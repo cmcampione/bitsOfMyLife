@@ -1,8 +1,9 @@
 import { createReducer, on } from "@ngrx/store";
-import { MileStone, MileStones, MileStonesMngr, Timeline } from "./app.models";
-import { BitsOfMyLifeState } from "./app.states";
-import * as BitsOfMyLifeActions from './app.actions';
+import { MileStone, MileStones, MileStonesMngr, Timeline } from "./bits-of-my-life.models";
+import { BitsOfMyLifeState } from "./bits-of-my-life.state";
+import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
+// Temporarily
 export const initialAppState = {
     dummy: 'dummy'
 }
@@ -36,11 +37,12 @@ let defaultTimeline: Timeline = {
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 
-    // Why: I can't do "mileStonesMngr: MileStonesMngr([['default', new Array<MileStone>]])" ?
+    // Why: I can't do "mileStonesMngr: new MileStonesMngr([[defaultMileStonesId, new Array<MileStone>]])" ?
     mileStonesMngr: new Map([
         [defaultMileStonesId, defaultMileStones]
     ]),
 
+    // Why: I can't do "timelinesMngr: new TimelinesMngr([[defaultTimelineId, new Array<Timeline>]])" ?
     timelinesMngr: new Map<number, Timeline>([
         [defaultTimelineId, defaultTimeline]
     ]),
@@ -60,8 +62,7 @@ export const bitsOfMyLifeReducer = createReducer(
         let selectMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
         if (selectMileStones) {
             selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-        } else
-        {
+        } else {
             //ToDo: To manage error
         }
         return {

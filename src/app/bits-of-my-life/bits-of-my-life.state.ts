@@ -1,4 +1,4 @@
-import { MileStonesMngr, TimelinesMngr } from './app.models';
+import { MileStonesMngr, TimelinesMngr } from './bits-of-my-life.models';
 
 export type BitsOfMyLifeState = {
     mileStonesMngr: MileStonesMngr;

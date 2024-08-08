@@ -61,7 +61,8 @@ export const bitsOfMyLifeReducer = createReducer(
         let mileStonesMngr: MileStonesMngr = state.mileStonesMngr;
         let selectMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
         if (selectMileStones) {
-            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            //selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone];
         } else {
             //ToDo: To manage error
         }

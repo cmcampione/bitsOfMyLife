@@ -17,7 +17,7 @@ export type TimelinesMngr = ReadonlyMap<number, Timeline>;
 
 export type Elapse = {
     years: number;
-    mounths: number;
+    months: number;
     days: number;
 }
 export type BitOfMyLife = {

@@ -18,15 +18,16 @@ function diffDate(data1: Date, data2: Date): Elapse {
 
   const days = end.diff(start, 'days');
 
-  return { years: years, mounths: months, days: days };
+  return { years: years, months: months, days: days };
 }
 
-const selectBitsOfMyLifeStateState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
+const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
-export const selectBitsOfMyLife = createSelector(selectBitsOfMyLifeStateState, (state: BitsOfMyLifeState) : BitsOfMyLife => {
+/*
+export const selectBitsOfMyLife = createSelector(selectBitsOfMyLifeState, (state: BitsOfMyLifeState) : BitsOfMyLife => {
   const todayMileStone: MileStone = {
     date: new Date(),
-    note: 'Now'
+    note: 'Now' //ToDo: To localize
   };
   const todayBitOfMyLife : BitOfMyLife = {
     mileStone: todayMileStone,
@@ -37,8 +38,8 @@ export const selectBitsOfMyLife = createSelector(selectBitsOfMyLifeStateState, (
     }
   };
 
-  let mileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
-  if (!mileStones) {
+  let selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
+  if (!selectedMileStones) {
     const emptyBitsOfMyLife: BitsOfMyLife = {
       mileStonesName: defaultMileStonesName,
       timelineName: defaultTimelineName,
@@ -50,7 +51,7 @@ export const selectBitsOfMyLife = createSelector(selectBitsOfMyLifeStateState, (
 
   let timeline = state.timelinesMngr.get(state.selectedTimelineId);
   if (!timeline) {
-    let bits = mileStones.mileStones.map(( mileStone: MileStone ) => {
+    let bits = selectedMileStones.mileStones.map(( mileStone: MileStone ) => {
       return {
       mileStone: mileStone,
       diff: diffDate(todayMileStone.date, mileStone.date)
@@ -58,23 +59,71 @@ export const selectBitsOfMyLife = createSelector(selectBitsOfMyLifeStateState, (
     bits = [...bits,todayBitOfMyLife].sort((a, b) => new Date(a.mileStone.date).getTime() - new Date(b.mileStone.date).getTime());
 
     return {
-      mileStonesName: mileStones.name,
+      mileStonesName: selectedMileStones.name,
       timelineMainDate: new Date(),
       timelineName: defaultTimelineName,
       bits: bits
-    }}
+    }
+  }
 
-  let bits = mileStones.mileStones.map(( mileStone: MileStone ) => {
+  let bits = selectedMileStones.mileStones.map(( mileStone: MileStone ) => {
     return {
-    mileStone: mileStone,
-    diff: diffDate(timeline.mainDate, mileStone.date)
-  }});
+      mileStone: mileStone,
+      diff: diffDate(timeline.mainDate, mileStone.date)
+    }});
+    
   bits = [...bits,todayBitOfMyLife].sort((a, b) => new Date(a.mileStone.date).getTime() - new Date(b.mileStone.date).getTime());
   
   return {
-      mileStonesName: mileStones.name,
+      mileStonesName: selectedMileStones.name,
       timelineMainDate: timeline.mainDate,
       timelineName: timeline.name,
       bits: bits
   }
 })
+*/
+
+export const selectBitsOfMyLife = createSelector(
+  selectBitsOfMyLifeState,
+  (state: BitsOfMyLifeState): BitsOfMyLife => {
+    const todayMileStone: MileStone = {
+      date: new Date(),
+      note: 'Now', // ToDo: To localize
+    };
+
+    const todayBitOfMyLife: BitOfMyLife = {
+      mileStone: todayMileStone,
+      diff: { years: 0, months: 0, days: 0 },
+    };
+
+    const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
+    const timeline = state.timelinesMngr.get(state.selectedTimelineId);
+
+    if (!selectedMileStones) {
+      return {
+        mileStonesName: defaultMileStonesName,
+        timelineName: defaultTimelineName,
+        timelineMainDate: new Date(),
+        bits: [todayBitOfMyLife],
+      };
+    }
+
+    const mainDate = timeline ? timeline.mainDate : new Date();
+    const timelineName = timeline ? timeline.name : defaultTimelineName;
+
+    const bits = [
+      ...selectedMileStones.mileStones.map((mileStone: MileStone) => ({
+        mileStone,
+        diff: diffDate(mainDate, mileStone.date),
+      })),
+      todayBitOfMyLife,
+    ].sort((a, b) => new Date(a.mileStone.date).getTime() - new Date(b.mileStone.date).getTime());
+
+    return {
+      mileStonesName: selectedMileStones.name,
+      timelineMainDate: mainDate,
+      timelineName,
+      bits,
+    };
+  }
+);

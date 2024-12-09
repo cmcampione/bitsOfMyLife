@@ -59,10 +59,10 @@ export const bitsOfMyLifeReducer = createReducer(
             note: bitOfMyLife.note
         }
         let mileStonesMngr: MileStonesMngr = state.mileStonesMngr;
-        let selectMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
-        if (selectMileStones) {
-            //selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            selectMileStones.mileStones = [...selectMileStones.mileStones, mileStone];
+        let selectedMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
+        if (selectedMileStones) {
+            //selectedMileStones.mileStones = [...selectedMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+            selectedMileStones.mileStones = [...selectedMileStones.mileStones, mileStone];
         } else {
             //ToDo: To manage error
         }

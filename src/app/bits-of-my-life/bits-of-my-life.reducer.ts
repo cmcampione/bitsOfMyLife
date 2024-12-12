@@ -50,7 +50,7 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     selectedMileStonesId: defaultMileStonesId,
     selectedTimelineId: defaultTimelineId
 }
-
+/*
 export const bitsOfMyLifeReducer = createReducer(
     initialBitsOfMyLifeState,
     on(BitsOfMyLifeActions.addBitOfMyLife, (state, { bitOfMyLife }) => {
@@ -68,6 +68,45 @@ export const bitsOfMyLifeReducer = createReducer(
         }
         return {
             ...state
+        };
+    })
+);
+*/
+
+export const bitsOfMyLifeReducer = createReducer(
+    initialBitsOfMyLifeState,
+    on(BitsOfMyLifeActions.addBitOfMyLife, (state, { bitOfMyLife }) => {
+        // Creazione del nuovo MileStone
+        const newMileStone: MileStone = {
+            date: bitOfMyLife.date,
+            note: bitOfMyLife.note,
+        };
+
+        // Ottieni i traguardi selezionati
+        const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
+
+        if (!selectedMileStones) {
+            console.error("Selected MileStones not found. Unable to add the milestone.");
+            return state; // Restituisci lo stato invariato per gestire l'errore
+        }
+
+        // Aggiorna i traguardi selezionati con il nuovo MileStone
+        const updatedMileStones: MileStones = {
+            ...selectedMileStones,
+            mileStones: [...selectedMileStones.mileStones, newMileStone]
+                .sort((a, b) => a.date.getTime() - b.date.getTime()), // Ordina per data
+        };
+
+        // Crea un nuovo manager aggiornato
+        const updatedMileStonesMngr: MileStonesMngr = new Map(state.mileStonesMngr).set(
+            state.selectedMileStonesId,
+            updatedMileStones
+        );
+
+        // Restituisci il nuovo stato
+        return {
+            ...state,
+            mileStonesMngr: updatedMileStonesMngr,
         };
     })
 );

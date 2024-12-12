@@ -28,6 +28,7 @@ export class AppComponent {
   }
 
   addBitOfMyLife(bitOfMyLife: BitOfMyLifeToAdd): void {
+    bitOfMyLife.date = new Date(bitOfMyLife.date);
     this.store.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
     this.newBit = { date: new Date(), note: '' };
   }

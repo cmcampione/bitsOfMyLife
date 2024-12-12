@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { BitOfMyLifeToAdd } from './bits-of-my-life.models';
+import { BitsOfMyLifeState } from './bits-of-my-life.state';
 /*
 export const loadEvents = createAction('[Event] Load Events');
 export const loadEventsSuccess = createAction('[Event] Load Events Success', props<{ events: Event[] }>());
@@ -21,3 +22,8 @@ export const deleteEvent = createAction('[Event] Delete Event', props<{ id: stri
 export const deleteEventSuccess = createAction('[Event] Delete Event Success', props<{ id: string }>());
 export const deleteEventFailure = createAction('[Event] Delete Event Failure', props<{ error: any }>());
 */
+
+export const loadState = createAction('[BitsOfMyLife] Load State');
+export const saveState = createAction('[BitsOfMyLife] Save State', props<{ state: BitsOfMyLifeState }>());
+export const clearState = createAction('[BitsOfMyLife] Clear State');
+export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ state: BitsOfMyLifeState }>());

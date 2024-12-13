@@ -24,6 +24,6 @@ export const deleteEventFailure = createAction('[Event] Delete Event Failure', p
 */
 
 export const loadState = createAction('[BitsOfMyLife] Load State');
-export const saveState = createAction('[BitsOfMyLife] Save State', props<{ state: BitsOfMyLifeState }>());
+export const saveState = createAction('[BitsOfMyLife] Save State');
 export const clearState = createAction('[BitsOfMyLife] Clear State');
 export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ state: BitsOfMyLifeState }>());

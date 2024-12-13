@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { BitOfMyLifeToAdd, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -27,10 +28,15 @@ export class AppComponent {
   constructor(private store: Store<BitsOfMyLifeState>) {
   }
 
+  ngOnInit() {
+    this.store.dispatch(BitsOfMyLifeActions.loadState());
+  }
+
   addBitOfMyLife(bitOfMyLife: BitOfMyLifeToAdd): void {
     bitOfMyLife.date = new Date(bitOfMyLife.date);
     this.store.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
     this.newBit = { date: new Date(), note: '' };
+    this.store.dispatch(BitsOfMyLifeActions.saveState());
   }
 }
 

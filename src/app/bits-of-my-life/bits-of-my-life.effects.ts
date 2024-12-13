@@ -1,9 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { map, tap } from "rxjs";
+import { map, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState } from "./bits-of-my-life.actions";
+import { selectBitsOfMyLife, selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 
 // Effects
 @Injectable()
@@ -28,8 +29,9 @@ export class BitsOfMyLifeEffects {
         () =>
             this.actions$.pipe(
                 ofType(saveState),
-                tap(({ state }) => {
-                    this.bitsOfMyLifeService.saveState(state);
+                withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+                tap(([action, currentState]) => {
+                    this.bitsOfMyLifeService.saveState(currentState);
                 })
             ),
         { dispatch: false }

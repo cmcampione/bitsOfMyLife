@@ -6,15 +6,18 @@ import { provideState, provideStore } from '@ngrx/store';
 import { appReducer, bitsOfMyLifeReducer } from './bits-of-my-life/bits-of-my-life.reducer';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideEffects } from '@ngrx/effects';
+import { BitsOfMyLifeEffects } from './bits-of-my-life/bits-of-my-life.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideIonicAngular({}),
     provideStore(),
     provideState({ name: 'AppState', reducer: appReducer }),
     provideState({ name: 'BitsOfMyLifeState', reducer: bitsOfMyLifeReducer }),
-    provideIonicAngular({}),
+    provideEffects(BitsOfMyLifeEffects),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode

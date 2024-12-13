@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AsyncPipe, NgFor } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
@@ -9,11 +9,12 @@ import { Observable } from 'rxjs';
 import { BitOfMyLifeToAdd, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
+import { AppState, selectAppState } from './bits-of-my-life/bits-of-my-life.reducer';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgxTimelineModule, AsyncPipe, NgFor, FormsModule],
+  imports: [RouterOutlet, NgxTimelineModule, AsyncPipe, NgFor, NgIf, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -21,22 +22,24 @@ export class AppComponent {
 
   title = 'bitsOfMyLife';
   
-  bitsOfMyLife$: Observable<BitsOfMyLife> = this.store.select(selectBitsOfMyLife);
+  appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
+  bitsOfMyLife$: Observable<BitsOfMyLife> = this.bitsOfMyLifeStore.select(selectBitsOfMyLife);
 
   newBit: BitOfMyLifeToAdd = { date: new Date(), note: '' };
   
-  constructor(private store: Store<BitsOfMyLifeState>) {
+  constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
+    private appStateStore: Store<AppState>) {
   }
 
   ngOnInit() {
-    this.store.dispatch(BitsOfMyLifeActions.loadState());
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
   }
 
   addBitOfMyLife(bitOfMyLife: BitOfMyLifeToAdd): void {
     bitOfMyLife.date = new Date(bitOfMyLife.date);
-    this.store.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
     this.newBit = { date: new Date(), note: '' };
-    this.store.dispatch(BitsOfMyLifeActions.saveState());
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.saveState());
   }
 }
 

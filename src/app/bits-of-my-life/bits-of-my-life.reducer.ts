@@ -1,16 +1,34 @@
-import { createReducer, on } from "@ngrx/store";
+import { createFeatureSelector, createReducer, on } from "@ngrx/store";
 import { MileStone, MileStones, MileStonesMngr, Timeline } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
 // Temporarily
-export const initialAppState = {
-    dummy: 'dummy'
+
+export type Error = {
+    code: number;
+    description: string
+}
+
+export type AppState = {
+    error: Error;
+    //isLoggedIn: boolean
+}
+
+export const selectAppState = createFeatureSelector<AppState>('AppState');
+
+export const initialAppState : AppState = {
+    error: {
+        code: 0,
+        description: "No error"
+    }
 }
 
 export const appReducer = createReducer(
-    initialAppState,
+    initialAppState
 )
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 
 export const defaultMileStonesId = 1;
 export const defaultMileStonesName = 'Default';
@@ -50,28 +68,6 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     selectedMileStonesId: defaultMileStonesId,
     selectedTimelineId: defaultTimelineId
 }
-/*
-export const bitsOfMyLifeReducer = createReducer(
-    initialBitsOfMyLifeState,
-    on(BitsOfMyLifeActions.addBitOfMyLife, (state, { bitOfMyLife }) => {
-        let mileStone: MileStone = {
-            date: bitOfMyLife.date,
-            note: bitOfMyLife.note
-        }
-        let mileStonesMngr: MileStonesMngr = state.mileStonesMngr;
-        let selectedMileStones: MileStones | undefined = mileStonesMngr.get(state.selectedMileStonesId);
-        if (selectedMileStones) {
-            //selectedMileStones.mileStones = [...selectedMileStones.mileStones, mileStone].sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-            selectedMileStones.mileStones = [...selectedMileStones.mileStones, mileStone];
-        } else {
-            //ToDo: To manage error
-        }
-        return {
-            ...state
-        };
-    })
-);
-*/
 
 export const bitsOfMyLifeReducer = createReducer(
     initialBitsOfMyLifeState,
@@ -109,7 +105,7 @@ export const bitsOfMyLifeReducer = createReducer(
             mileStonesMngr: updatedMileStonesMngr,
         };
     }),
-    on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
-    on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState })),
-    on(BitsOfMyLifeActions.saveState, (state) => ({ ...state })) // Non modifica nulla, ma intercetta l'azione
+    on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),    
+    on(BitsOfMyLifeActions.saveState, (state) => ({ ...state })), // Non modifica nulla, ma intercetta l'azione
+    on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

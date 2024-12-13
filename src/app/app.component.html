@@ -2,6 +2,10 @@
 </style>
 
 <main>
+  <div *ngIf="appState$ | async as appState">
+    <p>Errore: {{ appState.error.description }}</p>
+  </div>
+
   <p>Mile Stones name: {{ ( bitsOfMyLife$ | async )?.mileStonesName }}</p>
   <p>Timeline name: {{ ( bitsOfMyLife$ | async )?.timelineName }}</p>
   <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate }}</p>

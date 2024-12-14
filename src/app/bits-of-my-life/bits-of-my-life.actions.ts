@@ -1,9 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { BitOfMyLifeToAdd } from './bits-of-my-life.models';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
-import { AppState } from './bits-of-my-life.reducer';
-
-export const updateAppState = createAction('[AppState] Error State ', props<{ state: AppState}>());
 
 /*
 export const loadEvents = createAction('[Event] Load Events');

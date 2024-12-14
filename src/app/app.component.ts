@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { BitOfMyLifeToAdd, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
-import { AppState, selectAppState } from './bits-of-my-life/bits-of-my-life.reducer';
+import { AppState, selectAppState } from './global/globalMng';
 
 @Component({
   selector: 'app-root',

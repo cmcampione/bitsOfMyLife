@@ -1,32 +1,7 @@
-import { createFeatureSelector, createReducer, on } from "@ngrx/store";
+import { createReducer, on } from "@ngrx/store";
 import { MileStone, MileStones, MileStonesMngr, Timeline } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
-
-// Temporarily
-
-export type Error = {
-    code: number;
-    description: string
-}
-
-export type AppState = {
-    error: Error;
-    //isLoggedIn: boolean
-}
-
-export const selectAppState = createFeatureSelector<AppState>('AppState');
-
-export const initialAppState : AppState = {
-    error: {
-        code: 0,
-        description: "No error"
-    }
-}
-
-export const appReducer = createReducer(
-    initialAppState
-)
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 

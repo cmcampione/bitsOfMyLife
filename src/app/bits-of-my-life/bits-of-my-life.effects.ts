@@ -3,8 +3,9 @@ import { Store } from "@ngrx/store";
 import { map, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, updateAppState as updateAppState } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
+import { AppState, updateAppState } from "../global/globalMng";
 
 // Effects
 @Injectable()
@@ -20,7 +21,7 @@ export class BitsOfMyLifeEffects {
             ofType(loadState),
             map(() => {
                 try {
-                    const state = this.bitsOfMyLifeService.loadState();
+                    const state = this.bitsOfMyLifeService.loadState();                    
                     return stateLoaded({ state });
                 } catch (error) {
                     console.error('Errore durante il caricamento dello stato:', error);

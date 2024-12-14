@@ -3,11 +3,12 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
-import { appReducer, bitsOfMyLifeReducer } from './bits-of-my-life/bits-of-my-life.reducer';
+import { bitsOfMyLifeReducer } from './bits-of-my-life/bits-of-my-life.reducer';
 import { provideIonicAngular } from '@ionic/angular/standalone';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { BitsOfMyLifeEffects } from './bits-of-my-life/bits-of-my-life.effects';
+import { appReducer } from './global/globalMng';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -28,5 +28,6 @@ export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ s
 //export const stateLoadFailed = createAction('[BitsOfMyLife] State Load Failed', props<{ state: { error: any }}>());
 
 export const saveState = createAction('[BitsOfMyLife] Save State');
+export const stateSaved = createAction('[BitsOfMyLife] State Loaded');
 
 export const clearState = createAction('[BitsOfMyLife] Clear State');

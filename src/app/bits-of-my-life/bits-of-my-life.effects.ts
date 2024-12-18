@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { catchError, map, of, tap, withLatestFrom } from "rxjs";
+import { catchError, from, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved } from "./bits-of-my-life.actions";
@@ -37,23 +37,35 @@ export class BitsOfMyLifeEffects {
 
     saveState$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(saveState),
-            withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-            tap(([, currentState]) => this.bitsOfMyLifeService.saveState(currentState)), // Esegue l'operazione di salvataggio),            
-            map(() => stateSaved()),
-            catchError(error => {
+          ofType(saveState),
+          withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+          switchMap(([_, currentState]) =>
+            from(
+              new Promise<typeof currentState>((resolve, reject) => {
+                try {
+                  this.bitsOfMyLifeService.saveState(currentState); // Chiama il metodo
+                  resolve(currentState);
+                } catch (error) {
+                  reject(error);
+                }
+              })
+            ).pipe(
+              map((state) => stateSaved({ state })), // Dispatch di successo
+              catchError((error) => {
                 console.error('Error saving state:', error);
                 return of(updateAppState({
-                    state: {
-                        error: {
-                            code: 2,
-                            description: "Errore durante il salvataggio dello stato"
-                        }
-                    }
+                  state: {
+                    error: {
+                      code: 2,
+                      description: "Errore durante il salvataggio dello stato",
+                    },
+                  },
                 }));
-            })
+              })
+            )
+          )
         )
-    );    
+      );
 
     clearState$ = createEffect(
         () =>

@@ -80,7 +80,9 @@ export const bitsOfMyLifeReducer = createReducer(
             mileStonesMngr: updatedMileStonesMngr,
         };
     }),
-    on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),    
-    on(BitsOfMyLifeActions.saveState, (state) => ({ ...state })), // Non modifica nulla, ma intercetta l'azione
+    on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
+
+    on(BitsOfMyLifeActions.saveState, (state) => ({ ...state })), // Non modifica nulla, ma intercetta l'azione    
+    on(BitsOfMyLifeActions.stateSaved, (state, { state: loadedState }) => ({ ...loadedState })),
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

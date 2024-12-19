@@ -55,7 +55,6 @@ export const bitsOfMyLifeReducer = createReducer(
 
         // Ottieni i traguardi selezionati
         const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
-
         if (!selectedMileStones) {
             console.error("Selected MileStones not found. Unable to add the milestone.");
             return state; // Restituisci lo stato invariato per gestire l'errore

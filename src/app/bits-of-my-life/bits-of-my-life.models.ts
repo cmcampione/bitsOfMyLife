@@ -1,5 +1,6 @@
 
 export type MileStone = {
+    id: number;
     date: Date;
     note: string
 }

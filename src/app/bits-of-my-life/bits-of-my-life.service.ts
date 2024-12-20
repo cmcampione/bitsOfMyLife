@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
 import { MileStones, MileStone, MileStonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd } from './bits-of-my-life.models';
+import { State } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class BitsOfMyLifeService {
   
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
+        milestoneIdCounter: state.milestoneIdCounter,
         mileStonesMngr: Array.from(state.mileStonesMngr.entries()), // Converte Map in array
         timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Converte Map in array
         selectedMileStonesId: state.selectedMileStonesId,
@@ -23,6 +25,7 @@ export class BitsOfMyLifeService {
       const parsed = JSON.parse(json);
   
       return {
+        milestoneIdCounter: parsed.milestoneIdCounter,
         mileStonesMngr: new Map(
           parsed.mileStonesMngr.map(([id, milestones]: [number, MileStones]) => [
             id,
@@ -90,8 +93,10 @@ export class BitsOfMyLifeService {
      */
     async addBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToAdd): Promise<BitsOfMyLifeState> {
       
+      const newIdMilestone = state.milestoneIdCounter + 1;
       // Creazione del nuovo MileStone
       const newMileStone: MileStone = {
+        id: newIdMilestone,
         date: bitOfMyLife.date,
         note: bitOfMyLife.note,
       };
@@ -119,6 +124,7 @@ export class BitsOfMyLifeService {
       // Aggiorna lo stato
       const updatedState: BitsOfMyLifeState = {
         ...state,
+        milestoneIdCounter: newIdMilestone,
         mileStonesMngr: updatedMileStonesMngr,
       };
 

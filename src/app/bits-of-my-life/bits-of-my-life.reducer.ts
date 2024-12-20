@@ -14,10 +14,11 @@ export const defaultTimelineName = 'Default';
 let defaultMileStones: MileStones = {
     name: defaultMileStonesName,
     mileStones: [{
+        id: 1,
         note: 'I was born',
         date: new Date("1962-08-19")
     },
-    {        
+    {   id: 2,
         note: 'I married',
         date: new Date("1988-07-27")
     }]
@@ -29,6 +30,8 @@ let defaultTimeline: Timeline = {
 }
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
+
+    milestoneIdCounter: 2,
 
     // Why: I can't do "mileStonesMngr: new MileStonesMngr([[defaultMileStonesId, new Array<MileStone>]])" ?
     mileStonesMngr: new Map([

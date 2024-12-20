@@ -27,6 +27,7 @@ export const selectBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): BitsOfMyLife => {
     const todayMileStone: MileStone = {
+      id: 0,
       date: new Date(),
       note: 'Now', // ToDo: To localize
     };

@@ -11,7 +11,7 @@
   <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate }}</p>
 
   <ul *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">   
-    <li> {{ bit.mileStone.note }} - {{ bit.mileStone.date }} - {{ bit.diff.years }} - {{ bit.diff.months }} - {{ bit.diff.days }}</li>
+    <li> {{ bit.mileStone.id }} {{ bit.mileStone.note }} - {{ bit.mileStone.date }} - {{ bit.diff.years }} - {{ bit.diff.months }} - {{ bit.diff.days }}</li>
   </ul>
 
   <div>

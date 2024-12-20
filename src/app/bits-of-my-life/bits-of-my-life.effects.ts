@@ -3,9 +3,11 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
+import { BitOfMyLifeToAdd, MileStone, MileStones } from "./bits-of-my-life.models";
+import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 
 // Effects
 @Injectable()
@@ -61,8 +63,7 @@ export class BitsOfMyLifeEffects {
         )
     );
 
-    clearState$ = createEffect(
-        () =>
+    clearState$ = createEffect(() =>
             this.actions$.pipe(
                 ofType(clearState),
                 switchMap(() => 
@@ -82,5 +83,27 @@ export class BitsOfMyLifeEffects {
                 )
             ),
         { dispatch: false }
+    );
+    // Effect per l'aggiunta di un nuovo BitOfMyLife
+    addBitOfMyLife$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(addBitOfMyLife),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([action, currentState]: [{ bitOfMyLife: BitOfMyLifeToAdd }, BitsOfMyLifeState ]) =>
+            from(this.bitsOfMyLifeService.addBitOfMyLife(currentState, action.bitOfMyLife))
+            .pipe(
+            map((updatedState) => bitOfMyLifeAdded({ state: updatedState })),
+            catchError((error) => {
+                console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 4,
+                            description: "Errore durante l'aggiunta di un BitOfMyLife",
+                        },
+                    },
+                }));
+            })))
+        )
     );
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { MileStones, MileStone, MileStonesMngr, Timeline, TimelinesMngr } from './bits-of-my-life.models';
+import { MileStones, MileStone, MileStonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -52,46 +52,90 @@ export class BitsOfMyLifeService {
     /** Salva lo stato corrente nel localStorage in modo asincrono.
     * @param state Stato da salvare.
     */
+    async saveState(state: BitsOfMyLifeState): Promise<void> {
+        try {
+            const serializedState = this.serializeBitsOfMyLifeState(state);
+            await Promise.resolve(localStorage.setItem(this.storageKey, serializedState));
+        } catch (error) {
+            console.error('Errore durante il salvataggio dello stato:', error);
+            // Rilancia l'eccezione per essere gestita dal chiamante
+            throw new Error('Errore critico durante il salvataggio dello stato.');
+        }
+    }
+   
+    /**
+      * Carica lo stato dal localStorage in modo asincrono.
+      * @returns Lo stato deserializzato oppure un oggetto vuoto predefinito.
+      */
+    async loadState(): Promise<BitsOfMyLifeState> {
+        try {
+            const serializedState = await Promise.resolve(localStorage.getItem(this.storageKey));
+            if (serializedState) {
+                return this.deserializeBitsOfMyLifeState(serializedState);
+            }
+            // Nessun dato salvato, restituisci lo stato predefinito
+            return this.getDefaultState();
+        } catch (error) {
+            console.error('Errore durante il caricamento dello stato:', error);
+    
+            // Se è un problema di parsing o accesso, rilancia l'eccezione
+            throw new Error('Errore critico durante il caricamento dello stato.');
+        }
+    }
 
-   async saveState(state: BitsOfMyLifeState): Promise<void> {
-       try {
-           const serializedState = this.serializeBitsOfMyLifeState(state);
-           await Promise.resolve(localStorage.setItem(this.storageKey, serializedState));
-       } catch (error) {
-           console.error('Errore durante il salvataggio dello stato:', error);
-           // Rilancia l'eccezione per essere gestita dal chiamante
-           throw new Error('Errore critico durante il salvataggio dello stato.');
-       }
-   }
+    /**
+     * Aggiunge un nuovo `BitOfMyLife` allo stato.
+     * @param bitOfMyLife Il nuovo elemento da aggiungere.
+     * @returns Lo stato aggiornato.
+     */
+    async addBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToAdd): Promise<BitsOfMyLifeState> {
+      
+      // Creazione del nuovo MileStone
+      const newMileStone: MileStone = {
+        date: bitOfMyLife.date,
+        note: bitOfMyLife.note,
+      };
+
+      // Ottieni i traguardi selezionati
+      const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
+      if (!selectedMileStones) {
+        throw new Error('Selected MileStones not found. Unable to add the milestone.');
+      }
+
+      // Aggiorna i traguardi selezionati con il nuovo MileStone
+      const updatedMileStones: MileStones = {
+        ...selectedMileStones,
+        mileStones: [...selectedMileStones.mileStones, newMileStone].sort(
+          (a, b) => a.date.getTime() - b.date.getTime()
+        ),
+      };
+
+      // Crea un nuovo manager aggiornato
+      const updatedMileStonesMngr = new Map(state.mileStonesMngr).set(
+        state.selectedMileStonesId,
+        updatedMileStones
+      );
+
+      // Aggiorna lo stato
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        mileStonesMngr: updatedMileStonesMngr,
+      };
+
+      // Salva lo stato aggiornato nel localStorage
+      await this.saveState(updatedState);
+
+      // Restituisce lo stato aggiornato
+      return updatedState;
+    }
    
-   /**
-    * Carica lo stato dal localStorage in modo asincrono.
-    * @returns Lo stato deserializzato oppure un oggetto vuoto predefinito.
-    */
-   async loadState(): Promise<BitsOfMyLifeState> {
-       try {
-           const serializedState = await Promise.resolve(localStorage.getItem(this.storageKey));
-           if (serializedState) {
-               return this.deserializeBitsOfMyLifeState(serializedState);
-           }
-           // Nessun dato salvato, restituisci lo stato predefinito
-           return this.getDefaultState();
-       } catch (error) {
-           console.error('Errore durante il caricamento dello stato:', error);
-   
-           // Se è un problema di parsing o accesso, rilancia l'eccezione
-           throw new Error('Errore critico durante il caricamento dello stato.');
-       }
-   }
-   
-  
     /**
      * Cancella lo stato dal localStorage in modo asincrono.
      */
     async clearState(): Promise<void> {
       await Promise.resolve(localStorage.removeItem(this.storageKey));
     }
-  
+
     /**
      * Ritorna uno stato predefinito.
      * @returns Stato predefinito.
@@ -99,5 +143,5 @@ export class BitsOfMyLifeService {
     private getDefaultState(): BitsOfMyLifeState {
       return initialBitsOfMyLifeState;
     }
-  }
+}
   

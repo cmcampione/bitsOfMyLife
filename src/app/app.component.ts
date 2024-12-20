@@ -39,7 +39,6 @@ export class AppComponent {
     bitOfMyLife.date = new Date(bitOfMyLife.date);
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
     this.newBit = { date: new Date(), note: '' };
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.saveState());
   }
 }
 

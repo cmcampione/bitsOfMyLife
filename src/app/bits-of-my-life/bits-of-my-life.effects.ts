@@ -3,10 +3,10 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded, deleteBitOfMyLife, bitOfMyLifeDeleted } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
-import { BitOfMyLifeToAdd, MileStone, MileStones } from "./bits-of-my-life.models";
+import { BitOfMyLifeToAdd, Milestone, Milestones } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 
 // Effects
@@ -104,6 +104,29 @@ export class BitsOfMyLifeEffects {
                     },
                 }));
             })))
+        )
+    );
+
+    deleteBitOfMyLife$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(deleteBitOfMyLife),
+            withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+            switchMap(([{ id }, currentState]) =>
+                from(this.bitsOfMyLifeService.deleteBitOfMyLife(currentState, id)).pipe(
+                    map((updatedState) => bitOfMyLifeDeleted({ state: updatedState })),
+                    catchError((error) => {
+                        console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
+                        return of(updateAppState({
+                            state: {
+                                error: {
+                                    code: 5,
+                                    description: 'Errore durante la cancellazione di un BitOfMyLife',
+                                },
+                            },
+                        }));
+                    })
+                )
+            )
         )
     );
 }

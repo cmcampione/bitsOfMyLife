@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { MileStones, MileStone, MileStonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd } from './bits-of-my-life.models';
-import { State } from '@ngrx/store';
+import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -27,17 +26,17 @@ export class BitsOfMyLifeService {
       return {
         milestoneIdCounter: parsed.milestoneIdCounter,
         mileStonesMngr: new Map(
-          parsed.mileStonesMngr.map(([id, milestones]: [number, MileStones]) => [
+          parsed.mileStonesMngr.map(([id, milestones]: [number, Milestones]) => [
             id,
             {
               ...milestones,
-              mileStones: milestones.mileStones.map((ms: MileStone) => ({
+              mileStones: milestones.mileStones.map((ms: Milestone) => ({
                 ...ms,
                 date: new Date(ms.date) // Converte stringa ISO in Date
               }))
             }
           ])
-        ) as MileStonesMngr,
+        ) as MilestonesMngr,
         timelinesMngr: new Map(
           parsed.timelinesMngr.map(([id, timeline]: [number, Timeline]) => [
             id,
@@ -95,7 +94,7 @@ export class BitsOfMyLifeService {
       
       const newIdMilestone = state.milestoneIdCounter + 1;
       // Creazione del nuovo MileStone
-      const newMileStone: MileStone = {
+      const newMileStone: Milestone = {
         id: newIdMilestone,
         date: bitOfMyLife.date,
         note: bitOfMyLife.note,
@@ -108,7 +107,7 @@ export class BitsOfMyLifeService {
       }
 
       // Aggiorna i traguardi selezionati con il nuovo MileStone
-      const updatedMileStones: MileStones = {
+      const updatedMileStones: Milestones = {
         ...selectedMileStones,
         mileStones: [...selectedMileStones.mileStones, newMileStone].sort(
           (a, b) => a.date.getTime() - b.date.getTime()
@@ -125,6 +124,49 @@ export class BitsOfMyLifeService {
       const updatedState: BitsOfMyLifeState = {
         ...state,
         milestoneIdCounter: newIdMilestone,
+        mileStonesMngr: updatedMileStonesMngr,
+      };
+
+      // Salva lo stato aggiornato nel localStorage
+      await this.saveState(updatedState);
+
+      // Restituisce lo stato aggiornato
+      return updatedState;
+    }
+
+    /**
+   * Rimuove un `BitOfMyLife` dallo stato dato il suo ID.
+   * @param state Lo stato attuale.
+   * @param bitOfMyLifeId L'ID della milestone da rimuovere.
+   * @returns Lo stato aggiornato.
+   */
+    async deleteBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLifeId: number): Promise<BitsOfMyLifeState> {
+      // Trova i traguardi selezionati
+      const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
+      if (!selectedMileStones) {
+        throw new Error('Selected MileStones not found. Unable to remove the milestone.');
+      }
+
+      // Filtra per rimuovere la milestone con l'ID specificato
+      const updatedMilestones = selectedMileStones.mileStones.filter(
+        (milestone) => milestone.id !== bitOfMyLifeId
+      );
+
+      // Aggiorna i traguardi selezionati
+      const updatedMileStones: Milestones = {
+        ...selectedMileStones,
+        mileStones: updatedMilestones,
+      };
+
+      // Crea un nuovo manager aggiornato
+      const updatedMileStonesMngr = new Map(state.mileStonesMngr).set(
+        state.selectedMileStonesId,
+        updatedMileStones
+      );
+
+      // Aggiorna lo stato
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
         mileStonesMngr: updatedMileStonesMngr,
       };
 

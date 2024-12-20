@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import {BitOfMyLife, BitsOfMyLife, Elapse, MileStone } from './bits-of-my-life.models';
+import {BitOfMyLife, BitsOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultMileStonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
 
@@ -26,14 +26,14 @@ export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>(
 export const selectBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): BitsOfMyLife => {
-    const todayMileStone: MileStone = {
+    const todayMileStone: Milestone = {
       id: 0,
       date: new Date(),
       note: 'Now', // ToDo: To localize
     };
 
     const todayBitOfMyLife: BitOfMyLife = {
-      mileStone: todayMileStone,
+      milestone: todayMileStone,
       diff: { years: 0, months: 0, days: 0 },
     };
 
@@ -44,7 +44,7 @@ export const selectBitsOfMyLife = createSelector(
 
     if (!selectedMileStones) {
       return {
-        mileStonesName: defaultMileStonesName,
+        milestonesName: defaultMileStonesName,
         timelineName: defaultTimelineName,
         timelineMainDate: new Date(),
         bits: [todayBitOfMyLife],
@@ -55,15 +55,15 @@ export const selectBitsOfMyLife = createSelector(
     const timelineName = timeline ? timeline.name : defaultTimelineName;
 
     const bits = [
-      ...selectedMileStones.mileStones.map((mileStone: MileStone) => ({
-        mileStone,
-        diff: diffDate(mainDate, mileStone.date),
+      ...selectedMileStones.mileStones.map((milestone: Milestone) => ({
+        milestone: milestone,
+        diff: diffDate(mainDate, milestone.date),
       })),
       todayBitOfMyLife,
-    ].sort((a, b) => new Date(a.mileStone.date).getTime() - new Date(b.mileStone.date).getTime());
+    ].sort((a, b) => new Date(a.milestone.date).getTime() - new Date(b.milestone.date).getTime());
 
     return {
-      mileStonesName: selectedMileStones.name,
+      milestonesName: selectedMileStones.name,
       timelineMainDate: mainDate,
       timelineName,
       bits,

@@ -6,13 +6,23 @@
     <p>Errore: {{ appState.error.description }}</p>
   </div>
 
-  <p>Mile Stones name: {{ ( bitsOfMyLife$ | async )?.mileStonesName }}</p>
+  <p>Mile Stones name: {{ ( bitsOfMyLife$ | async )?.milestonesName }}</p>
   <p>Timeline name: {{ ( bitsOfMyLife$ | async )?.timelineName }}</p>
   <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate }}</p>
 
-  <ul *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">   
-    <li> {{ bit.mileStone.id }} {{ bit.mileStone.note }} - {{ bit.mileStone.date }} - {{ bit.diff.years }} - {{ bit.diff.months }} - {{ bit.diff.days }}</li>
-  </ul>
+  <ul *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">    
+    <li>
+        {{ bit.milestone.id }} {{ bit.milestone.note }} - {{ bit.milestone.date }} - 
+        {{ bit.diff.years }} - {{ bit.diff.months }} - {{ bit.diff.days }}
+        
+        <!-- Visualizza il pulsante solo se l'ID è diverso da 0 -->
+        <button 
+            *ngIf="bit.milestone.id !== 0" 
+            (click)="deleteBitMyLife(bit.milestone.id)">
+            Cancella
+        </button>
+    </li>
+</ul>
 
   <div>
     <label for="date">Date:</label>

@@ -40,5 +40,12 @@ export class AppComponent {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
     this.newBit = { date: new Date(), note: '' };
   }
+
+  deleteBitMyLife(id: number) {
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');
+    if (userConfirmed) {
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteBitOfMyLife({ id }));
+    }
+  }
 }
 

@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { MileStone, MileStones, MileStonesMngr, Timeline } from "./bits-of-my-life.models";
+import { Milestone, Milestones, MilestonesMngr, Timeline } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
@@ -11,7 +11,7 @@ export const defaultMileStonesName = 'Default';
 export const defaultTimelineId = 1;
 export const defaultTimelineName = 'Default';
 
-let defaultMileStones: MileStones = {
+let defaultMileStones: Milestones = {
     name: defaultMileStonesName,
     mileStones: [{
         id: 1,

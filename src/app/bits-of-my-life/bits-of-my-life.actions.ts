@@ -5,6 +5,9 @@ import { BitsOfMyLifeState } from './bits-of-my-life.state';
 export const addBitOfMyLife = createAction('[BitOfMyLife] Add BitOfMyLife', props<{ bitOfMyLife: BitOfMyLifeToAdd }>());
 export const bitOfMyLifeAdded = createAction('[BitOfMyLife] Add BitOfMyLife Success', props<{ state: BitsOfMyLifeState }>());
 
+export const deleteBitOfMyLife = createAction("[BitOfMyLife] Delete BitOfMyLife", props<{ id: number }>());
+export const bitOfMyLifeDeleted = createAction('[BitOfMyLife] Add BitOfMyLife Success', props<{ state: BitsOfMyLifeState }>());
+
 export const loadState = createAction('[BitsOfMyLife] Load State');
 export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ state: BitsOfMyLifeState }>());
 

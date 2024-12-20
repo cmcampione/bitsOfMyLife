@@ -22,19 +22,18 @@
             Cancella
         </button>
     </li>
-</ul>
+  </ul>
 
   <div>
     <label for="date">Date:</label>
     <input id="date" type="date" [(ngModel)]="newBit.date">
-  
+
     <label for="note">Note:</label>
     <input id="note" type="text" [(ngModel)]="newBit.note">
-  
+
     <button (click)="addBitOfMyLife(newBit)">Add</button>
   </div>
+
 </main>
 
 <router-outlet />
-
-

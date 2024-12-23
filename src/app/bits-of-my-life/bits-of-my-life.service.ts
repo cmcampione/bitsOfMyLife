@@ -101,30 +101,30 @@ export class BitsOfMyLifeService {
       };
 
       // Ottieni i traguardi selezionati
-      const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
-      if (!selectedMileStones) {
+      const selectedMilestones = state.mileStonesMngr.get(state.selectedMileStonesId);
+      if (!selectedMilestones) {
         throw new Error('Selected MileStones not found. Unable to add the milestone.');
       }
 
       // Aggiorna i traguardi selezionati con il nuovo MileStone
-      const updatedMileStones: Milestones = {
-        ...selectedMileStones,
-        mileStones: [...selectedMileStones.mileStones, newMileStone].sort(
+      const updatedMilestones: Milestones = {
+        ...selectedMilestones,
+        mileStones: [...selectedMilestones.mileStones, newMileStone].sort(
           (a, b) => a.date.getTime() - b.date.getTime()
         ),
       };
 
       // Crea un nuovo manager aggiornato
-      const updatedMileStonesMngr = new Map(state.mileStonesMngr).set(
+      const updatedMilestonesMngr = new Map(state.mileStonesMngr).set(
         state.selectedMileStonesId,
-        updatedMileStones
+        updatedMilestones
       );
 
       // Aggiorna lo stato
       const updatedState: BitsOfMyLifeState = {
         ...state,
         milestoneIdCounter: newIdMilestone,
-        mileStonesMngr: updatedMileStonesMngr,
+        mileStonesMngr: updatedMilestonesMngr,
       };
 
       // Salva lo stato aggiornato nel localStorage

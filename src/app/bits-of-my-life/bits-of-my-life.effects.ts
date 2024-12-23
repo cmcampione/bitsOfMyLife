@@ -89,9 +89,8 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(addBitOfMyLife),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([action, currentState]: [{ bitOfMyLife: BitOfMyLifeToAdd }, BitsOfMyLifeState ]) =>
-            from(this.bitsOfMyLifeService.addBitOfMyLife(currentState, action.bitOfMyLife))
-            .pipe(
+        switchMap(([{ bitOfMyLife }, currentState]) =>
+            from(this.bitsOfMyLifeService.addBitOfMyLife(currentState, bitOfMyLife)).pipe(
             map((updatedState) => bitOfMyLifeAdded({ state: updatedState })),
             catchError((error) => {
                 console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
@@ -109,24 +108,22 @@ export class BitsOfMyLifeEffects {
 
     deleteBitOfMyLife$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(deleteBitOfMyLife),
-            withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-            switchMap(([{ id }, currentState]) =>
-                from(this.bitsOfMyLifeService.deleteBitOfMyLife(currentState, id)).pipe(
-                    map((updatedState) => bitOfMyLifeDeleted({ state: updatedState })),
-                    catchError((error) => {
-                        console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
-                        return of(updateAppState({
-                            state: {
-                                error: {
-                                    code: 5,
-                                    description: 'Errore durante la cancellazione di un BitOfMyLife',
-                                },
-                            },
-                        }));
-                    })
-                )
-            )
+        ofType(deleteBitOfMyLife),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([{ id }, currentState]) =>
+            from(this.bitsOfMyLifeService.deleteBitOfMyLife(currentState, id)).pipe(
+            map((updatedState) => bitOfMyLifeDeleted({ state: updatedState })),
+            catchError((error) => {
+                console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 5,
+                            description: 'Errore durante la cancellazione di un BitOfMyLife',
+                        },
+                    },
+                }));
+            })))
         )
     );
 }

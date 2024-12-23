@@ -50,12 +50,9 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 export const bitsOfMyLifeReducer = createReducer(
     initialBitsOfMyLifeState,    
     
-    on(BitsOfMyLifeActions.bitOfMyLifeAdded, (state, { state: updatedState }) => ({ ...updatedState })), // Non modifica nulla, ma intercetta l'azione
-    
+    on(BitsOfMyLifeActions.bitOfMyLifeAdded, (state, { state: updatedState }) => ({ ...updatedState })),
+    on(BitsOfMyLifeActions.bitOfMyLifeDeleted, (state, { state: updatedState }) => ({ ...updatedState })),
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
-
-    on(BitsOfMyLifeActions.saveState, (state) => ({ ...state })), // Non modifica nulla, ma intercetta l'azione    
-    on(BitsOfMyLifeActions.stateSaved, (state, { state: savedState }) => ({ ...savedState })),
 
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
@@ -14,7 +15,7 @@ import { AppState, selectAppState } from './global/globalMng';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgxTimelineModule, AsyncPipe, NgFor, NgIf, FormsModule],
+  imports: [RouterOutlet, NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

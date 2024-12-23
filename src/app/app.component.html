@@ -1,30 +1,168 @@
 <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  main {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+  }
+
+  h1 {
+    color: #333;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1.1em;
+    line-height: 1.5;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  .error-message {
+    color: red;
+    font-weight: bold;
+  }
+
+  .form-group {
+    margin: 10px 0;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input[type="date"], input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  button {
+    background: #ff4d4d;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  button:hover {
+    background: #e60000;
+  }
+
+  @media (max-width: 600px) {
+    table, thead, tbody, th, td, tr {
+      display: block;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: right;
+    }
+
+    thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    tr {
+      margin: 0 0 10px 0;
+    }
+
+    td {
+      border: none;
+      position: relative;
+      padding-left: 50%;
+    }
+
+    td:before {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+      content: attr(data-label);
+      font-weight: bold;
+    }
+  }
 </style>
 
 <main>
+  <h1>Bits of My Life</h1>
   <div *ngIf="appState$ | async as appState">
-    <p>Errore: {{ appState.error.description }}</p>
+    <p class="error-message">Errore: {{ appState.error.description }}</p>
   </div>
 
   <p>Mile Stones name: {{ ( bitsOfMyLife$ | async )?.milestonesName }}</p>
   <p>Timeline name: {{ ( bitsOfMyLife$ | async )?.timelineName }}</p>
-  <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate }}</p>
+  <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
 
-  <ul *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">    
-    <li>
-        {{ bit.milestone.id }} {{ bit.milestone.note }} - {{ bit.milestone.date }} - 
-        {{ bit.diff.years }} - {{ bit.diff.months }} - {{ bit.diff.days }}
-        
-        <!-- Visualizza il pulsante solo se l'ID è diverso da 0 -->
-        <button 
-            *ngIf="bit.milestone.id !== 0" 
-            (click)="deleteBitMyLife(bit.milestone.id)">
-            Cancella
-        </button>
-    </li>
-  </ul>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Note</th>
+        <th>Date</th>
+        <th>Years</th>
+        <th>Months</th>
+        <th>Days</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">
+        <td data-label="ID">{{ bit.milestone.id }}</td>
+        <td data-label="Note">{{ bit.milestone.note }}</td>
+        <td data-label="Date">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</td>
+        <td data-label="Years">{{ bit.diff.years }}</td>
+        <td data-label="Months">{{ bit.diff.months }}</td>
+        <td data-label="Days">{{ bit.diff.days }}</td>
+        <td data-label="Action">
+          <button 
+              *ngIf="bit.milestone.id !== 0" 
+              (click)="deleteBitMyLife(bit.milestone.id)">
+              Cancella
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-  <div>
+  <div class="form-group">
     <label for="date">Date:</label>
     <input id="date" type="date" [(ngModel)]="newBit.date">
 
@@ -33,7 +171,6 @@
 
     <button (click)="addBitOfMyLife(newBit)">Add</button>
   </div>
-
 </main>
 
 <router-outlet />

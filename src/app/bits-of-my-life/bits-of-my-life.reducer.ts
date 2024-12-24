@@ -13,7 +13,7 @@ export const defaultTimelineName = 'Default';
 
 let defaultMileStones: Milestones = {
     name: defaultMileStonesName,
-    mileStones: [{
+    milestones: [{
         id: 1,
         note: 'I was born',
         date: new Date("1962-08-19")

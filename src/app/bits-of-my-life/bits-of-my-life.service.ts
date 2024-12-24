@@ -30,7 +30,7 @@ export class BitsOfMyLifeService {
             id,
             {
               ...milestones,
-              mileStones: milestones.mileStones.map((ms: Milestone) => ({
+              mileStones: milestones.milestones.map((ms: Milestone) => ({
                 ...ms,
                 date: new Date(ms.date) // Converte stringa ISO in Date
               }))
@@ -109,7 +109,7 @@ export class BitsOfMyLifeService {
       // Aggiorna i traguardi selezionati con il nuovo MileStone
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
-        mileStones: [...selectedMilestones.mileStones, newMileStone],
+        milestones: [...selectedMilestones.milestones, newMileStone],
       };
 
       // Crea un nuovo manager aggiornato
@@ -140,14 +140,14 @@ export class BitsOfMyLifeService {
       }
     
       // Trova il traguardo da modificare
-      const milestoneIndex = selectedMilestones.mileStones.findIndex((milestone) => milestone.id === bitOfMyLife.id);
+      const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === bitOfMyLife.id);
       if (milestoneIndex === -1) {
         throw new Error('Milestone not found. Unable to edit the milestone.');
       }
     
       // Crea il nuovo traguardo con i dati modificati
       const updatedMileStone: Milestone = {
-        ...selectedMilestones.mileStones[milestoneIndex],
+        ...selectedMilestones.milestones[milestoneIndex],
         date: bitOfMyLife.date,
         note: bitOfMyLife.note,
       };
@@ -155,10 +155,10 @@ export class BitsOfMyLifeService {
       // Aggiorna la lista dei traguardi
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
-        mileStones: [
-          ...selectedMilestones.mileStones.slice(0, milestoneIndex),
+        milestones: [
+          ...selectedMilestones.milestones.slice(0, milestoneIndex),
           updatedMileStone,
-          ...selectedMilestones.mileStones.slice(milestoneIndex + 1),
+          ...selectedMilestones.milestones.slice(milestoneIndex + 1),
         ],
       };
     
@@ -195,14 +195,14 @@ export class BitsOfMyLifeService {
       }
 
       // Filtra per rimuovere la milestone con l'ID specificato
-      const updatedMilestones = selectedMileStones.mileStones.filter(
+      const updatedMilestones = selectedMileStones.milestones.filter(
         (milestone) => milestone.id !== bitOfMyLifeId
       );
 
       // Aggiorna i traguardi selezionati
       const updatedMileStones: Milestones = {
         ...selectedMileStones,
-        mileStones: updatedMilestones,
+        milestones: updatedMilestones,
       };
 
       // Crea un nuovo manager aggiornato

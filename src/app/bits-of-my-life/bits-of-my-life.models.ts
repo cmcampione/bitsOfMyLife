@@ -6,7 +6,7 @@ export type Milestone = {
 }
 export type Milestones = {
     name: string;
-    mileStones: ReadonlyArray<Milestone>;
+    milestones: ReadonlyArray<Milestone>;
 }
 export type MilestonesMngr = ReadonlyMap<number, Milestones>;
 

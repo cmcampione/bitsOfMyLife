@@ -55,7 +55,7 @@ export const selectBitsOfMyLife = createSelector(
     const timelineName = timeline ? timeline.name : defaultTimelineName;
 
     const bits = [
-      ...selectedMilestones.mileStones.map((milestone: Milestone) => ({
+      ...selectedMilestones.milestones.map((milestone: Milestone) => ({
         milestone: milestone,
         diff: diffDate(mainDate, milestone.date),
       })),

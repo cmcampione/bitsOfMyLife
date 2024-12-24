@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { selectBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { Observable } from 'rxjs';
-import { BitOfMyLifeToAdd, BitOfMyLifeToEdit, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
 import { AppState, selectAppState } from './global/globalMng';
@@ -43,12 +43,12 @@ export class AppComponent {
     this.newBit = { date: new Date(), note: '' };
   }
 
-  editBitOfMyLife(bitOfMyLife: any): void {
+  editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
     this.editingBit = { ...bitOfMyLife.milestone, date: new Date(bitOfMyLife.milestone.date) };
   }
 
   updateBitOfMyLife(bitOfMyLife: BitOfMyLifeToEdit): void {
-    if (bitOfMyLife.id > 0) {
+    if (bitOfMyLife.id != 0) {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editBitOfMyLife({ bitOfMyLifeToEdit: bitOfMyLife }));
       this.editingBit = { id: 0, date: new Date(), note: '' };  // Reset after update
     } else {

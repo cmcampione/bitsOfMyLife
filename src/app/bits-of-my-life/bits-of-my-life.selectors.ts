@@ -21,13 +21,15 @@ function diffDate(data1: Date, data2: Date): Elapse {
   return { years: years, months: months, days: days };
 }
 
+export const todayBitOfMyLifeId = 0;
+
 export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
 export const selectBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): BitsOfMyLife => {
     const todayMileStone: Milestone = {
-      id: 0,
+      id: todayBitOfMyLifeId,
       date: new Date(),
       note: 'Now', // ToDo: To localize
     };

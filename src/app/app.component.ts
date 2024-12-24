@@ -4,7 +4,7 @@ import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
-import { selectBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
+import { todayBitOfMyLifeId, selectBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { Observable } from 'rxjs';
 import { BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
@@ -25,6 +25,8 @@ export class AppComponent {
   
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
   bitsOfMyLife$: Observable<BitsOfMyLife> = this.bitsOfMyLifeStore.select(selectBitsOfMyLife);
+
+  todayBitOfMyLifeId = todayBitOfMyLifeId;
 
   newBit: BitOfMyLifeToAdd = { date: new Date(), note: '' };
   editingBit: BitOfMyLifeToEdit = { id: 0, date: new Date(), note: '' };

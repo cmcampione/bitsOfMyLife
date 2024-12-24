@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { Milestone, Milestones, MilestonesMngr, Timeline } from "./bits-of-my-life.models";
+import { Milestones, Timeline } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 

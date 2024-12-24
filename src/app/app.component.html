@@ -153,12 +153,12 @@
         <td data-label="Days">{{ bit.diff.days }}</td>
         <td data-label="Action">
           <button 
-              *ngIf="bit.milestone.id !== 0" 
+              *ngIf="bit.milestone.id !== todayBitOfMyLifeId" 
               (click)="deleteBitMyLife(bit.milestone.id)">
               Cancella
           </button>
           <button 
-              *ngIf="bit.milestone.id !== 0" 
+              *ngIf="bit.milestone.id !== todayBitOfMyLifeId" 
               (click)="editBitOfMyLife(bit)">
               Modifica
           </button>

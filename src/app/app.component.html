@@ -157,6 +157,11 @@
               (click)="deleteBitMyLife(bit.milestone.id)">
               Cancella
           </button>
+          <button 
+              *ngIf="bit.milestone.id !== 0" 
+              (click)="editBitOfMyLife(bit)">
+              Modifica
+          </button>
         </td>
       </tr>
     </tbody>
@@ -169,7 +174,9 @@
     <label for="note">Note:</label>
     <input id="note" type="text" [(ngModel)]="newBit.note">
 
-    <button (click)="addBitOfMyLife(newBit)">Add</button>
+    <button (click)="addBitOfMyLife()">Add</button>
+    <button *ngIf="editingBit.id" (click)="updateBitOfMyLife(editingBit)">Update</button>
+    
   </div>
 </main>
 

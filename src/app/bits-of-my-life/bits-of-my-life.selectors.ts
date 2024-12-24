@@ -37,12 +37,12 @@ export const selectBitsOfMyLife = createSelector(
       diff: { years: 0, months: 0, days: 0 },
     };
 
-    const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
+    const selectedMilestones = state.mileStonesMngr.get(state.selectedMileStonesId);
     const timeline = state.timelinesMngr.get(state.selectedTimelineId);
     if (timeline?.mainDate && state.selectedTimelineId === defaultTimelineId)
       timeline.mainDate = new Date();
 
-    if (!selectedMileStones) {
+    if (!selectedMilestones) {
       return {
         milestonesName: defaultMileStonesName,
         timelineName: defaultTimelineName,
@@ -55,7 +55,7 @@ export const selectBitsOfMyLife = createSelector(
     const timelineName = timeline ? timeline.name : defaultTimelineName;
 
     const bits = [
-      ...selectedMileStones.mileStones.map((milestone: Milestone) => ({
+      ...selectedMilestones.mileStones.map((milestone: Milestone) => ({
         milestone: milestone,
         diff: diffDate(mainDate, milestone.date),
       })),
@@ -63,7 +63,7 @@ export const selectBitsOfMyLife = createSelector(
     ].sort((a, b) => new Date(a.milestone.date).getTime() - new Date(b.milestone.date).getTime());
 
     return {
-      milestonesName: selectedMileStones.name,
+      milestonesName: selectedMilestones.name,
       timelineMainDate: mainDate,
       timelineName,
       bits,

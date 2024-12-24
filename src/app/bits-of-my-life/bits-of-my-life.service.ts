@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd } from './bits-of-my-life.models';
+import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -109,9 +109,7 @@ export class BitsOfMyLifeService {
       // Aggiorna i traguardi selezionati con il nuovo MileStone
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
-        mileStones: [...selectedMilestones.mileStones, newMileStone].sort(
-          (a, b) => a.date.getTime() - b.date.getTime()
-        ),
+        mileStones: [...selectedMilestones.mileStones, newMileStone],
       };
 
       // Crea un nuovo manager aggiornato
@@ -130,6 +128,55 @@ export class BitsOfMyLifeService {
       // Salva lo stato aggiornato nel localStorage
       await this.saveState(updatedState);
 
+      // Restituisce lo stato aggiornato
+      return updatedState;
+    }
+
+    async editBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToEdit): Promise<BitsOfMyLifeState> {
+      // Ottieni i traguardi selezionati
+      const selectedMilestones = state.mileStonesMngr.get(state.selectedMileStonesId);
+      if (!selectedMilestones) {
+        throw new Error('Selected MileStones not found. Unable to edit the milestone.');
+      }
+    
+      // Trova il traguardo da modificare
+      const milestoneIndex = selectedMilestones.mileStones.findIndex((milestone) => milestone.id === bitOfMyLife.id);
+      if (milestoneIndex === -1) {
+        throw new Error('Milestone not found. Unable to edit the milestone.');
+      }
+    
+      // Crea il nuovo traguardo con i dati modificati
+      const updatedMileStone: Milestone = {
+        ...selectedMilestones.mileStones[milestoneIndex],
+        date: bitOfMyLife.date,
+        note: bitOfMyLife.note,
+      };
+    
+      // Aggiorna la lista dei traguardi
+      const updatedMilestones: Milestones = {
+        ...selectedMilestones,
+        mileStones: [
+          ...selectedMilestones.mileStones.slice(0, milestoneIndex),
+          updatedMileStone,
+          ...selectedMilestones.mileStones.slice(milestoneIndex + 1),
+        ],
+      };
+    
+      // Crea un nuovo manager aggiornato
+      const updatedMilestonesMngr = new Map(state.mileStonesMngr).set(
+        state.selectedMileStonesId,
+        updatedMilestones
+      );
+    
+      // Aggiorna lo stato
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        mileStonesMngr: updatedMilestonesMngr,
+      };
+    
+      // Salva lo stato aggiornato nel localStorage
+      await this.saveState(updatedState);
+    
       // Restituisce lo stato aggiornato
       return updatedState;
     }

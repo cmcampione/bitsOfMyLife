@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded, deleteBitOfMyLife, bitOfMyLifeDeleted } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded, deleteBitOfMyLife, bitOfMyLifeDeleted, editBitOfMyLife, bitOfMyLifeEdited } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 import { BitOfMyLifeToAdd, Milestone, Milestones } from "./bits-of-my-life.models";
@@ -89,8 +89,8 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(addBitOfMyLife),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ bitOfMyLife }, currentState]) =>
-            from(this.bitsOfMyLifeService.addBitOfMyLife(currentState, bitOfMyLife)).pipe(
+        switchMap(([{ bitOfMyLifeToAdd }, currentState]) =>
+            from(this.bitsOfMyLifeService.addBitOfMyLife(currentState, bitOfMyLifeToAdd)).pipe(
             map((updatedState) => bitOfMyLifeAdded({ state: updatedState })),
             catchError((error) => {
                 console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
@@ -99,6 +99,27 @@ export class BitsOfMyLifeEffects {
                         error: {
                             code: 4,
                             description: "Errore durante l'aggiunta di un BitOfMyLife",
+                        },
+                    },
+                }));
+            })))
+        )
+    );
+
+    editBitOfMyLife$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(editBitOfMyLife),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([{ bitOfMyLifeToEdit }, currentState]) =>
+            from(this.bitsOfMyLifeService.editBitOfMyLife(currentState, bitOfMyLifeToEdit)).pipe(
+            map((updatedState) => bitOfMyLifeEdited({ state: updatedState })),
+            catchError((error) => {
+                console.error("Errore durante la modifica di un BitOfMyLife:", error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 6,
+                            description: "Errore durante la modifica di un BitOfMyLife",
                         },
                     },
                 }));

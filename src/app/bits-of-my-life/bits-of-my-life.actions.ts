@@ -1,9 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { BitOfMyLifeToAdd } from './bits-of-my-life.models';
+import { BitOfMyLifeToAdd, BitOfMyLifeToEdit } from './bits-of-my-life.models';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 
-export const addBitOfMyLife = createAction('[BitOfMyLife] Add BitOfMyLife', props<{ bitOfMyLife: BitOfMyLifeToAdd }>());
+export const addBitOfMyLife = createAction('[BitOfMyLife] Add BitOfMyLife', props<{ bitOfMyLifeToAdd: BitOfMyLifeToAdd }>());
 export const bitOfMyLifeAdded = createAction('[BitOfMyLife] Add BitOfMyLife Success', props<{ state: BitsOfMyLifeState }>());
+
+export const editBitOfMyLife = createAction('[BitsOfMyLife] Edit BitOfMyLife', props<{ bitOfMyLifeToEdit: BitOfMyLifeToEdit }>());
+export const bitOfMyLifeEdited = createAction('[BitsOfMyLife] Edit Bit Of My Life Success', props<{ state: BitsOfMyLifeState }>());
 
 export const deleteBitOfMyLife = createAction("[BitOfMyLife] Delete BitOfMyLife", props<{ id: number }>());
 export const bitOfMyLifeDeleted = createAction('[BitOfMyLife] Delete BitOfMyLife Success', props<{ state: BitsOfMyLifeState }>());

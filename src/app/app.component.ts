@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { selectBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { Observable } from 'rxjs';
-import { BitOfMyLifeToAdd, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLifeToAdd, BitOfMyLifeToEdit, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
 import { AppState, selectAppState } from './global/globalMng';
@@ -27,6 +27,7 @@ export class AppComponent {
   bitsOfMyLife$: Observable<BitsOfMyLife> = this.bitsOfMyLifeStore.select(selectBitsOfMyLife);
 
   newBit: BitOfMyLifeToAdd = { date: new Date(), note: '' };
+  editingBit: BitOfMyLifeToEdit = { id: 0, date: new Date(), note: '' };
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -36,10 +37,23 @@ export class AppComponent {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
   }
 
-  addBitOfMyLife(bitOfMyLife: BitOfMyLifeToAdd): void {
-    bitOfMyLife.date = new Date(bitOfMyLife.date);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLife }));
+  addBitOfMyLife(): void {
+    this.newBit.date = new Date(this.newBit.date);
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLifeToAdd: this.newBit }));
     this.newBit = { date: new Date(), note: '' };
+  }
+
+  editBitOfMyLife(bitOfMyLife: any): void {
+    this.editingBit = { ...bitOfMyLife.milestone, date: new Date(bitOfMyLife.milestone.date) };
+  }
+
+  updateBitOfMyLife(bitOfMyLife: BitOfMyLifeToEdit): void {
+    if (bitOfMyLife.id > 0) {
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editBitOfMyLife({ bitOfMyLifeToEdit: bitOfMyLife }));
+      this.editingBit = { id: 0, date: new Date(), note: '' };  // Reset after update
+    } else {
+      console.error('Invalid ID for updating BitOfMyLife');
+    }
   }
 
   deleteBitMyLife(id: number) {

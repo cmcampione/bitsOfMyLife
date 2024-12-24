@@ -37,3 +37,9 @@ export type BitOfMyLifeToAdd = {
     note: string
 }
 
+export type BitOfMyLifeToEdit = {
+    id: number;
+    date: Date;
+    note: string
+}
+

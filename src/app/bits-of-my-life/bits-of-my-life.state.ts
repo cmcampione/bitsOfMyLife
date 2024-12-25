@@ -1,10 +1,11 @@
 import { MilestonesMngr, TimelinesMngr } from './bits-of-my-life.models';
 
 export type BitsOfMyLifeState = {
+    stateVersion: number;
     milestoneIdCounter: number;
-    mileStonesMngr: MilestonesMngr;
+    milestonesMngr: MilestonesMngr;
     timelinesMngr: TimelinesMngr;
     
-    selectedMileStonesId: number;
+    selectedMilestonesId: number;
     selectedTimelineId: number;
 }

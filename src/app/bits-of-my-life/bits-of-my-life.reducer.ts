@@ -5,14 +5,14 @@ import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-export const defaultMileStonesId = 1;
-export const defaultMileStonesName = 'Default';
+export const defaultMilestonesId = 1;
+export const defaultMilestonesName = 'Default';
 
 export const defaultTimelineId = 1;
 export const defaultTimelineName = 'Default';
 
-let defaultMileStones: Milestones = {
-    name: defaultMileStonesName,
+let defaultMilestones: Milestones = {
+    name: defaultMilestonesName,
     milestones: [{
         id: 1,
         note: 'I was born',
@@ -31,11 +31,12 @@ let defaultTimeline: Timeline = {
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 
+    stateVersion: 1,
     milestoneIdCounter: 2,
 
-    // Why: I can't do "mileStonesMngr: new MileStonesMngr([[defaultMileStonesId, new Array<MileStone>]])" ?
-    mileStonesMngr: new Map([
-        [defaultMileStonesId, defaultMileStones]
+    // Why: I can't do "milestonesMngr: new MilestonesMngr([[defaultMilestonesId, new Array<Milestone>]])" ?
+    milestonesMngr: new Map([
+        [defaultMilestonesId, defaultMilestones]
     ]),
 
     // Why: I can't do "timelinesMngr: new TimelinesMngr([[defaultTimelineId, new Array<Timeline>]])" ?
@@ -43,7 +44,7 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
         [defaultTimelineId, defaultTimeline]
     ]),
     
-    selectedMileStonesId: defaultMileStonesId,
+    selectedMilestonesId: defaultMilestonesId,
     selectedTimelineId: defaultTimelineId
 }
 

@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import {BitOfMyLife, BitsOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState } from './bits-of-my-life.state';
-import { defaultMileStonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
+import { defaultMilestonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Crea oggetti moment per le due date
@@ -28,25 +28,25 @@ export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>(
 export const selectBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): BitsOfMyLife => {
-    const todayMileStone: Milestone = {
+    const todayMilestone: Milestone = {
       id: todayBitOfMyLifeId,
       date: new Date(),
       note: 'Now', // ToDo: To localize
     };
 
     const todayBitOfMyLife: BitOfMyLife = {
-      milestone: todayMileStone,
+      milestone: todayMilestone,
       diff: { years: 0, months: 0, days: 0 },
     };
 
-    const selectedMilestones = state.mileStonesMngr.get(state.selectedMileStonesId);
+    const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
     const timeline = state.timelinesMngr.get(state.selectedTimelineId);
     if (timeline?.mainDate && state.selectedTimelineId === defaultTimelineId)
       timeline.mainDate = new Date();
 
     if (!selectedMilestones) {
       return {
-        milestonesName: defaultMileStonesName,
+        milestonesName: defaultMilestonesName,
         timelineName: defaultTimelineName,
         timelineMainDate: new Date(),
         bits: [todayBitOfMyLife],

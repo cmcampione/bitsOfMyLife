@@ -12,10 +12,11 @@ export class BitsOfMyLifeService {
   
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
+        stateVersion: state.stateVersion,
         milestoneIdCounter: state.milestoneIdCounter,
-        mileStonesMngr: Array.from(state.mileStonesMngr.entries()), // Converte Map in array
+        milestonesMngr: Array.from(state.milestonesMngr.entries()), // Converte Map in array
         timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Converte Map in array
-        selectedMileStonesId: state.selectedMileStonesId,
+        selectedMilestonesId: state.selectedMilestonesId,
         selectedTimelineId: state.selectedTimelineId
       });
     }
@@ -24,13 +25,14 @@ export class BitsOfMyLifeService {
       const parsed = JSON.parse(json);
   
       return {
+        stateVersion: parsed.stateVersion,
         milestoneIdCounter: parsed.milestoneIdCounter,
-        mileStonesMngr: new Map(
-          parsed.mileStonesMngr.map(([id, milestones]: [number, Milestones]) => [
+        milestonesMngr: new Map(
+          parsed.milestonesMngr.map(([id, milestones]: [number, Milestones]) => [
             id,
             {
               ...milestones,
-              mileStones: milestones.milestones.map((ms: Milestone) => ({
+              milestones: milestones.milestones.map((ms: Milestone) => ({
                 ...ms,
                 date: new Date(ms.date) // Converte stringa ISO in Date
               }))
@@ -46,7 +48,7 @@ export class BitsOfMyLifeService {
             }
           ])
         ) as TimelinesMngr,
-        selectedMileStonesId: parsed.selectedMileStonesId,
+        selectedMilestonesId: parsed.selectedMilestonesId,
         selectedTimelineId: parsed.selectedTimelineId
       };
     }
@@ -93,28 +95,28 @@ export class BitsOfMyLifeService {
     async addBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToAdd): Promise<BitsOfMyLifeState> {
       
       const newIdMilestone = state.milestoneIdCounter + 1;
-      // Creazione del nuovo MileStone
-      const newMileStone: Milestone = {
+      // Creazione del nuovo Milestone
+      const newMilestone: Milestone = {
         id: newIdMilestone,
         date: bitOfMyLife.date,
         note: bitOfMyLife.note,
       };
 
       // Ottieni i traguardi selezionati
-      const selectedMilestones = state.mileStonesMngr.get(state.selectedMileStonesId);
+      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
-        throw new Error('Selected MileStones not found. Unable to add the milestone.');
+        throw new Error('Selected Milestones not found. Unable to add the milestone.');
       }
 
-      // Aggiorna i traguardi selezionati con il nuovo MileStone
+      // Aggiorna i traguardi selezionati con il nuovo Milestone
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
-        milestones: [...selectedMilestones.milestones, newMileStone],
+        milestones: [...selectedMilestones.milestones, newMilestone],
       };
 
       // Crea un nuovo manager aggiornato
-      const updatedMilestonesMngr = new Map(state.mileStonesMngr).set(
-        state.selectedMileStonesId,
+      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
+        state.selectedMilestonesId,
         updatedMilestones
       );
 
@@ -122,7 +124,7 @@ export class BitsOfMyLifeService {
       const updatedState: BitsOfMyLifeState = {
         ...state,
         milestoneIdCounter: newIdMilestone,
-        mileStonesMngr: updatedMilestonesMngr,
+        milestonesMngr: updatedMilestonesMngr,
       };
 
       // Salva lo stato aggiornato nel localStorage
@@ -134,9 +136,9 @@ export class BitsOfMyLifeService {
 
     async editBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToEdit): Promise<BitsOfMyLifeState> {
       // Ottieni i traguardi selezionati
-      const selectedMilestones = state.mileStonesMngr.get(state.selectedMileStonesId);
+      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
-        throw new Error('Selected MileStones not found. Unable to edit the milestone.');
+        throw new Error('Selected Milestones not found. Unable to edit the milestone.');
       }
     
       // Trova il traguardo da modificare
@@ -146,7 +148,7 @@ export class BitsOfMyLifeService {
       }
     
       // Crea il nuovo traguardo con i dati modificati
-      const updatedMileStone: Milestone = {
+      const updatedMilestone: Milestone = {
         ...selectedMilestones.milestones[milestoneIndex],
         date: bitOfMyLife.date,
         note: bitOfMyLife.note,
@@ -157,21 +159,21 @@ export class BitsOfMyLifeService {
         ...selectedMilestones,
         milestones: [
           ...selectedMilestones.milestones.slice(0, milestoneIndex),
-          updatedMileStone,
+          updatedMilestone,
           ...selectedMilestones.milestones.slice(milestoneIndex + 1),
         ],
       };
     
       // Crea un nuovo manager aggiornato
-      const updatedMilestonesMngr = new Map(state.mileStonesMngr).set(
-        state.selectedMileStonesId,
+      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
+        state.selectedMilestonesId,
         updatedMilestones
       );
     
       // Aggiorna lo stato
       const updatedState: BitsOfMyLifeState = {
         ...state,
-        mileStonesMngr: updatedMilestonesMngr,
+        milestonesMngr: updatedMilestonesMngr,
       };
     
       // Salva lo stato aggiornato nel localStorage
@@ -189,32 +191,32 @@ export class BitsOfMyLifeService {
    */
     async deleteBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLifeId: number): Promise<BitsOfMyLifeState> {
       // Trova i traguardi selezionati
-      const selectedMileStones = state.mileStonesMngr.get(state.selectedMileStonesId);
-      if (!selectedMileStones) {
-        throw new Error('Selected MileStones not found. Unable to remove the milestone.');
+      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+      if (!selectedMilestones) {
+        throw new Error('Selected Milestones not found. Unable to remove the milestone.');
       }
 
       // Filtra per rimuovere la milestone con l'ID specificato
-      const updatedMilestones = selectedMileStones.milestones.filter(
+      const filteredMilestones = selectedMilestones.milestones.filter(
         (milestone) => milestone.id !== bitOfMyLifeId
       );
 
       // Aggiorna i traguardi selezionati
-      const updatedMileStones: Milestones = {
-        ...selectedMileStones,
-        milestones: updatedMilestones,
+      const updatedMilestones: Milestones = {
+        ...selectedMilestones,
+        milestones: filteredMilestones,
       };
 
       // Crea un nuovo manager aggiornato
-      const updatedMileStonesMngr = new Map(state.mileStonesMngr).set(
-        state.selectedMileStonesId,
-        updatedMileStones
+      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
+        state.selectedMilestonesId,
+        updatedMilestones
       );
 
       // Aggiorna lo stato
       const updatedState: BitsOfMyLifeState = {
         ...state,
-        mileStonesMngr: updatedMileStonesMngr,
+        milestonesMngr: updatedMilestonesMngr,
       };
 
       // Salva lo stato aggiornato nel localStorage

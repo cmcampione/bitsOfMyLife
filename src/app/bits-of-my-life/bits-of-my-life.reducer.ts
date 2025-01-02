@@ -9,7 +9,7 @@ export const defaultMilestonesId = 1;
 export const defaultMilestonesName = 'Default';
 
 export const defaultTimelineId = 1;
-export const defaultTimelineName = 'Default';
+export const defaultTimelineName = 'Ad oggi sono passati o mancano ancora';
 
 let defaultMilestones: Milestones = {
     name: defaultMilestonesName,
@@ -31,7 +31,7 @@ let defaultTimeline: Timeline = {
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 
-    stateVersion: 1,
+    version: 1,
     milestoneIdCounter: 2,
 
     // Why: I can't do "milestonesMngr: new MilestonesMngr([[defaultMilestonesId, new Array<Milestone>]])" ?

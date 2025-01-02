@@ -12,7 +12,7 @@ export class BitsOfMyLifeService {
   
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
-        stateVersion: state.stateVersion,
+        version: state.version,
         milestoneIdCounter: state.milestoneIdCounter,
         milestonesMngr: Array.from(state.milestonesMngr.entries()), // Converte Map in array
         timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Converte Map in array
@@ -25,7 +25,7 @@ export class BitsOfMyLifeService {
       const parsed = JSON.parse(json);
   
       return {
-        stateVersion: parsed.stateVersion,
+        version: parsed.version,
         milestoneIdCounter: parsed.milestoneIdCounter,
         milestonesMngr: new Map(
           parsed.milestonesMngr.map(([id, milestones]: [number, Milestones]) => [

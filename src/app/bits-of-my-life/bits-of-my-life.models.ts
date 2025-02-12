@@ -25,12 +25,6 @@ export type BitOfMyLife = {
     milestone: Milestone;
     diff: Elapse
 }
-export type BitsOfMyLife = {
-    milestonesName: string;
-    timelineName: string;
-    timelineMainDate: Date;
-    bits: ReadonlyArray<BitOfMyLife>
-}
 
 export type BitOfMyLifeToAdd = {
     date: Date;

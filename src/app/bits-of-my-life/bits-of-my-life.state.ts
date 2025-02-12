@@ -1,4 +1,4 @@
-import { MilestonesMngr, TimelinesMngr } from './bits-of-my-life.models';
+import { BitOfMyLife, MilestonesMngr, TimelinesMngr } from './bits-of-my-life.models';
 
 export type BitsOfMyLifeState = {
     version: number;
@@ -8,4 +8,11 @@ export type BitsOfMyLifeState = {
     
     selectedMilestonesId: number;
     selectedTimelineId: number;
+}
+
+export type SelectedBitsOfMyLifeState = {
+    milestonesName: string;
+    timelineName: string;
+    timelineMainDate: Date;
+    bits: ReadonlyArray<BitOfMyLife>
 }

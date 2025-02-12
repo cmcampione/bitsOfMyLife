@@ -127,9 +127,9 @@
     <p class="error-message">Errore: {{ appState.error.description }}</p>
   </div>
 
-  <p>Milestones name: {{ ( bitsOfMyLife$ | async )?.milestonesName }}</p>
-  <p>Timeline name: {{ ( bitsOfMyLife$ | async )?.timelineName }}</p>
-  <p>Timeline main date: {{ ( bitsOfMyLife$ | async )?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+  <p>Milestones name: {{ ( selectedBitsOfMyLife$ | async )?.milestonesName }}</p>
+  <p>Timeline name: {{ ( selectedBitsOfMyLife$ | async )?.timelineName }}</p>
+  <p>Timeline main date: {{ ( selectedBitsOfMyLife$ | async )?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
 
   <table>
     <thead>
@@ -144,7 +144,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let bit of (bitsOfMyLife$ | async)?.bits">
+      <tr *ngFor="let bit of (selectedBitsOfMyLife$ | async)?.bits">
         <td data-label="ID">{{ bit.milestone.id }}</td>
         <td data-label="Note">{{ bit.milestone.note }}</td>
         <td data-label="Date">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</td>

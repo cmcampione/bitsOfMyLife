@@ -4,10 +4,10 @@ import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
-import { todayBitOfMyLifeId, selectBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
-import { BitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
+import { todayBitOfMyLifeId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
+import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { Observable } from 'rxjs';
-import { BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit, BitsOfMyLife } from './bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
 import { AppState, selectAppState } from './global/globalMng';
@@ -24,7 +24,7 @@ export class AppComponent {
   title = 'bitsOfMyLife';
   
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
-  bitsOfMyLife$: Observable<BitsOfMyLife> = this.bitsOfMyLifeStore.select(selectBitsOfMyLife);
+  selectedBitsOfMyLife$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
 
   todayBitOfMyLifeId = todayBitOfMyLifeId;
 

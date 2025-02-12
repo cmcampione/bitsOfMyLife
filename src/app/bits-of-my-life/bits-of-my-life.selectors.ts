@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import {BitOfMyLife, BitsOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
-import { BitsOfMyLifeState as BitsOfMyLifeState } from './bits-of-my-life.state';
+import {BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
+import { BitsOfMyLifeState as BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultMilestonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
@@ -25,9 +25,9 @@ export const todayBitOfMyLifeId = 0;
 
 export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
-export const selectBitsOfMyLife = createSelector(
+export const selectSelectedBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
-  (state: BitsOfMyLifeState): BitsOfMyLife => {
+  (state: BitsOfMyLifeState): SelectedBitsOfMyLifeState => {
     const todayMilestone: Milestone = {
       id: todayBitOfMyLifeId,
       date: new Date(),

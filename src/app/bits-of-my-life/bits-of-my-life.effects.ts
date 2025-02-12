@@ -6,8 +6,6 @@ import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded, deleteBitOfMyLife, bitOfMyLifeDeleted, editBitOfMyLife, bitOfMyLifeEdited } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
-import { BitOfMyLifeToAdd, Milestone, Milestones } from "./bits-of-my-life.models";
-import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 
 // Effects
 @Injectable()

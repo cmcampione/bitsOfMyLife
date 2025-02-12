@@ -49,7 +49,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
         milestonesName: defaultMilestonesName,
         timelineName: defaultTimelineName,
         timelineMainDate: new Date(),
-        bits: [todayBitOfMyLife],
+        bitsOfMyLife: [todayBitOfMyLife],
       };
     }
 
@@ -68,7 +68,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
       milestonesName: selectedMilestones.name,
       timelineMainDate: mainDate,
       timelineName,
-      bits,
+      bitsOfMyLife: bits,
     };
   }
 );

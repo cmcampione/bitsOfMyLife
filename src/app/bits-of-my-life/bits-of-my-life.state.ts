@@ -14,5 +14,5 @@ export type SelectedBitsOfMyLifeState = {
     milestonesName: string;
     timelineName: string;
     timelineMainDate: Date;
-    bits: ReadonlyArray<BitOfMyLife>
+    bitsOfMyLife: ReadonlyArray<BitOfMyLife>
 }

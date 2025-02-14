@@ -53,22 +53,22 @@ export const selectSelectedBitsOfMyLife = createSelector(
       };
     }
 
-    const mainDate = timeline ? timeline.mainDate : new Date();
+    const timelineMainDate = timeline ? timeline.mainDate : new Date();
     const timelineName = timeline ? timeline.name : defaultTimelineName;
 
-    const bits = [
+    const bitsOfMyLife = [
       ...selectedMilestones.milestones.map((milestone: Milestone) => ({
-        milestone: milestone,
-        diff: diffDate(mainDate, milestone.date),
+        milestone,
+        diff: diffDate(timelineMainDate, milestone.date),
       })),
       todayBitOfMyLife,
     ].sort((a, b) => new Date(a.milestone.date).getTime() - new Date(b.milestone.date).getTime());
 
     return {
       milestonesName: selectedMilestones.name,
-      timelineMainDate: mainDate,
+      timelineMainDate,
       timelineName,
-      bitsOfMyLife: bits,
+      bitsOfMyLife,
     };
   }
 );

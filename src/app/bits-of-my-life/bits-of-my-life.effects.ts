@@ -87,8 +87,8 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(addMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ milestoneToAdd: bitOfMyLifeToAdd }, currentState]) =>
-            from(this.bitsOfMyLifeService.addMilestone(currentState, bitOfMyLifeToAdd)).pipe(
+        switchMap(([{ milestoneToAdd }, currentState]) =>
+            from(this.bitsOfMyLifeService.addMilestone(currentState, milestoneToAdd)).pipe(
             map((updatedState) => milestoneAdded({ state: updatedState })),
             catchError((error) => {
                 console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
@@ -108,8 +108,8 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(editMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ bitOfMyLifeToEdit }, currentState]) =>
-            from(this.bitsOfMyLifeService.editMilestone(currentState, bitOfMyLifeToEdit)).pipe(
+        switchMap(([{ milestoneToEdit }, currentState]) =>
+            from(this.bitsOfMyLifeService.editMilestone(currentState, milestoneToEdit)).pipe(
             map((updatedState) => milestoneEdited({ state: updatedState })),
             catchError((error) => {
                 console.error("Errore durante la modifica di un BitOfMyLife:", error);

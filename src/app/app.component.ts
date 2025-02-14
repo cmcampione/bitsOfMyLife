@@ -51,7 +51,7 @@ export class AppComponent {
 
   updateBitOfMyLife(bitOfMyLife: MilestoneToEdit): void {
     if (bitOfMyLife.id != 0) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ bitOfMyLifeToEdit: bitOfMyLife }));
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: bitOfMyLife }));
       this.editingMilestone = { id: 0, date: new Date(), note: '' };  // Reset after update
     } else {
       console.error('Invalid ID for updating BitOfMyLife');

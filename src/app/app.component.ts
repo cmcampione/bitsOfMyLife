@@ -4,10 +4,10 @@ import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
-import { todayBitOfMyLifeId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
+import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { Observable } from 'rxjs';
-import { BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit } from './bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { FormsModule } from '@angular/forms';
 import { AppState, selectAppState } from './global/globalMng';
@@ -26,10 +26,10 @@ export class AppComponent {
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
   selectedBitsOfMyLife$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
 
-  todayBitOfMyLifeId = todayBitOfMyLifeId;
+  todayBitOfMyLifeId = todayMilestoneId;
 
-  newBit: BitOfMyLifeToAdd = { date: new Date(), note: '' };
-  editingBit: BitOfMyLifeToEdit = { id: 0, date: new Date(), note: '' };
+  newBit: MilestoneToAdd = { date: new Date(), note: '' };
+  editingBit: MilestoneToEdit = { id: 0, date: new Date(), note: '' };
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -41,7 +41,7 @@ export class AppComponent {
 
   addBitOfMyLife(): void {
     this.newBit.date = new Date(this.newBit.date);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addBitOfMyLife({ bitOfMyLifeToAdd: this.newBit }));
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newBit }));
     this.newBit = { date: new Date(), note: '' };
   }
 
@@ -49,9 +49,9 @@ export class AppComponent {
     this.editingBit = { ...bitOfMyLife.milestone, date: new Date(bitOfMyLife.milestone.date) };
   }
 
-  updateBitOfMyLife(bitOfMyLife: BitOfMyLifeToEdit): void {
+  updateBitOfMyLife(bitOfMyLife: MilestoneToEdit): void {
     if (bitOfMyLife.id != 0) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editBitOfMyLife({ bitOfMyLifeToEdit: bitOfMyLife }));
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ bitOfMyLifeToEdit: bitOfMyLife }));
       this.editingBit = { id: 0, date: new Date(), note: '' };  // Reset after update
     } else {
       console.error('Invalid ID for updating BitOfMyLife');
@@ -61,7 +61,7 @@ export class AppComponent {
   deleteBitMyLife(id: number) {
     const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');
     if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteBitOfMyLife({ id }));
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ id }));
     }
   }
 }

@@ -10,6 +10,17 @@ export type Milestones = {
 }
 export type MilestonesMngr = ReadonlyMap<number, Milestones>;
 
+export type MilestoneToAdd = {
+    date: Date;
+    note: string
+}
+
+export type MilestoneToEdit = {
+    id: number;
+    date: Date;
+    note: string
+}
+
 export type Timeline = {
     name: string;
     mainDate: Date;
@@ -26,14 +37,5 @@ export type BitOfMyLife = {
     diff: Elapse
 }
 
-export type BitOfMyLifeToAdd = {
-    date: Date;
-    note: string
-}
 
-export type BitOfMyLifeToEdit = {
-    id: number;
-    date: Date;
-    note: string
-}
 

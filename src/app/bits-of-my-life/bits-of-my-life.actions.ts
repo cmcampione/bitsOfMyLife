@@ -1,15 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-import { BitOfMyLifeToAdd, BitOfMyLifeToEdit } from './bits-of-my-life.models';
+import { MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 
-export const addBitOfMyLife = createAction('[BitOfMyLife] Add BitOfMyLife', props<{ bitOfMyLifeToAdd: BitOfMyLifeToAdd }>());
-export const bitOfMyLifeAdded = createAction('[BitOfMyLife] Add BitOfMyLife Success', props<{ state: BitsOfMyLifeState }>());
+export const addMilestone = createAction('[BitOfMyLife] Add Milestone', props<{ milestoneToAdd: MilestoneToAdd }>());
+export const milestoneAdded = createAction('[BitOfMyLife] Add Milestone Success', props<{ state: BitsOfMyLifeState }>());
 
-export const editBitOfMyLife = createAction('[BitsOfMyLife] Edit BitOfMyLife', props<{ bitOfMyLifeToEdit: BitOfMyLifeToEdit }>());
-export const bitOfMyLifeEdited = createAction('[BitsOfMyLife] Edit Bit Of My Life Success', props<{ state: BitsOfMyLifeState }>());
+export const editMilestone = createAction('[BitsOfMyLife] Edit Milestone', props<{ bitOfMyLifeToEdit: MilestoneToEdit }>());
+export const milestoneEdited = createAction('[BitsOfMyLife] Edit Milestone Success', props<{ state: BitsOfMyLifeState }>());
 
-export const deleteBitOfMyLife = createAction("[BitOfMyLife] Delete BitOfMyLife", props<{ id: number }>());
-export const bitOfMyLifeDeleted = createAction('[BitOfMyLife] Delete BitOfMyLife Success', props<{ state: BitsOfMyLifeState }>());
+export const deleteMilestone = createAction("[BitOfMyLife] Delete Milestone", props<{ id: number }>());
+export const milestoneDeleted = createAction('[BitOfMyLife] Delete Milestone Success', props<{ state: BitsOfMyLifeState }>());
 
 export const loadState = createAction('[BitsOfMyLife] Load State');
 export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ state: BitsOfMyLifeState }>());

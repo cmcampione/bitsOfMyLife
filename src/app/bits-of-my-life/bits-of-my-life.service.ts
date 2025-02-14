@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, BitOfMyLife, BitOfMyLifeToAdd, BitOfMyLifeToEdit } from './bits-of-my-life.models';
+import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -89,17 +89,17 @@ export class BitsOfMyLifeService {
 
     /**
      * Aggiunge un nuovo `BitOfMyLife` allo stato.
-     * @param bitOfMyLife Il nuovo elemento da aggiungere.
+     * @param milestone Il nuovo elemento da aggiungere.
      * @returns Lo stato aggiornato.
      */
-    async addBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToAdd): Promise<BitsOfMyLifeState> {
+    async addMilestone(state: BitsOfMyLifeState, milestone: MilestoneToAdd): Promise<BitsOfMyLifeState> {
       
       const newIdMilestone = state.milestoneIdCounter + 1;
       // Creazione del nuovo Milestone
       const newMilestone: Milestone = {
         id: newIdMilestone,
-        date: bitOfMyLife.date,
-        note: bitOfMyLife.note,
+        date: milestone.date,
+        note: milestone.note,
       };
 
       // Ottieni i traguardi selezionati
@@ -134,7 +134,7 @@ export class BitsOfMyLifeService {
       return updatedState;
     }
 
-    async editBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLife: BitOfMyLifeToEdit): Promise<BitsOfMyLifeState> {
+    async editMilestone(state: BitsOfMyLifeState, milestone: MilestoneToEdit): Promise<BitsOfMyLifeState> {
       // Ottieni i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
@@ -142,7 +142,7 @@ export class BitsOfMyLifeService {
       }
     
       // Trova il traguardo da modificare
-      const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === bitOfMyLife.id);
+      const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestone.id);
       if (milestoneIndex === -1) {
         throw new Error('Milestone not found. Unable to edit the milestone.');
       }
@@ -150,8 +150,8 @@ export class BitsOfMyLifeService {
       // Crea il nuovo traguardo con i dati modificati
       const updatedMilestone: Milestone = {
         ...selectedMilestones.milestones[milestoneIndex],
-        date: bitOfMyLife.date,
-        note: bitOfMyLife.note,
+        date: milestone.date,
+        note: milestone.note,
       };
     
       // Aggiorna la lista dei traguardi
@@ -189,7 +189,7 @@ export class BitsOfMyLifeService {
    * @param bitOfMyLifeId L'ID della milestone da rimuovere.
    * @returns Lo stato aggiornato.
    */
-    async deleteBitOfMyLife(state: BitsOfMyLifeState, bitOfMyLifeId: number): Promise<BitsOfMyLifeState> {
+    async deleteMilestone(state: BitsOfMyLifeState, bitOfMyLifeId: number): Promise<BitsOfMyLifeState> {
       // Trova i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {

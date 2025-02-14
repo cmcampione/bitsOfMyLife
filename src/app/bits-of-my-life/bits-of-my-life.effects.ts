@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, tap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addBitOfMyLife, bitOfMyLifeAdded, deleteBitOfMyLife, bitOfMyLifeDeleted, editBitOfMyLife, bitOfMyLifeEdited } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 
@@ -83,13 +83,13 @@ export class BitsOfMyLifeEffects {
         { dispatch: false }
     );
     // Effect per l'aggiunta di un nuovo BitOfMyLife
-    addBitOfMyLife$ = createEffect(() =>
+    addMilestone$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(addBitOfMyLife),
+        ofType(addMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ bitOfMyLifeToAdd }, currentState]) =>
-            from(this.bitsOfMyLifeService.addBitOfMyLife(currentState, bitOfMyLifeToAdd)).pipe(
-            map((updatedState) => bitOfMyLifeAdded({ state: updatedState })),
+        switchMap(([{ milestoneToAdd: bitOfMyLifeToAdd }, currentState]) =>
+            from(this.bitsOfMyLifeService.addMilestone(currentState, bitOfMyLifeToAdd)).pipe(
+            map((updatedState) => milestoneAdded({ state: updatedState })),
             catchError((error) => {
                 console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
                 return of(updateAppState({
@@ -104,13 +104,13 @@ export class BitsOfMyLifeEffects {
         )
     );
 
-    editBitOfMyLife$ = createEffect(() =>
+    editMilestone$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(editBitOfMyLife),
+        ofType(editMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
         switchMap(([{ bitOfMyLifeToEdit }, currentState]) =>
-            from(this.bitsOfMyLifeService.editBitOfMyLife(currentState, bitOfMyLifeToEdit)).pipe(
-            map((updatedState) => bitOfMyLifeEdited({ state: updatedState })),
+            from(this.bitsOfMyLifeService.editMilestone(currentState, bitOfMyLifeToEdit)).pipe(
+            map((updatedState) => milestoneEdited({ state: updatedState })),
             catchError((error) => {
                 console.error("Errore durante la modifica di un BitOfMyLife:", error);
                 return of(updateAppState({
@@ -125,13 +125,13 @@ export class BitsOfMyLifeEffects {
         )
     );
 
-    deleteBitOfMyLife$ = createEffect(() =>
+    deleteMilestone$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(deleteBitOfMyLife),
+        ofType(deleteMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
         switchMap(([{ id }, currentState]) =>
-            from(this.bitsOfMyLifeService.deleteBitOfMyLife(currentState, id)).pipe(
-            map((updatedState) => bitOfMyLifeDeleted({ state: updatedState })),
+            from(this.bitsOfMyLifeService.deleteMilestone(currentState, id)).pipe(
+            map((updatedState) => milestoneDeleted({ state: updatedState })),
             catchError((error) => {
                 console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
                 return of(updateAppState({

@@ -127,9 +127,9 @@
     <p class="error-message">Errore: {{ appState.error.description }}</p>
   </div>
 
-  <p>Milestones name: {{ ( selectedBitsOfMyLife$ | async )?.milestonesName }}</p>
-  <p>Timeline name: {{ ( selectedBitsOfMyLife$ | async )?.timelineName }}</p>
-  <p>Timeline main date: {{ ( selectedBitsOfMyLife$ | async )?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+  <p>Milestones name: {{ ( selectedBitsOfMyLifeState$ | async )?.milestonesName }}</p>
+  <p>Timeline name: {{ ( selectedBitsOfMyLifeState$ | async )?.timelineName }}</p>
+  <p>Timeline main date: {{ ( selectedBitsOfMyLifeState$ | async )?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
 
   <table>
     <thead>
@@ -144,7 +144,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let bit of (selectedBitsOfMyLife$ | async)?.bitsOfMyLife">
+      <tr *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
         <td data-label="ID">{{ bit.milestone.id }}</td>
         <td data-label="Note">{{ bit.milestone.note }}</td>
         <td data-label="Date">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</td>
@@ -153,12 +153,12 @@
         <td data-label="Days">{{ bit.diff.days }}</td>
         <td data-label="Action">
           <button 
-              *ngIf="bit.milestone.id !== todayBitOfMyLifeId" 
+              *ngIf="bit.milestone.id !== todayMilestoneId" 
               (click)="deleteBitMyLife(bit.milestone.id)">
               Cancella
           </button>
           <button 
-              *ngIf="bit.milestone.id !== todayBitOfMyLifeId" 
+              *ngIf="bit.milestone.id !== todayMilestoneId" 
               (click)="editBitOfMyLife(bit)">
               Modifica
           </button>
@@ -169,10 +169,10 @@
 
   <div class="form-group">
     <label for="date">Date:</label>
-    <input id="date" type="date" [(ngModel)]="newBit.date">
+    <input id="date" type="date" [(ngModel)]="newMilestone.date">
 
     <label for="note">Note:</label>
-    <input id="note" type="text" [(ngModel)]="newBit.note">
+    <input id="note" type="text" [(ngModel)]="newMilestone.note">
 
     <button (click)="addBitOfMyLife()">Add</button>
     <!-- <button *ngIf="editingBit.id" (click)="updateBitOfMyLife(editingBit)">Update</button> -->

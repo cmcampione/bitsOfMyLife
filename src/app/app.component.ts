@@ -24,12 +24,12 @@ export class AppComponent {
   title = 'bitsOfMyLife';
   
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
-  selectedBitsOfMyLife$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
+  selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
 
-  todayBitOfMyLifeId = todayMilestoneId;
+  todayMilestoneId = todayMilestoneId;
 
-  newBit: MilestoneToAdd = { date: new Date(), note: '' };
-  editingBit: MilestoneToEdit = { id: 0, date: new Date(), note: '' };
+  newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
+  editingMilestone: MilestoneToEdit = { id: 0, date: new Date(), note: '' };
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -40,26 +40,26 @@ export class AppComponent {
   }
 
   addBitOfMyLife(): void {
-    this.newBit.date = new Date(this.newBit.date);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newBit }));
-    this.newBit = { date: new Date(), note: '' };
+    this.newMilestone.date = new Date(this.newMilestone.date);
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newMilestone }));
+    this.newMilestone = { date: new Date(), note: '' };
   }
 
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
-    this.editingBit = { ...bitOfMyLife.milestone, date: new Date(bitOfMyLife.milestone.date) };
+    this.editingMilestone = { ...bitOfMyLife.milestone, date: new Date(bitOfMyLife.milestone.date) };
   }
 
   updateBitOfMyLife(bitOfMyLife: MilestoneToEdit): void {
     if (bitOfMyLife.id != 0) {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ bitOfMyLifeToEdit: bitOfMyLife }));
-      this.editingBit = { id: 0, date: new Date(), note: '' };  // Reset after update
+      this.editingMilestone = { id: 0, date: new Date(), note: '' };  // Reset after update
     } else {
       console.error('Invalid ID for updating BitOfMyLife');
     }
   }
 
   deleteBitMyLife(id: number) {
-    const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ id }));
     }

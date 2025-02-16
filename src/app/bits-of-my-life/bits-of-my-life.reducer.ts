@@ -51,7 +51,6 @@ export const bitsOfMyLifeReducer = createReducer(
     
     on(BitsOfMyLifeActions.milestoneAdded, (state, { newMilestone }) => {
         
-
         // Ottieni i traguardi selezionati
         const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
         if (!selectedMilestones) {
@@ -71,17 +70,43 @@ export const bitsOfMyLifeReducer = createReducer(
         );
 
         // Aggiorna lo stato
-        const updatedState: BitsOfMyLifeState = {
+        return {
             ...state,
             milestonesMngr: updatedMilestonesMngr,
         };
-
-        // Restituisce lo stato aggiornato
-        return updatedState;
     }),
-    on(BitsOfMyLifeActions.milestoneDeleted, (state, { state: updatedState }) => ({ ...updatedState })),
+    on(BitsOfMyLifeActions.milestoneDeleted,(state, { milestoneIdToRemove }) => {  
+       // Trova i traguardi selezionati
+      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+      if (!selectedMilestones) {
+        throw new Error('Selected Milestones not found. Unable to remove the milestone.');
+      }
+
+      // Filtra per rimuovere la milestone con l'ID specificato
+      const filteredMilestones = selectedMilestones.milestones.filter(
+        (milestone) => milestone.id !== milestoneIdToRemove
+      );
+
+      // Aggiorna i traguardi selezionati
+      const updatedMilestones: Milestones = {
+        ...selectedMilestones,
+        milestones: filteredMilestones,
+      };
+
+      // Crea un nuovo manager aggiornato
+      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
+        state.selectedMilestonesId,
+        updatedMilestones
+      );
+
+      // Aggiorna lo stato
+      return {
+        ...state,
+        milestonesMngr: updatedMilestonesMngr,
+      };
+    }),
     on(BitsOfMyLifeActions.milestoneEdited, (state, { state: updatedState }) => ({ ...updatedState })),
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
-
+    // ToDo: To remove
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

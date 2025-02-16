@@ -185,7 +185,7 @@ export class BitsOfMyLifeService {
    * @param milestoneId L'ID della milestone da rimuovere.
    * @returns Lo stato aggiornato.
    */
-    async deleteMilestone(state: BitsOfMyLifeState, milestoneId: string): Promise<BitsOfMyLifeState> {
+    async deleteMilestone(state: BitsOfMyLifeState, milestoneId: string): Promise<string> {
       // Trova i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
@@ -219,12 +219,13 @@ export class BitsOfMyLifeService {
       await this.saveState(updatedState);
 
       // Restituisce lo stato aggiornato
-      return updatedState;
+      return milestoneId;
     }
    
     /**
      * Cancella lo stato dal localStorage in modo asincrono.
      */
+    // ToDo: To remove
     async clearState(): Promise<void> {
       await Promise.resolve(localStorage.removeItem(this.storageKey));
     }

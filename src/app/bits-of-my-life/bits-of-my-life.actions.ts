@@ -9,7 +9,7 @@ export const editMilestone = createAction('[BitsOfMyLife] Edit Milestone', props
 export const milestoneEdited = createAction('[BitsOfMyLife] Edit Milestone Success', props<{ state: BitsOfMyLifeState }>());
 
 export const deleteMilestone = createAction("[BitOfMyLife] Delete Milestone", props<{ id: string }>());
-export const milestoneDeleted = createAction('[BitOfMyLife] Delete Milestone Success', props<{ state: BitsOfMyLifeState }>());
+export const milestoneDeleted = createAction('[BitOfMyLife] Delete Milestone Success', props<{ milestoneIdToRemove: string }>());
 
 export const loadState = createAction('[BitsOfMyLife] Load State');
 export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ state: BitsOfMyLifeState }>());
@@ -17,4 +17,5 @@ export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ s
 export const saveState = createAction('[BitsOfMyLife] Save State');
 export const stateSaved = createAction('[BitsOfMyLife] State Loaded',  props<{ state: BitsOfMyLifeState }>());
 
+// ToDo: To remove
 export const clearState = createAction('[BitsOfMyLife] Clear State');

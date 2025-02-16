@@ -1,6 +1,6 @@
 
 export type Milestone = {
-    id: number;
+    id: string;
     date: Date;
     note: string
 }
@@ -16,7 +16,7 @@ export type MilestoneToAdd = {
 }
 
 export type MilestoneToEdit = {
-    id: number;
+    id: string;
     date: Date;
     note: string
 }

@@ -13,7 +13,6 @@ export class BitsOfMyLifeService {
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
         version: state.version,
-        milestoneIdCounter: state.milestoneIdCounter,
         milestonesMngr: Array.from(state.milestonesMngr.entries()), // Converte Map in array
         timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Converte Map in array
         selectedMilestonesId: state.selectedMilestonesId,
@@ -26,7 +25,6 @@ export class BitsOfMyLifeService {
   
       return {
         version: parsed.version,
-        milestoneIdCounter: parsed.milestoneIdCounter,
         milestonesMngr: new Map(
           parsed.milestonesMngr.map(([id, milestones]: [number, Milestones]) => [
             id,
@@ -92,12 +90,11 @@ export class BitsOfMyLifeService {
      * @param milestoneToAdd Il nuovo elemento da aggiungere.
      * @returns Lo stato aggiornato.
      */
-    async addMilestone(state: BitsOfMyLifeState, milestoneToAdd: MilestoneToAdd): Promise<MilestoneToAdd> {
+    async addMilestone(state: BitsOfMyLifeState, milestoneToAdd: MilestoneToAdd): Promise<Milestone> {
       
-      const newIdMilestone = state.milestoneIdCounter + 1;
       // Creazione del nuovo Milestone
       const newMilestone: Milestone = {
-        id: newIdMilestone,
+        id: crypto.randomUUID(),
         date: milestoneToAdd.date,
         note: milestoneToAdd.note,
       };
@@ -123,7 +120,6 @@ export class BitsOfMyLifeService {
       // Aggiorna lo stato
       const updatedState: BitsOfMyLifeState = {
         ...state,
-        milestoneIdCounter: newIdMilestone,
         milestonesMngr: updatedMilestonesMngr,
       };
 
@@ -131,7 +127,7 @@ export class BitsOfMyLifeService {
       await this.saveState(updatedState);
 
       // Restituisce lo stato aggiornato
-      return milestoneToAdd;
+      return newMilestone;
     }
 
     async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<BitsOfMyLifeState> {
@@ -189,7 +185,7 @@ export class BitsOfMyLifeService {
    * @param milestoneId L'ID della milestone da rimuovere.
    * @returns Lo stato aggiornato.
    */
-    async deleteMilestone(state: BitsOfMyLifeState, milestoneId: number): Promise<BitsOfMyLifeState> {
+    async deleteMilestone(state: BitsOfMyLifeState, milestoneId: string): Promise<BitsOfMyLifeState> {
       // Trova i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {

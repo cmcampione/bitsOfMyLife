@@ -14,11 +14,11 @@ export const defaultTimelineName = 'Ad oggi sono passati o mancano ancora';
 let defaultMilestones: Milestones = {
     name: defaultMilestonesName,
     milestones: [{
-        id: 1,
+        id: "bf156a93-b6a6-464d-9c02-40663103a180",
         note: 'I was born',
         date: new Date("1962-08-19")
     },
-    {   id: 2,
+    {   id: "e8519e32-8a0d-4b92-8ed7-4a620bbc3b60",
         note: 'I married',
         date: new Date("1988-07-27")
     }]
@@ -30,9 +30,7 @@ let defaultTimeline: Timeline = {
 }
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
-
     version: 1,
-    milestoneIdCounter: 2,
 
     // Why: I can't do "milestonesMngr: new MilestonesMngr([[defaultMilestonesId, new Array<Milestone>]])" ?
     milestonesMngr: new Map([
@@ -51,15 +49,8 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 export const bitsOfMyLifeReducer = createReducer(
     initialBitsOfMyLifeState,    
     
-    on(BitsOfMyLifeActions.milestoneAdded, (state, { milestoneToAdd }) => {
-        const newIdMilestone = state.milestoneIdCounter + 1;
-
-        // Creazione del nuovo Milestone
-        const newMilestone: Milestone = {
-            id: newIdMilestone,
-            date: milestoneToAdd.date,
-            note: milestoneToAdd.note,
-        };
+    on(BitsOfMyLifeActions.milestoneAdded, (state, { newMilestone }) => {
+        
 
         // Ottieni i traguardi selezionati
         const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
@@ -82,7 +73,6 @@ export const bitsOfMyLifeReducer = createReducer(
         // Aggiorna lo stato
         const updatedState: BitsOfMyLifeState = {
             ...state,
-            milestoneIdCounter: newIdMilestone,
             milestonesMngr: updatedMilestonesMngr,
         };
 

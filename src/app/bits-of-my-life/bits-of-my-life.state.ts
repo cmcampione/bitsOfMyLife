@@ -2,7 +2,6 @@ import { BitOfMyLife, MilestonesMngr, TimelinesMngr } from './bits-of-my-life.mo
 
 export type BitsOfMyLifeState = {
     version: number;
-    milestoneIdCounter: number;
     milestonesMngr: MilestonesMngr;
     timelinesMngr: TimelinesMngr;
     

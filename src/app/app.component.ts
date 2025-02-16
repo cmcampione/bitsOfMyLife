@@ -29,7 +29,7 @@ export class AppComponent {
   todayMilestoneId = todayMilestoneId;
 
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
-  editingMilestone: MilestoneToEdit = { id: 0, date: new Date(), note: '' };
+  editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -50,15 +50,15 @@ export class AppComponent {
   }
 
   updateBitOfMyLife(bitOfMyLife: MilestoneToEdit): void {
-    if (bitOfMyLife.id != 0) {
+    if (bitOfMyLife.id != "") {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: bitOfMyLife }));
-      this.editingMilestone = { id: 0, date: new Date(), note: '' };  // Reset after update
+      this.editingMilestone = { id: "", date: new Date(), note: '' };  // Reset after update
     } else {
       console.error('Invalid ID for updating BitOfMyLife');
     }
   }
 
-  deleteBitMyLife(id: number) {
+  deleteBitMyLife(id: string) {
     const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ id }));

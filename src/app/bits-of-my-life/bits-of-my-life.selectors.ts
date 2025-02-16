@@ -21,7 +21,7 @@ function diffDate(data1: Date, data2: Date): Elapse {
   return { years: years, months: months, days: days };
 }
 
-export const todayMilestoneId = 0;
+export const todayMilestoneId = "";
 
 export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 

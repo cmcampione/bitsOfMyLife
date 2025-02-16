@@ -63,7 +63,7 @@ export class BitsOfMyLifeService {
         } catch (error) {
             console.error('Errore durante il salvataggio dello stato:', error);
             // Rilancia l'eccezione per essere gestita dal chiamante
-            throw new Error('Errore critico durante il salvataggio dello stato.');
+            throw new Error(`Errore critico durante il salvataggio dello stato: ${error.message}`);
         }
     }
    
@@ -83,12 +83,12 @@ export class BitsOfMyLifeService {
             console.error('Errore durante il caricamento dello stato:', error);
     
             // Se è un problema di parsing o accesso, rilancia l'eccezione
-            throw new Error('Errore critico durante il caricamento dello stato.');
+            throw new Error(`Errore critico durante il caricamento dello stato: ${error.message}`);
         }
     }
 
     /**
-     * Aggiunge un nuovo `BitOfMyLife` allo stato.
+     * Aggiunge una nuova `Milestone` allo stato.
      * @param milestone Il nuovo elemento da aggiungere.
      * @returns Lo stato aggiornato.
      */
@@ -134,7 +134,7 @@ export class BitsOfMyLifeService {
       return updatedState;
     }
 
-    async editMilestone(state: BitsOfMyLifeState, milestone: MilestoneToEdit): Promise<BitsOfMyLifeState> {
+    async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<BitsOfMyLifeState> {
       // Ottieni i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
@@ -142,7 +142,7 @@ export class BitsOfMyLifeService {
       }
     
       // Trova il traguardo da modificare
-      const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestone.id);
+      const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestoneToEdit.id);
       if (milestoneIndex === -1) {
         throw new Error('Milestone not found. Unable to edit the milestone.');
       }
@@ -150,8 +150,8 @@ export class BitsOfMyLifeService {
       // Crea il nuovo traguardo con i dati modificati
       const updatedMilestone: Milestone = {
         ...selectedMilestones.milestones[milestoneIndex],
-        date: milestone.date,
-        note: milestone.note,
+        date: milestoneToEdit.date,
+        note: milestoneToEdit.note,
       };
     
       // Aggiorna la lista dei traguardi
@@ -184,12 +184,12 @@ export class BitsOfMyLifeService {
     }
 
     /**
-   * Rimuove un `BitOfMyLife` dallo stato dato il suo ID.
+   * Rimuove una `Milestone` dallo stato dato il suo ID.
    * @param state Lo stato attuale.
-   * @param bitOfMyLifeId L'ID della milestone da rimuovere.
+   * @param milestoneId L'ID della milestone da rimuovere.
    * @returns Lo stato aggiornato.
    */
-    async deleteMilestone(state: BitsOfMyLifeState, bitOfMyLifeId: number): Promise<BitsOfMyLifeState> {
+    async deleteMilestone(state: BitsOfMyLifeState, milestoneId: number): Promise<BitsOfMyLifeState> {
       // Trova i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
@@ -198,7 +198,7 @@ export class BitsOfMyLifeService {
 
       // Filtra per rimuovere la milestone con l'ID specificato
       const filteredMilestones = selectedMilestones.milestones.filter(
-        (milestone) => milestone.id !== bitOfMyLifeId
+        (milestone) => milestone.id !== milestoneId
       );
 
       // Aggiorna i traguardi selezionati

@@ -82,7 +82,7 @@ export class BitsOfMyLifeEffects {
             ),
         { dispatch: false }
     );
-    // Effect per l'aggiunta di un nuovo BitOfMyLife
+    // Effect per l'aggiunta di una nuova Milestone
     addMilestone$ = createEffect(() =>
         this.actions$.pipe(
         ofType(addMilestone),

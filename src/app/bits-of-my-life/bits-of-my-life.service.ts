@@ -63,7 +63,7 @@ export class BitsOfMyLifeService {
         } catch (error) {
             console.error('Errore durante il salvataggio dello stato:', error);
             // Rilancia l'eccezione per essere gestita dal chiamante
-            throw new Error(`Errore critico durante il salvataggio dello stato: ${error.message}`);
+            throw new Error(`Errore critico durante il salvataggio dello stato`);
         }
     }
    
@@ -83,23 +83,23 @@ export class BitsOfMyLifeService {
             console.error('Errore durante il caricamento dello stato:', error);
     
             // Se è un problema di parsing o accesso, rilancia l'eccezione
-            throw new Error(`Errore critico durante il caricamento dello stato: ${error.message}`);
+            throw new Error(`Errore critico durante il caricamento dello stato`);
         }
     }
 
     /**
      * Aggiunge una nuova `Milestone` allo stato.
-     * @param milestone Il nuovo elemento da aggiungere.
+     * @param milestoneToAdd Il nuovo elemento da aggiungere.
      * @returns Lo stato aggiornato.
      */
-    async addMilestone(state: BitsOfMyLifeState, milestone: MilestoneToAdd): Promise<BitsOfMyLifeState> {
+    async addMilestone(state: BitsOfMyLifeState, milestoneToAdd: MilestoneToAdd): Promise<MilestoneToAdd> {
       
       const newIdMilestone = state.milestoneIdCounter + 1;
       // Creazione del nuovo Milestone
       const newMilestone: Milestone = {
         id: newIdMilestone,
-        date: milestone.date,
-        note: milestone.note,
+        date: milestoneToAdd.date,
+        note: milestoneToAdd.note,
       };
 
       // Ottieni i traguardi selezionati
@@ -131,7 +131,7 @@ export class BitsOfMyLifeService {
       await this.saveState(updatedState);
 
       // Restituisce lo stato aggiornato
-      return updatedState;
+      return milestoneToAdd;
     }
 
     async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<BitsOfMyLifeState> {

@@ -89,7 +89,7 @@ export class BitsOfMyLifeEffects {
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
         switchMap(([{ milestoneToAdd }, currentState]) =>
             from(this.bitsOfMyLifeService.addMilestone(currentState, milestoneToAdd)).pipe(
-            map((updatedState) => milestoneAdded({ state: updatedState })),
+            map((updatedState) => milestoneAdded({ milestoneToAdd: updatedState })),
             catchError((error) => {
                 console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
                 return of(updateAppState({

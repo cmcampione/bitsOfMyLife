@@ -3,7 +3,7 @@ import { MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 
 export const addMilestone = createAction('[BitOfMyLife] Add Milestone', props<{ milestoneToAdd: MilestoneToAdd }>());
-export const milestoneAdded = createAction('[BitOfMyLife] Add Milestone Success', props<{ state: BitsOfMyLifeState }>());
+export const milestoneAdded = createAction('[BitOfMyLife] Add Milestone Success', props<{ milestoneToAdd: MilestoneToAdd }>());
 
 export const editMilestone = createAction('[BitsOfMyLife] Edit Milestone', props<{ milestoneToEdit: MilestoneToEdit }>());
 export const milestoneEdited = createAction('[BitsOfMyLife] Edit Milestone Success', props<{ state: BitsOfMyLifeState }>());

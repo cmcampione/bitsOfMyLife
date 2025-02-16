@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { Milestones, Timeline } from "./bits-of-my-life.models";
+import { Milestone, Milestones, MilestoneToAdd, Timeline } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
@@ -51,7 +51,44 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 export const bitsOfMyLifeReducer = createReducer(
     initialBitsOfMyLifeState,    
     
-    on(BitsOfMyLifeActions.milestoneAdded, (state, { state: updatedState }) => ({ ...updatedState })),
+    on(BitsOfMyLifeActions.milestoneAdded, (state, { milestoneToAdd }) => {
+        const newIdMilestone = state.milestoneIdCounter + 1;
+
+        // Creazione del nuovo Milestone
+        const newMilestone: Milestone = {
+            id: newIdMilestone,
+            date: milestoneToAdd.date,
+            note: milestoneToAdd.note,
+        };
+
+        // Ottieni i traguardi selezionati
+        const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+        if (!selectedMilestones) {
+            throw new Error('Selected Milestones not found. Unable to add the milestone.');
+        }
+
+        // Aggiorna i traguardi selezionati con il nuovo Milestone
+        const updatedMilestones: Milestones = {
+            ...selectedMilestones,
+            milestones: [...selectedMilestones.milestones, newMilestone],
+        };
+
+        // Crea un nuovo manager aggiornato
+        const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
+            state.selectedMilestonesId,
+            updatedMilestones
+        );
+
+        // Aggiorna lo stato
+        const updatedState: BitsOfMyLifeState = {
+            ...state,
+            milestoneIdCounter: newIdMilestone,
+            milestonesMngr: updatedMilestonesMngr,
+        };
+
+        // Restituisce lo stato aggiornato
+        return updatedState;
+    }),
     on(BitsOfMyLifeActions.milestoneDeleted, (state, { state: updatedState }) => ({ ...updatedState })),
     on(BitsOfMyLifeActions.milestoneEdited, (state, { state: updatedState }) => ({ ...updatedState })),
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),

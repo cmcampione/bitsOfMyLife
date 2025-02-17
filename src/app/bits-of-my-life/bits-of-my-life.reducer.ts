@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { Milestone, Milestones, MilestoneToAdd, Timeline } from "./bits-of-my-life.models";
+import { Milestones, Timeline } from "./bits-of-my-life.models";
 import { BitsOfMyLifeState } from "./bits-of-my-life.state";
 import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
@@ -9,7 +9,7 @@ export const defaultMilestonesId = 1;
 export const defaultMilestonesName = 'Default';
 
 export const defaultTimelineId = 1;
-export const defaultTimelineName = 'Ad oggi sono passati o mancano ancora';
+export const defaultTimelineName = 'Up to today, it has passed or still remains';
 
 let defaultMilestones: Milestones = {
     name: defaultMilestonesName,
@@ -51,74 +51,74 @@ export const bitsOfMyLifeReducer = createReducer(
     
     on(BitsOfMyLifeActions.milestoneAdded, (state, { newMilestone }) => {
         
-        // Ottieni i traguardi selezionati
+        // Get the selected milestones
         const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
         if (!selectedMilestones) {
             throw new Error('Selected Milestones not found. Unable to add the milestone.');
         }
 
-        // Aggiorna i traguardi selezionati con il nuovo Milestone
+        // Update the selected milestones with the new Milestone
         const updatedMilestones: Milestones = {
             ...selectedMilestones,
             milestones: [...selectedMilestones.milestones, newMilestone],
         };
 
-        // Crea un nuovo manager aggiornato
+        // Create a new updated manager
         const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
             state.selectedMilestonesId,
             updatedMilestones
         );
 
-        // Aggiorna lo stato
+        // Update the state
         return {
             ...state,
             milestonesMngr: updatedMilestonesMngr,
         };
     }),
     on(BitsOfMyLifeActions.milestoneDeleted,(state, { milestoneIdToRemove }) => {  
-       // Trova i traguardi selezionati
+       // Find the selected milestones
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to remove the milestone.');
       }
 
-      // Filtra per rimuovere la milestone con l'ID specificato
+      // Filter to remove the milestone with the specified ID
       const filteredMilestones = selectedMilestones.milestones.filter(
         (milestone) => milestone.id !== milestoneIdToRemove
       );
 
-      // Aggiorna i traguardi selezionati
+      // Update the selected milestones
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
         milestones: filteredMilestones,
       };
 
-      // Crea un nuovo manager aggiornato
+      // Create a new updated manager
       const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
         state.selectedMilestonesId,
         updatedMilestones
       );
 
-      // Aggiorna lo stato
+      // Update the state
       return {
         ...state,
         milestonesMngr: updatedMilestonesMngr,
       };
     }),
     on(BitsOfMyLifeActions.milestoneEdited, (state, { updatedMilestone }) => {
-        // Ottieni i traguardi selezionati
+        // Get the selected milestones
         const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
         if (!selectedMilestones) {
             throw new Error('Selected Milestones not found. Unable to edit the milestone.');
         }
         
-        // Trova il traguardo da modificare
+        // Find the milestone to edit
         const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === updatedMilestone.id);
         if (milestoneIndex === -1) {
             throw new Error('Milestone not found. Unable to edit the milestone.');
         }
             
-        // Aggiorna la lista dei traguardi
+        // Update the list of milestones
         const updatedMilestones: Milestones = {
             ...selectedMilestones,
             milestones: [
@@ -128,13 +128,13 @@ export const bitsOfMyLifeReducer = createReducer(
             ],
         };
         
-        // Crea un nuovo manager aggiornato
+        // Create a new updated manager
         const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
             state.selectedMilestonesId,
             updatedMilestones
         );
         
-        // Aggiorna lo stato
+        // Update the state
         return {
             ...state,
             milestonesMngr: updatedMilestonesMngr,

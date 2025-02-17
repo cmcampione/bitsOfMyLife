@@ -51,8 +51,8 @@ export class BitsOfMyLifeService {
       };
     }
   
-    /** Salva lo stato corrente nel localStorage in modo asincrono.
-    * @param state Stato da salvare.
+    /** Saves the current state to localStorage asynchronously.
+    * @param state State to save.
     */
     async saveState(state: BitsOfMyLifeState): Promise<void> {
         try {

@@ -105,7 +105,41 @@ export const bitsOfMyLifeReducer = createReducer(
         milestonesMngr: updatedMilestonesMngr,
       };
     }),
-    on(BitsOfMyLifeActions.milestoneEdited, (state, { state: updatedState }) => ({ ...updatedState })),
+    on(BitsOfMyLifeActions.milestoneEdited, (state, { updatedMilestone }) => {
+        // Ottieni i traguardi selezionati
+        const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+        if (!selectedMilestones) {
+            throw new Error('Selected Milestones not found. Unable to edit the milestone.');
+        }
+        
+        // Trova il traguardo da modificare
+        const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === updatedMilestone.id);
+        if (milestoneIndex === -1) {
+            throw new Error('Milestone not found. Unable to edit the milestone.');
+        }
+            
+        // Aggiorna la lista dei traguardi
+        const updatedMilestones: Milestones = {
+            ...selectedMilestones,
+            milestones: [
+            ...selectedMilestones.milestones.slice(0, milestoneIndex),
+            updatedMilestone,
+            ...selectedMilestones.milestones.slice(milestoneIndex + 1),
+            ],
+        };
+        
+        // Crea un nuovo manager aggiornato
+        const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
+            state.selectedMilestonesId,
+            updatedMilestones
+        );
+        
+        // Aggiorna lo stato
+        return {
+            ...state,
+            milestonesMngr: updatedMilestonesMngr,
+        };
+    }),
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
     // ToDo: To remove
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))

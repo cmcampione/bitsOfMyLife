@@ -130,7 +130,7 @@ export class BitsOfMyLifeService {
       return newMilestone;
     }
 
-    async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<BitsOfMyLifeState> {
+    async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<Milestone> {
       // Ottieni i traguardi selezionati
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
@@ -176,7 +176,7 @@ export class BitsOfMyLifeService {
       await this.saveState(updatedState);
     
       // Restituisce lo stato aggiornato
-      return updatedState;
+      return updatedMilestone;
     }
 
     /**

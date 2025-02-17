@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
+import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +13,8 @@ export class BitsOfMyLifeService {
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
         version: state.version,
-        milestonesMngr: Array.from(state.milestonesMngr.entries()), // Converte Map in array
-        timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Converte Map in array
+        milestonesMngr: Array.from(state.milestonesMngr.entries()), // Convert Map to array
+        timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Convert Map to array
         selectedMilestonesId: state.selectedMilestonesId,
         selectedTimelineId: state.selectedTimelineId
       });
@@ -32,7 +32,7 @@ export class BitsOfMyLifeService {
               ...milestones,
               milestones: milestones.milestones.map((ms: Milestone) => ({
                 ...ms,
-                date: new Date(ms.date) // Converte stringa ISO in Date
+                date: new Date(ms.date) // Convert ISO string to Date
               }))
             }
           ])
@@ -42,7 +42,7 @@ export class BitsOfMyLifeService {
             id,
             {
               ...timeline,
-              mainDate: new Date(timeline.mainDate) // Converte stringa ISO in Date
+              mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
             }
           ])
         ) as TimelinesMngr,
@@ -59,15 +59,15 @@ export class BitsOfMyLifeService {
             const serializedState = this.serializeBitsOfMyLifeState(state);
             await Promise.resolve(localStorage.setItem(this.storageKey, serializedState));
         } catch (error) {
-            console.error('Errore durante il salvataggio dello stato:', error);
-            // Rilancia l'eccezione per essere gestita dal chiamante
-            throw new Error(`Errore critico durante il salvataggio dello stato`);
+            console.error('Error saving state:', error);
+            // Rethrow the exception to be handled by the caller
+            throw new Error(`Critical error saving state`);
         }
     }
    
     /**
-      * Carica lo stato dal localStorage in modo asincrono.
-      * @returns Lo stato deserializzato oppure un oggetto vuoto predefinito.
+      * Loads the state from localStorage asynchronously.
+      * @returns The deserialized state or a default empty object.
       */
     async loadState(): Promise<BitsOfMyLifeState> {
         try {
@@ -75,82 +75,82 @@ export class BitsOfMyLifeService {
             if (serializedState) {
                 return this.deserializeBitsOfMyLifeState(serializedState);
             }
-            // Nessun dato salvato, restituisci lo stato predefinito
+            // No saved data, return default state
             return this.getDefaultState();
         } catch (error) {
-            console.error('Errore durante il caricamento dello stato:', error);
+            console.error('Error loading state:', error);
     
-            // Se è un problema di parsing o accesso, rilancia l'eccezione
-            throw new Error(`Errore critico durante il caricamento dello stato`);
+            // If it's a parsing or access issue, rethrow the exception
+            throw new Error(`Critical error loading state`);
         }
     }
 
     /**
-     * Aggiunge una nuova `Milestone` allo stato.
-     * @param milestoneToAdd Il nuovo elemento da aggiungere.
-     * @returns Lo stato aggiornato.
+     * Adds a new `Milestone` to the state.
+     * @param milestoneToAdd The new item to add.
+     * @returns The updated state.
      */
     async addMilestone(state: BitsOfMyLifeState, milestoneToAdd: MilestoneToAdd): Promise<Milestone> {
       
-      // Creazione del nuovo Milestone
+      // Create the new Milestone
       const newMilestone: Milestone = {
         id: crypto.randomUUID(),
         date: milestoneToAdd.date,
         note: milestoneToAdd.note,
       };
 
-      // Ottieni i traguardi selezionati
+      // Get the selected milestones
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to add the milestone.');
       }
 
-      // Aggiorna i traguardi selezionati con il nuovo Milestone
+      // Update the selected milestones with the new Milestone
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
         milestones: [...selectedMilestones.milestones, newMilestone],
       };
 
-      // Crea un nuovo manager aggiornato
+      // Create a new updated manager
       const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
         state.selectedMilestonesId,
         updatedMilestones
       );
 
-      // Aggiorna lo stato
+      // Update the state
       const updatedState: BitsOfMyLifeState = {
         ...state,
         milestonesMngr: updatedMilestonesMngr,
       };
 
-      // Salva lo stato aggiornato nel localStorage
+      // Save the updated state to localStorage
       await this.saveState(updatedState);
 
-      // Restituisce lo stato aggiornato
+      // Return the updated state
       return newMilestone;
     }
 
     async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<Milestone> {
-      // Ottieni i traguardi selezionati
+      // Get the selected milestones
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to edit the milestone.');
       }
     
-      // Trova il traguardo da modificare
+      // Find the milestone to edit
       const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestoneToEdit.id);
       if (milestoneIndex === -1) {
         throw new Error('Milestone not found. Unable to edit the milestone.');
       }
     
-      // Crea il nuovo traguardo con i dati modificati
+      // Create the new milestone with the edited data
       const updatedMilestone: Milestone = {
         ...selectedMilestones.milestones[milestoneIndex],
         date: milestoneToEdit.date,
         note: milestoneToEdit.note,
       };
     
-      // Aggiorna la lista dei traguardi
+      // Update the list of milestones
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
         milestones: [
@@ -160,70 +160,70 @@ export class BitsOfMyLifeService {
         ],
       };
     
-      // Crea un nuovo manager aggiornato
+      // Create a new updated manager
       const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
         state.selectedMilestonesId,
         updatedMilestones
       );
     
-      // Aggiorna lo stato
+      // Update the state
       const updatedState: BitsOfMyLifeState = {
         ...state,
         milestonesMngr: updatedMilestonesMngr,
       };
     
-      // Salva lo stato aggiornato nel localStorage
+      // Save the updated state to localStorage
       await this.saveState(updatedState);
     
-      // Restituisce lo stato aggiornato
+      // Return the updated state
       return updatedMilestone;
     }
 
     /**
-   * Rimuove una `Milestone` dallo stato dato il suo ID.
-   * @param state Lo stato attuale.
-   * @param milestoneId L'ID della milestone da rimuovere.
-   * @returns Lo stato aggiornato.
+   * Removes a `Milestone` from the state given its ID.
+   * @param state The current state.
+   * @param milestoneId The ID of the milestone to remove.
+   * @returns The updated state.
    */
     async deleteMilestone(state: BitsOfMyLifeState, milestoneId: string): Promise<string> {
-      // Trova i traguardi selezionati
+      // Find the selected milestones
       const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to remove the milestone.');
       }
 
-      // Filtra per rimuovere la milestone con l'ID specificato
+      // Filter to remove the milestone with the specified ID
       const filteredMilestones = selectedMilestones.milestones.filter(
         (milestone) => milestone.id !== milestoneId
       );
 
-      // Aggiorna i traguardi selezionati
+      // Update the selected milestones
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
         milestones: filteredMilestones,
       };
 
-      // Crea un nuovo manager aggiornato
+      // Create a new updated manager
       const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
         state.selectedMilestonesId,
         updatedMilestones
       );
 
-      // Aggiorna lo stato
+      // Update the state
       const updatedState: BitsOfMyLifeState = {
         ...state,
         milestonesMngr: updatedMilestonesMngr,
       };
 
-      // Salva lo stato aggiornato nel localStorage
+      // Save the updated state to localStorage
       await this.saveState(updatedState);
 
-      // Restituisce lo stato aggiornato
+      // Return the updated state
       return milestoneId;
     }
    
     /**
-     * Cancella lo stato dal localStorage in modo asincrono.
+     * Clears the state from localStorage asynchronously.
      */
     // ToDo: To remove
     async clearState(): Promise<void> {
@@ -231,11 +231,10 @@ export class BitsOfMyLifeService {
     }
 
     /**
-     * Ritorna uno stato predefinito.
-     * @returns Stato predefinito.
+     * Returns a default state.
+     * @returns Default state.
      */
     private getDefaultState(): BitsOfMyLifeState {
       return initialBitsOfMyLifeState;
     }
 }
-  

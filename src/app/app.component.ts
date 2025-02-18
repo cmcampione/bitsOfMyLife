@@ -4,6 +4,7 @@ import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
+import { IonicModule } from '@ionic/angular';
 import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { Observable } from 'rxjs';
@@ -15,9 +16,9 @@ import { AppState, selectAppState } from './global/globalMng';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule],
+  imports: [NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule, IonicModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
 

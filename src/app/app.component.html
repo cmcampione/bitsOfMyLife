@@ -1,183 +1,58 @@
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bits of My Life</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-  main {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    width: 100%;
-  }
+<ion-content>
+  <ion-card *ngIf="appState$ | async as appState">
+    <ion-card-content>
+      <ion-text color="danger">Errore: {{ appState.error.description }}</ion-text>
+    </ion-card-content>
+  </ion-card>
 
-  h1 {
-    color: #333;
-    text-align: center;
-  }
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Milestones</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Milestones name: {{ (selectedBitsOfMyLifeState$ | async)?.milestonesName }}</p>
+      <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
+      <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+    </ion-card-content>
+  </ion-card>
 
-  p {
-    font-size: 1.1em;
-    line-height: 1.5;
-  }
+  <ion-card *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
+    <ion-card-header>
+      <ion-card-title>ID: {{ bit.milestone.id }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>Note: {{ bit.milestone.note }}</p>
+      <p>Date: {{ bit.milestone.date | date:'dd/MM/yyyy' }}</p>
+      <p>Years: {{ bit.diff.years }} | Months: {{ bit.diff.months }} | Days: {{ bit.diff.days }}</p>
+      <ion-button *ngIf="bit.milestone.id !== todayMilestoneId" color="danger" (click)="deleteBitMyLife(bit.milestone.id)">
+        Cancella
+      </ion-button>
+      <ion-button *ngIf="bit.milestone.id !== todayMilestoneId" (click)="editBitOfMyLife(bit)">
+        Modifica
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-
-  th, td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: left;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  .error-message {
-    color: red;
-    font-weight: bold;
-  }
-
-  .form-group {
-    margin: 10px 0;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-
-  input[type="date"], input[type="text"] {
-    width: calc(100% - 20px);
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  button {
-    background: #ff4d4d;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  button:hover {
-    background: #e60000;
-  }
-
-  @media (max-width: 600px) {
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-
-    th, td {
-      padding: 10px;
-      text-align: right;
-    }
-
-    thead tr {
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
-    }
-
-    tr {
-      margin: 0 0 10px 0;
-    }
-
-    td {
-      border: none;
-      position: relative;
-      padding-left: 50%;
-    }
-
-    td:before {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      width: 45%;
-      padding-right: 10px;
-      white-space: nowrap;
-      content: attr(data-label);
-      font-weight: bold;
-    }
-  }
-</style>
-
-<main>
-  <h1>Bits of My Life</h1>
-  <div *ngIf="appState$ | async as appState">
-    <p class="error-message">Errore: {{ appState.error.description }}</p>
-  </div>
-
-  <p>Milestones name: {{ ( selectedBitsOfMyLifeState$ | async )?.milestonesName }}</p>
-  <p>Timeline name: {{ ( selectedBitsOfMyLifeState$ | async )?.timelineName }}</p>
-  <p>Timeline main date: {{ ( selectedBitsOfMyLifeState$ | async )?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
-
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Note</th>
-        <th>Date</th>
-        <th>Years</th>
-        <th>Months</th>
-        <th>Days</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
-        <td data-label="ID">{{ bit.milestone.id }}</td>
-        <td data-label="Note">{{ bit.milestone.note }}</td>
-        <td data-label="Date">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</td>
-        <td data-label="Years">{{ bit.diff.years }}</td>
-        <td data-label="Months">{{ bit.diff.months }}</td>
-        <td data-label="Days">{{ bit.diff.days }}</td>
-        <td data-label="Action">
-          <button 
-              *ngIf="bit.milestone.id !== todayMilestoneId" 
-              (click)="deleteBitMyLife(bit.milestone.id)">
-              Cancella
-          </button>
-          <button 
-              *ngIf="bit.milestone.id !== todayMilestoneId" 
-              (click)="editBitOfMyLife(bit)">
-              Modifica
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="form-group">
-    <label for="date">Date:</label>
-    <input id="date" type="date" [(ngModel)]="newMilestone.date">
-
-    <label for="note">Note:</label>
-    <input id="note" type="text" [(ngModel)]="newMilestone.note">
-
-    <button (click)="addBitOfMyLife()">Add</button>
-    <!-- <button *ngIf="editingBit.id" (click)="updateBitOfMyLife(editingBit)">Update</button> -->
-    
-  </div>
-</main>
-
-<router-outlet />
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Aggiungi Nuovo</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="floating">Date</ion-label>
+        <ion-input type="date" [(ngModel)]="newMilestone.date"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Note</ion-label>
+        <ion-input type="text" [(ngModel)]="newMilestone.note"></ion-input>
+      </ion-item>
+      <ion-button expand="full" (click)="addBitOfMyLife()">Add</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

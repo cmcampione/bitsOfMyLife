@@ -24,10 +24,9 @@
 
   <ion-card *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
     <ion-card-header>
-      <ion-card-title>{{ bit.milestone.note }}</ion-card-title>
+      <ion-card-title>{{ bit.milestone.date | date:'dd/MM/yyyy' }} - {{ bit.milestone.note }}</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <p>Date: {{ bit.milestone.date | date:'dd/MM/yyyy' }}</p>
       <p>Years: {{ bit.diff.years }} | Months: {{ bit.diff.months }} | Days: {{ bit.diff.days }}</p>
       <ion-button *ngIf="bit.milestone.id !== todayMilestoneId" color="danger" (click)="deleteBitMyLife(bit.milestone.id)">
         <ion-icon name="trash" slot="icon-only"></ion-icon>

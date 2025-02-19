@@ -28,41 +28,52 @@ export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>(
 export const selectSelectedBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): SelectedBitsOfMyLifeState => {
+    const now = new Date();
+
+    // Create today's milestone with the current date
     const todayMilestone: Milestone = {
       id: todayMilestoneId,
-      date: new Date(),
-      note: 'Now', // ToDo: To localize
-    };
-
-    const todayBitOfMyLife: BitOfMyLife = {
-      milestone: todayMilestone,
-      diff: { years: 0, months: 0, days: 0 },
+      date: now,
+      note: 'Now', // TODO: localize
     };
 
     const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
-    const timeline = state.timelinesMngr.get(state.selectedTimelineId);
-    if (timeline?.mainDate && state.selectedTimelineId === defaultTimelineId)
-      timeline.mainDate = new Date();
+    const selectedTimeline = state.timelinesMngr.get(state.selectedTimelineId);
 
+    // If the timeline is the default one, update its main date
+    if (selectedTimeline?.mainDate && state.selectedTimelineId === defaultTimelineId) {
+      selectedTimeline.mainDate = now;
+    }
+
+    const timelineMainDate = selectedTimeline?.mainDate || now;
+    const timelineName = selectedTimeline?.name || defaultTimelineName;
+
+    const todayBitOfMyLife: BitOfMyLife = {
+      milestone: todayMilestone,
+      diff: diffDate(timelineMainDate, now),
+    };
+
+    // If there are no selected milestones, return only today's bit
     if (!selectedMilestones) {
       return {
         milestonesName: defaultMilestonesName,
         timelineName: defaultTimelineName,
-        timelineMainDate: new Date(),
+        timelineMainDate: now,
         bitsOfMyLife: [todayBitOfMyLife],
       };
     }
 
-    const timelineMainDate = timeline ? timeline.mainDate : new Date();
-    const timelineName = timeline ? timeline.name : defaultTimelineName;
-
-    const bitsOfMyLife = [
-      ...selectedMilestones.milestones.map((milestone: Milestone) => ({
+    // Map the selected milestones and add today's bit
+    const bitsOfMyLife = selectedMilestones.milestones
+      .map((milestone: Milestone) => ({
         milestone,
         diff: diffDate(timelineMainDate, milestone.date),
-      })),
-      todayBitOfMyLife,
-    ].sort((a, b) => new Date(a.milestone.date).getTime() - new Date(b.milestone.date).getTime());
+      }))
+      .concat(todayBitOfMyLife)
+      .sort(
+        (a, b) =>
+          new Date(a.milestone.date).getTime() - new Date(b.milestone.date).getTime()
+      );
 
     return {
       milestonesName: selectedMilestones.name,
@@ -72,3 +83,4 @@ export const selectSelectedBitsOfMyLife = createSelector(
     };
   }
 );
+

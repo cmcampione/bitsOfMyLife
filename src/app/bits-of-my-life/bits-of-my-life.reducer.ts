@@ -9,17 +9,17 @@ export const defaultMilestonesId = 1;
 export const defaultMilestonesName = 'Default';
 
 export const defaultTimelineId = 1;
-export const defaultTimelineName = 'Up to today, it has passed or still remains';
+export const defaultTimelineName = 'Up to today, it has passed or still remains';//TODO: Localize
 
 let defaultMilestones: Milestones = {
     name: defaultMilestonesName,
     milestones: [{
         id: "bf156a93-b6a6-464d-9c02-40663103a180",
-        note: 'I was born',
+        note: 'I was born',//TODO: Localize
         date: new Date("1962-08-19")
     },
     {   id: "e8519e32-8a0d-4b92-8ed7-4a620bbc3b60",
-        note: 'I married',
+        note: 'I married',//TODO: Localize
         date: new Date("1988-07-27")
     }]
 }
@@ -27,6 +27,11 @@ let defaultMilestones: Milestones = {
 let defaultTimeline: Timeline = {
     name: defaultTimelineName,
     mainDate: new Date
+}
+
+let dummyTimeline: Timeline = {
+    name: "Sono passati o passeranno", //TODO: Localize
+    mainDate: new Date("1962-08-19")
 }
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
@@ -39,11 +44,13 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 
     // Why: I can't do "timelinesMngr: new TimelinesMngr([[defaultTimelineId, new Array<Timeline>]])" ?
     timelinesMngr: new Map<number, Timeline>([
-        [defaultTimelineId, defaultTimeline]
+        [defaultTimelineId, defaultTimeline],
+        [100, dummyTimeline],
     ]),
     
     selectedMilestonesId: defaultMilestonesId,
     selectedTimelineId: defaultTimelineId
+    //selectedTimelineId: 100
 }
 
 export const bitsOfMyLifeReducer = createReducer(

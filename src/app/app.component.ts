@@ -1,22 +1,28 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Observable } from 'rxjs';
 import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
-import { IonicModule } from '@ionic/angular';
-import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
-import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
-import { Observable } from 'rxjs';
+
+import { IonHeader, IonInput } from '@ionic/angular/standalone';
+import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel  } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { trash, create } from 'ionicons/icons';
+
+import { AppState, selectAppState } from './global/globalMng';
+
 import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
-import { FormsModule } from '@angular/forms';
-import { AppState, selectAppState } from './global/globalMng';
+import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
+import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule, IonicModule],
+  imports: [NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel, IonInput, IonIcon],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -34,6 +40,7 @@ export class AppComponent {
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
+      addIcons({ trash, create });
   }
 
   ngOnInit() {

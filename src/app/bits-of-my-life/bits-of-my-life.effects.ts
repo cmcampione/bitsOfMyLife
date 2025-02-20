@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, selectOrAddNextTimeline, timelineSelectedOrAdded } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 
@@ -162,6 +162,27 @@ export class BitsOfMyLifeEffects {
                         error: {
                             code: 7,
                             description: 'Errore durante la selezione o la creazione della prossima Timeline',
+                        },
+                    },
+                }));
+            })))
+        )
+    );
+
+    selectOrAddPrevTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(selectOrAddPrevTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([{ }, currentState]) =>
+            from(this.bitsOfMyLifeService.selectOrAddPrevTimeline(currentState)).pipe(
+            map((selectedTimeline) => timelineSelectedOrAdded(selectedTimeline)),
+            catchError((error) => {
+                console.error('Errore durante la selezione della Timeline precedente:', error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 8,
+                            description: 'Errore durante la selezione della Timeline precedente',
                         },
                     },
                 }));

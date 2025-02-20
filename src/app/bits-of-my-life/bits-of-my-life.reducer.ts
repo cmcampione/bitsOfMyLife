@@ -147,15 +147,13 @@ export const bitsOfMyLifeReducer = createReducer(
         };
     }),
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
-    on(BitsOfMyLifeActions.timelineSelectedOrAdded, (state, { timelineIndex: timelineIndex, timeline  }) => { 
+    on(BitsOfMyLifeActions.timelineSelectedOrAdded, (state, { isSelected, timelineIndex, timeline }) => { 
         
-        if (timelineIndex < state.timelinesMngr.length)
+        if (isSelected)
             return { ...state, selectedTimelineIndex: timelineIndex }
         
-        const newTimelineIndex = state.timelinesMngr.length;
-        const updatedTimelinesMngr = [...state.timelinesMngr, timeline];
-        
-        return { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: newTimelineIndex };
+        const updatedTimelinesMngr = [...state.timelinesMngr.slice(0,timelineIndex), timeline, ...state.timelinesMngr.slice(timelineIndex)];        
+        return { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: timelineIndex };
     }),
     // ToDo: To remove?
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))

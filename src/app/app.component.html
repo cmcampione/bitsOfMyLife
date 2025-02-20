@@ -17,8 +17,11 @@
     </ion-card-header>
     <ion-card-content>
       <p>Milestones name: {{ (selectedBitsOfMyLifeState$ | async)?.milestonesName }}</p>
+      <p>Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineIndex }}</p>
       <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
       <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+      <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
+      <ion-button (click)="prevTimeline()">Prev</ion-button>
       <ion-button (click)="nextTimeline()">Next</ion-button>
     </ion-card-content>
   </ion-card>

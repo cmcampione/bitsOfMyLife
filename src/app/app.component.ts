@@ -73,8 +73,12 @@ export class AppComponent {
     }
   }
 
+  prevTimeline() {
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddPrevTimeline());
+  }
+
   nextTimeline() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
-  }    
+  }
 }
 

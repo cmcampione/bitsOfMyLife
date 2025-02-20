@@ -218,32 +218,50 @@ export class BitsOfMyLifeService {
       return milestoneId;
     }
 
-    async selectOrAddNextTimeline(state: BitsOfMyLifeState): Promise<{ timelineIndex: number; timeline: Timeline }> {
-
-        if (state.selectedTimelineIndex < state.timelinesMngr.length - 1) {
-          const nextTimelineIndex = state.selectedTimelineIndex + 1;
-          const updatedState: BitsOfMyLifeState = { ...state, selectedTimelineIndex: nextTimelineIndex };            
-          // Save the updated state to localStorage
+    async selectOrAddNextTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
+      let nextTimelineIndex = state.selectedTimelineIndex + 1;
+      let updatedTimelinesMngr = state.timelinesMngr;
+      let selected = true
+  
+      if (nextTimelineIndex === state.timelinesMngr.length) {
+          const newTimeline: Timeline = { name: 'New Next Timeline', mainDate: new Date() };
+          updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];          
+          selected = false
+      }
+  
+      const updatedState: BitsOfMyLifeState = { 
+          ...state, 
+          timelinesMngr: updatedTimelinesMngr, 
+          selectedTimelineIndex: nextTimelineIndex 
+      };
+  
+      await this.saveState(updatedState);
+  
+      return {isSelected : selected, timelineIndex: nextTimelineIndex, timeline: updatedTimelinesMngr[nextTimelineIndex] };
+    }
+  
+    async selectOrAddPrevTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
+      if (state.selectedTimelineIndex > 0) {
+          const prevTimelineIndex = state.selectedTimelineIndex - 1;
+          const updatedState = { ...state, selectedTimelineIndex: prevTimelineIndex };
           await this.saveState(updatedState);
-          return { timelineIndex: nextTimelineIndex, timeline: state.timelinesMngr[nextTimelineIndex] };
-        }
-        
-        const newTimeline: Timeline = { name: 'New Timeline', mainDate: new Date() };
-        const newTimelineIndex = state.timelinesMngr.length;
-        const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];
-        // Update the state
-        const updatedState: BitsOfMyLifeState = { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: newTimelineIndex };
-        // Save the updated state to localStorage
-        await this.saveState(updatedState);
+          return {isSelected: true, timelineIndex: prevTimelineIndex, timeline: state.timelinesMngr[prevTimelineIndex] };
+      }
 
-        return { timelineIndex: newTimelineIndex, timeline: newTimeline };
+      // If we are already at the first index, create a new timeline
+      const newTimeline: Timeline = { name: 'New Prev Timeline', mainDate: new Date() };
+      const updatedTimelinesMngr = [newTimeline, ...state.timelinesMngr];
+      const updatedState = { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: 0 };
+      await this.saveState(updatedState);
+      
+      return { isSelected: false, timelineIndex: 0, timeline: newTimeline };
     }
     
-      /**
-       * Clears the state from localStorage asynchronously.
-       */
-      // Todo: To check, don't know if useful
-      async clearState(): Promise<void> {
+    /**
+     * Clears the state from localStorage asynchronously.
+     */
+    // Todo: To check, don't know if useful
+    async clearState(): Promise<void> {
         await Promise.resolve(localStorage.removeItem(this.storageKey));
     }
 

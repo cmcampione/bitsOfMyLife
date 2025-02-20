@@ -15,7 +15,8 @@ export const deleteMilestone = createAction("[BitOfMyLife] Delete Milestone", pr
 export const milestoneDeleted = createAction('[BitOfMyLife] Delete Milestone Success', props<{ milestoneIdToRemove: string }>());
 
 export const selectOrAddNextTimeline = createAction('[BitsOfMyLife] Select or Add Next Timeline');
-export const timelineSelectedOrAdded = createAction('[BitsOfMyLife] Selected or Added Timeline', props<{ timelineIndex: number; timeline: Timeline}>());
+export const selectOrAddPrevTimeline = createAction('[BitsOfMyLife] Select or Add Prev Timeline');
+export const timelineSelectedOrAdded = createAction('[BitsOfMyLife] Selected or Added Timeline', props<{ isSelected: boolean; timelineIndex: number; timeline: Timeline}>());
 
 // Todo: To check, don't know if useful
 export const saveState = createAction('[BitsOfMyLife] Save State');

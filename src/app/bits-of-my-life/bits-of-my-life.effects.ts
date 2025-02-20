@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { catchError, from, map, of, switchMap, tap, withLatestFrom } from "rxjs";
+import { catchError, from, map, of, switchMap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, selectOrAddTimeline, timelineSelectedOrAdded } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 
@@ -38,6 +38,7 @@ export class BitsOfMyLifeEffects {
         )
     );
 
+    // Todo: To check, don't know if useful
     saveState$ = createEffect(() =>
         this.actions$.pipe(
             ofType(saveState),
@@ -61,6 +62,7 @@ export class BitsOfMyLifeEffects {
         )
     );
 
+    // Todo: To check, don't know if useful
     clearState$ = createEffect(() =>
             this.actions$.pipe(
                 ofType(clearState),
@@ -139,6 +141,27 @@ export class BitsOfMyLifeEffects {
                         error: {
                             code: 5,
                             description: 'Errore durante la cancellazione di un BitOfMyLife',
+                        },
+                    },
+                }));
+            })))
+        )
+    );
+
+    selectOrAddTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(selectOrAddTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([{ }, currentState]) =>
+            from(this.bitsOfMyLifeService.selectOrAddTimeline(currentState)).pipe(
+            map((selectedOrCreatedTimeline) => timelineSelectedOrAdded(selectedOrCreatedTimeline)),
+            catchError((error) => {
+                console.error('Errore durante la selezione o la creazione della prossima Timeline:', error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 7,
+                            description: 'Errore durante la selezione o la creazione della prossima Timeline',
                         },
                     },
                 }));

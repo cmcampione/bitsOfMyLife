@@ -1,20 +1,20 @@
 import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
-import {BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
+import { BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultMilestonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
-  // Crea oggetti moment per le due date
+  // Create moment objects for the two dates
   const start = moment(data1);
   const end = moment(data2);
 
-  // Calcola la differenza tra le due date in anni, mesi e giorni
+  // Calculate the difference between the two dates in years, months, and days
   const years = end.diff(start, 'years');
-  start.add(years, 'years'); // Aggiungi gli anni calcolati per la successiva differenza di mesi e giorni
+  start.add(years, 'years'); // Add the calculated years for the next difference of months and days
 
   const months = end.diff(start, 'months');
-  start.add(months, 'months'); // Aggiungi i mesi calcolati per la successiva differenza di giorni
+  start.add(months, 'months'); // Add the calculated months for the next difference of days
 
   const days = end.diff(start, 'days');
 
@@ -38,14 +38,9 @@ export const selectSelectedBitsOfMyLife = createSelector(
     };
 
     const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
-    const selectedTimeline = state.timelinesMngr.get(state.selectedTimelineId);
-
-    // If the timeline is the default one, update its main date
-    if (selectedTimeline?.mainDate && state.selectedTimelineId === defaultTimelineId) {
-      selectedTimeline.mainDate = now;
-    }
-
-    const timelineMainDate = selectedTimeline?.mainDate || now;
+    
+    const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
+    const timelineMainDate = (selectedTimeline?.mainDate || state.selectedTimelineIndex === defaultTimelineId) || now;  
     const timelineName = selectedTimeline?.name || defaultTimelineName;
 
     const todayBitOfMyLife: BitOfMyLife = {
@@ -56,9 +51,11 @@ export const selectSelectedBitsOfMyLife = createSelector(
     // If there are no selected milestones, return only today's bit
     if (!selectedMilestones) {
       return {
+        milestonesId: state.selectedMilestonesId,        
         milestonesName: defaultMilestonesName,
+        timelineIndex: state.selectedTimelineIndex,
         timelineName: defaultTimelineName,
-        timelineMainDate: now,
+        timelineMainDate: timelineMainDate,
         bitsOfMyLife: [todayBitOfMyLife],
       };
     }
@@ -76,11 +73,12 @@ export const selectSelectedBitsOfMyLife = createSelector(
       );
 
     return {
+      milestonesId: state.selectedMilestonesId,
       milestonesName: selectedMilestones.name,
+      timelineIndex: state.selectedTimelineIndex,
       timelineMainDate,
       timelineName,
       bitsOfMyLife,
     };
   }
 );
-

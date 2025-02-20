@@ -6,11 +6,13 @@ export type BitsOfMyLifeState = {
     timelinesMngr: TimelinesMngr;
     
     selectedMilestonesId: number;
-    selectedTimelineId: number;
+    selectedTimelineIndex: number;
 }
 
 export type SelectedBitsOfMyLifeState = {
+    milestonesId: number;
     milestonesName: string;
+    timelineIndex: number
     timelineName: string;
     timelineMainDate: Date;
     bitsOfMyLife: ReadonlyArray<BitOfMyLife>

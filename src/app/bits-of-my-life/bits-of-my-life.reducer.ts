@@ -8,7 +8,7 @@ import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 export const defaultMilestonesId = 1;
 export const defaultMilestonesName = 'Default';
 
-export const defaultTimelineId = 1;
+export const defaultTimelineId = 0;
 export const defaultTimelineName = 'Up to today, it has passed or still remains';//TODO: Localize
 
 let defaultMilestones: Milestones = {
@@ -42,15 +42,14 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
         [defaultMilestonesId, defaultMilestones]
     ]),
 
-    // Why: I can't do "timelinesMngr: new TimelinesMngr([[defaultTimelineId, new Array<Timeline>]])" ?
-    timelinesMngr: new Map<number, Timeline>([
-        [defaultTimelineId, defaultTimeline],
-        [100, dummyTimeline],
-    ]),
+    timelinesMngr: [
+        defaultTimeline,
+        dummyTimeline,
+    ],
     
     selectedMilestonesId: defaultMilestonesId,
-    selectedTimelineId: defaultTimelineId
-    //selectedTimelineId: 100
+    selectedTimelineIndex: defaultTimelineId
+    //selectedTimelineId: 1
 }
 
 export const bitsOfMyLifeReducer = createReducer(
@@ -148,6 +147,16 @@ export const bitsOfMyLifeReducer = createReducer(
         };
     }),
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
-    // ToDo: To remove
+    on(BitsOfMyLifeActions.timelineSelectedOrAdded, (state, { timelineIndex: timelineIndex, timeline  }) => { 
+        
+        if (timelineIndex < state.timelinesMngr.length - 1)
+            return { ...state, selectedTimelineIndex: timelineIndex }
+        
+        const newTimelineIndex = state.timelinesMngr.length;
+        const updatedTimelinesMngr = [...state.timelinesMngr, timeline];
+        
+        return { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: newTimelineIndex };
+    }),
+    // ToDo: To remove?
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

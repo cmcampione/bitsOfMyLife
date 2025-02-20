@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { Milestones, Milestone, MilestonesMngr, Timeline, TimelinesMngr, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
+import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BitsOfMyLifeService {
-
+    
     private readonly storageKey = 'bitsOfMyLifeState';
   
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
         version: state.version,
         milestonesMngr: Array.from(state.milestonesMngr.entries()), // Convert Map to array
-        timelinesMngr: Array.from(state.timelinesMngr.entries()),  // Convert Map to array
+        timelinesMngr: state.timelinesMngr,
         selectedMilestonesId: state.selectedMilestonesId,
-        selectedTimelineId: state.selectedTimelineId
+        selectedTimelineId: state.selectedTimelineIndex
       });
     }
   
@@ -37,23 +37,19 @@ export class BitsOfMyLifeService {
             }
           ])
         ) as MilestonesMngr,
-        timelinesMngr: new Map(
-          parsed.timelinesMngr.map(([id, timeline]: [number, Timeline]) => [
-            id,
-            {
-              ...timeline,
-              mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
-            }
-          ])
-        ) as TimelinesMngr,
+        timelinesMngr: parsed.timelinesMngr.map((timeline: Timeline) => ({
+          ...timeline,
+          mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
+      })),
         selectedMilestonesId: parsed.selectedMilestonesId,
-        selectedTimelineId: parsed.selectedTimelineId
+        selectedTimelineIndex: parsed.selectedTimelineId
       };
     }
   
     /** Saves the current state to localStorage asynchronously.
     * @param state State to save.
     */
+    // Todo: To check, don't know if useful for public access
     async saveState(state: BitsOfMyLifeState): Promise<void> {
         try {
             const serializedState = this.serializeBitsOfMyLifeState(state);
@@ -221,13 +217,34 @@ export class BitsOfMyLifeService {
       // Return the updated state
       return milestoneId;
     }
-   
-    /**
-     * Clears the state from localStorage asynchronously.
-     */
-    // ToDo: To remove
-    async clearState(): Promise<void> {
-      await Promise.resolve(localStorage.removeItem(this.storageKey));
+
+    async selectOrAddTimeline(state: BitsOfMyLifeState): Promise<{ timelineIndex: number; timeline: Timeline }> {
+
+        if (state.selectedTimelineIndex < state.timelinesMngr.length - 1) {
+          const nextTimelineIndex = state.selectedTimelineIndex + 1;
+          const updatedState: BitsOfMyLifeState = { ...state, selectedTimelineIndex: nextTimelineIndex };            
+          // Save the updated state to localStorage
+          await this.saveState(updatedState);
+          return { timelineIndex: nextTimelineIndex, timeline: state.timelinesMngr[nextTimelineIndex] };
+        }
+        
+        const newTimeline: Timeline = { name: 'New Timeline', mainDate: new Date() };
+        const newTimelineIndex = state.timelinesMngr.length;
+        const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];
+        // Update the state
+        const updatedState: BitsOfMyLifeState = { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: newTimelineIndex };
+        // Save the updated state to localStorage
+        await this.saveState(updatedState);
+
+        return { timelineIndex: newTimelineIndex, timeline: newTimeline };
+    }
+    
+      /**
+       * Clears the state from localStorage asynchronously.
+       */
+      // Todo: To check, don't know if useful
+      async clearState(): Promise<void> {
+        await Promise.resolve(localStorage.removeItem(this.storageKey));
     }
 
     /**

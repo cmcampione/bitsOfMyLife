@@ -25,7 +25,7 @@ export type Timeline = {
     name: string;
     mainDate: Date;
 }
-export type TimelinesMngr = ReadonlyMap<number, Timeline>;
+export type TimelinesMngr = ReadonlyArray<Timeline>;
 
 export type Elapse = {
     years: number;

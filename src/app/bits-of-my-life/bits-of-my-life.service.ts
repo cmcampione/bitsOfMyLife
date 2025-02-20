@@ -218,7 +218,7 @@ export class BitsOfMyLifeService {
       return milestoneId;
     }
 
-    async selectOrAddTimeline(state: BitsOfMyLifeState): Promise<{ timelineIndex: number; timeline: Timeline }> {
+    async selectOrAddNextTimeline(state: BitsOfMyLifeState): Promise<{ timelineIndex: number; timeline: Timeline }> {
 
         if (state.selectedTimelineIndex < state.timelinesMngr.length - 1) {
           const nextTimelineIndex = state.selectedTimelineIndex + 1;

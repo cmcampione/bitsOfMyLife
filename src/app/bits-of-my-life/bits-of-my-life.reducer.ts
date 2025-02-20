@@ -149,7 +149,7 @@ export const bitsOfMyLifeReducer = createReducer(
     on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
     on(BitsOfMyLifeActions.timelineSelectedOrAdded, (state, { timelineIndex: timelineIndex, timeline  }) => { 
         
-        if (timelineIndex < state.timelinesMngr.length - 1)
+        if (timelineIndex < state.timelinesMngr.length)
             return { ...state, selectedTimelineIndex: timelineIndex }
         
         const newTimelineIndex = state.timelinesMngr.length;

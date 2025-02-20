@@ -3,7 +3,7 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, selectOrAddTimeline, timelineSelectedOrAdded } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, selectOrAddNextTimeline, timelineSelectedOrAdded } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 
@@ -148,12 +148,12 @@ export class BitsOfMyLifeEffects {
         )
     );
 
-    selectOrAddTimeline$ = createEffect(() =>
+    selectOrAddNextTimeline$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(selectOrAddTimeline),
+        ofType(selectOrAddNextTimeline),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
         switchMap(([{ }, currentState]) =>
-            from(this.bitsOfMyLifeService.selectOrAddTimeline(currentState)).pipe(
+            from(this.bitsOfMyLifeService.selectOrAddNextTimeline(currentState)).pipe(
             map((selectedOrCreatedTimeline) => timelineSelectedOrAdded(selectedOrCreatedTimeline)),
             catchError((error) => {
                 console.error('Errore durante la selezione o la creazione della prossima Timeline:', error);

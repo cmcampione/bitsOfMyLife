@@ -72,5 +72,9 @@ export class AppComponent {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ id }));
     }
   }
+
+  nextTimeline() {
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
+  }    
 }
 

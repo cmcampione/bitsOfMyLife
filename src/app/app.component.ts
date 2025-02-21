@@ -7,7 +7,8 @@ import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
 
 import { IonHeader, IonInput } from '@ionic/angular/standalone';
-import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel  } from '@ionic/angular/standalone';
+import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, 
+  IonCardTitle, IonButton, IonItem, IonLabel, IonModal, IonButtons } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trash, create } from 'ionicons/icons';
 
@@ -22,7 +23,8 @@ import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/
   selector: 'app-root',
   standalone: true,
   imports: [NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel, IonInput, IonIcon],
+    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
+    IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel, IonInput, IonIcon, IonModal],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -35,9 +37,13 @@ export class AppComponent {
 
   todayMilestoneId = todayMilestoneId;
 
-  newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
-  editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
   formatedDate: string = '';
+
+  newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
+  isAddModalOpen = false;
+
+  editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
+  isEditModalOpen = false;
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -49,13 +55,26 @@ export class AppComponent {
   }
 
   addBitOfMyLife(): void {
+    this.newMilestone.date = new Date();
+    this.formatedDate = this.newMilestone.date.toISOString().split('T')[0];
+    this.isAddModalOpen = true;
+  }
+
+  addedBitOfMyLife(): void {
     this.newMilestone.date = new Date(this.formatedDate);
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newMilestone }));
     this.newMilestone = { date: new Date(), note: '' };
+    this.isAddModalOpen = false;
   }
 
+  closeAddDialog() {
+    this.isAddModalOpen = false;
+  }
+  
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
+    this.formatedDate = bitOfMyLife.milestone.date.toISOString().split('T')[0];
     this.editingMilestone = { ...bitOfMyLife.milestone, date: bitOfMyLife.milestone.date };
+    this.isEditModalOpen = true;
   }
 
   updateBitOfMyLife(): void {
@@ -66,6 +85,11 @@ export class AppComponent {
     } else {
       console.error('Invalid ID for updating BitOfMyLife');
     }
+    this.isEditModalOpen = false;
+  }
+
+  closeEditDialog() {
+    this.isEditModalOpen = false;
   }
 
   deleteBitMyLife(id: string) {

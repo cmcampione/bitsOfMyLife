@@ -42,38 +42,63 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>Aggiungi Nuovo</ion-card-title>
-    </ion-card-header>
     <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Date</ion-label>
-        <ion-input type="date" [ngModel]="newMilestone.date | date:'yyyy-MM-dd'" (ngModelChange)="formatedDate = $event">
-        </ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Note</ion-label>
-        <ion-input type="text" [(ngModel)]="newMilestone.note"></ion-input>
-      </ion-item>
       <ion-button expand="full" (click)="addBitOfMyLife()">Add</ion-button>
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="editingMilestone">
-    <ion-card-header>
-      <ion-card-title>Modifica Milestone</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-item>
-        <ion-label position="floating">Date</ion-label>
-        <ion-input type="date" [ngModel]="editingMilestone.date | date:'yyyy-MM-dd'" (ngModelChange)="formatedDate = $event">
-        </ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-label position="floating">Note</ion-label>
-        <ion-input type="text" [(ngModel)]="editingMilestone.note"></ion-input>
-      </ion-item>
-      <ion-button expand="full" (click)="updateBitOfMyLife()">Update</ion-button>
-    </ion-card-content>
-  </ion-card>
+  <ion-modal [isOpen]="isAddModalOpen" [canDismiss]="!isAddModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Aggiungi Nuovo</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddDialog()">Chiudi</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content>
+        <ion-item>
+          <ion-label position="floating">Date</ion-label>
+          <ion-input type="date" [ngModel]="newMilestone.date | date:'yyyy-MM-dd'"
+                    (ngModelChange)="formatedDate = $event">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Note</ion-label>
+          <ion-input type="text" [(ngModel)]="newMilestone.note"></ion-input>
+        </ion-item>
+        <ion-button expand="full" (click)="addedBitOfMyLife()">Add</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  
+  <ion-modal [isOpen]="isEditModalOpen" [canDismiss]="!isEditModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Modifica Milestone</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeEditDialog()">Chiudi</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>      
+      <ion-content>
+        <ion-item>
+          <ion-label position="floating">Date</ion-label>
+          <ion-input type="date" [ngModel]="editingMilestone.date | date:'yyyy-MM-dd'" 
+                    (ngModelChange)="formatedDate = $event">
+          </ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Note</ion-label>
+          <ion-input type="text" [(ngModel)]="editingMilestone.note"></ion-input>
+        </ion-item>
+        <ion-button expand="full" (click)="updateBitOfMyLife()">Update</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
+
+

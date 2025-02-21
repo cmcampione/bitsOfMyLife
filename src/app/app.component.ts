@@ -37,6 +37,7 @@ export class AppComponent {
 
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
   editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
+  formatedDate: string = '';
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -48,18 +49,19 @@ export class AppComponent {
   }
 
   addBitOfMyLife(): void {
-    this.newMilestone.date = new Date(this.newMilestone.date);
+    this.newMilestone.date = new Date(this.formatedDate);
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newMilestone }));
     this.newMilestone = { date: new Date(), note: '' };
   }
 
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
-    this.editingMilestone = { ...bitOfMyLife.milestone, date: new Date(bitOfMyLife.milestone.date) };
+    this.editingMilestone = { ...bitOfMyLife.milestone, date: bitOfMyLife.milestone.date };
   }
 
-  updateBitOfMyLife(bitOfMyLife: MilestoneToEdit): void {
-    if (bitOfMyLife.id != "") {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: bitOfMyLife }));
+  updateBitOfMyLife(): void {
+    if (this.editingMilestone.id != "") {
+      this.editingMilestone.date = new Date(this.formatedDate);
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: this.editingMilestone }));
       this.editingMilestone = { id: "", date: new Date(), note: '' };  // Reset after update
     } else {
       console.error('Invalid ID for updating BitOfMyLife');

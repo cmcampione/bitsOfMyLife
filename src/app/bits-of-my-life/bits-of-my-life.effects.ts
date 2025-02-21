@@ -131,9 +131,9 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(deleteMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ id }, currentState]) =>
-            from(this.bitsOfMyLifeService.deleteMilestone(currentState, id)).pipe(
-            map((milestoneIdToRemove) => milestoneDeleted({ milestoneIdToRemove: milestoneIdToRemove })),
+        switchMap(([{ milestoneIdToRemove }, currentState]) =>
+            from(this.bitsOfMyLifeService.deleteMilestone(currentState, milestoneIdToRemove)).pipe(
+            map((milestoneIdToRemove) => milestoneDeleted({ milestoneIdToRemove })),
             catchError((error) => {
                 console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
                 return of(updateAppState({

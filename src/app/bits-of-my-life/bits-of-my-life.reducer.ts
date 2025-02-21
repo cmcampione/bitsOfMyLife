@@ -5,13 +5,13 @@ import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-export const defaultMilestonesId = 1;
+export const defaultMilestonesIndex = 0;
 export const defaultMilestonesName = 'Default';
 
-export const defaultTimelineId = 0;
+export const defaultTimelineIndex = 0;
 export const defaultTimelineName = 'Up to today, it has passed or still remains';//TODO: Localize
 
-let defaultMilestones: Milestones = {
+const defaultMilestones: Milestones = {
     name: defaultMilestonesName,
     milestones: [{
         id: "bf156a93-b6a6-464d-9c02-40663103a180",
@@ -24,32 +24,24 @@ let defaultMilestones: Milestones = {
     }]
 }
 
-let defaultTimeline: Timeline = {
+const defaultTimeline: Timeline = {
     name: defaultTimelineName,
     mainDate: new Date
 }
 
-let dummyTimeline: Timeline = {
+const dummyTimeline: Timeline = {
     name: "Sono passati o passeranno", //TODO: Localize
     mainDate: new Date("1962-08-19")
 }
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     version: 1,
-
-    // Why: I can't do "milestonesMngr: new MilestonesMngr([[defaultMilestonesId, new Array<Milestone>]])" ?
-    milestonesMngr: new Map([
-        [defaultMilestonesId, defaultMilestones]
-    ]),
-
-    timelinesMngr: [
-        defaultTimeline,
-        dummyTimeline,
-    ],
+    milestonesMngr: [defaultMilestones],
+    timelinesMngr: [defaultTimeline, dummyTimeline],
     
-    selectedMilestonesId: defaultMilestonesId,
-    selectedTimelineIndex: defaultTimelineId
-    //selectedTimelineId: 1
+    selectedMilestonesIndex: defaultMilestonesIndex,
+    selectedTimelineIndex: defaultTimelineIndex
+    //selectedTimelineIndex: 1
 }
 
 export const bitsOfMyLifeReducer = createReducer(
@@ -58,7 +50,7 @@ export const bitsOfMyLifeReducer = createReducer(
     on(BitsOfMyLifeActions.milestoneAdded, (state, { newMilestone }) => {
         
         // Get the selected milestones
-        const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+        const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
         if (!selectedMilestones) {
             return state; // Any potential error is handled by the effects
         }
@@ -70,11 +62,10 @@ export const bitsOfMyLifeReducer = createReducer(
         };
 
         // Create a new updated manager
-        const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
-            state.selectedMilestonesId,
-            updatedMilestones
+        const updatedMilestonesMngr = state.milestonesMngr.map((milestones, index) =>
+            index === state.selectedMilestonesIndex ? updatedMilestones : milestones
         );
-
+          
         // Update the state
         return {
             ...state,
@@ -83,7 +74,7 @@ export const bitsOfMyLifeReducer = createReducer(
     }),
     on(BitsOfMyLifeActions.milestoneDeleted,(state, { milestoneIdToRemove }) => {  
        // Find the selected milestones
-      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+      const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
         return state; // Any potential error is handled by the effects
       }
@@ -100,11 +91,9 @@ export const bitsOfMyLifeReducer = createReducer(
       };
 
       // Create a new updated manager
-      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
-        state.selectedMilestonesId,
-        updatedMilestones
+      const updatedMilestonesMngr = state.milestonesMngr.map((milestone, index) => 
+        index === state.selectedMilestonesIndex ? updatedMilestones : milestone
       );
-
       // Update the state
       return {
         ...state,
@@ -113,7 +102,7 @@ export const bitsOfMyLifeReducer = createReducer(
     }),
     on(BitsOfMyLifeActions.milestoneEdited, (state, { updatedMilestone }) => {
         // Get the selected milestones
-        const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+        const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
         if (!selectedMilestones) {
             return state; // Any potential error is handled by the effects
         }
@@ -135,9 +124,8 @@ export const bitsOfMyLifeReducer = createReducer(
         };
         
         // Create a new updated manager
-        const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
-            state.selectedMilestonesId,
-            updatedMilestones
+        const updatedMilestonesMngr = state.milestonesMngr.map((milestone, index) => 
+            index === state.selectedMilestonesIndex ? updatedMilestones : milestone
         );
         
         // Update the state

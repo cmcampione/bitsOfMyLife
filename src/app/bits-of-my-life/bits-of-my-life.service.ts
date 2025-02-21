@@ -13,10 +13,10 @@ export class BitsOfMyLifeService {
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
       return JSON.stringify({
         version: state.version,
-        milestonesMngr: Array.from(state.milestonesMngr.entries()), // Convert Map to array
+        milestonesMngr: state.milestonesMngr,
         timelinesMngr: state.timelinesMngr,
-        selectedMilestonesId: state.selectedMilestonesId,
-        selectedTimelineId: state.selectedTimelineIndex
+        selectedMilestonesIndex: state.selectedMilestonesIndex,
+        selectedTimelineIndex: state.selectedTimelineIndex
       });
     }
   
@@ -25,24 +25,20 @@ export class BitsOfMyLifeService {
   
       return {
         version: parsed.version,
-        milestonesMngr: new Map(
-          parsed.milestonesMngr.map(([id, milestones]: [number, Milestones]) => [
-            id,
-            {
-              ...milestones,
-              milestones: milestones.milestones.map((ms: Milestone) => ({
-                ...ms,
-                date: new Date(ms.date) // Convert ISO string to Date
-              }))
-            }
-          ])
-        ) as MilestonesMngr,
+
+        milestonesMngr: parsed.milestonesMngr.map((milestones: Milestones) => ({
+          ...milestones,
+          milestones: milestones.milestones.map((milestone: Milestone) => ({
+            ...milestone,
+            date: new Date(milestone.date) // Convert ISO string to Date
+          }))})),
+
         timelinesMngr: parsed.timelinesMngr.map((timeline: Timeline) => ({
           ...timeline,
           mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
-      })),
-        selectedMilestonesId: parsed.selectedMilestonesId,
-        selectedTimelineIndex: parsed.selectedTimelineId
+          })),
+        selectedMilestonesIndex: parsed.selectedMilestonesIndex,
+        selectedTimelineIndex: parsed.selectedTimelineIndex
       };
     }
   
@@ -96,7 +92,7 @@ export class BitsOfMyLifeService {
       };
 
       // Get the selected milestones
-      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+      const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to add the milestone.');
       }
@@ -108,11 +104,10 @@ export class BitsOfMyLifeService {
       };
 
       // Create a new updated manager
-      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
-        state.selectedMilestonesId,
-        updatedMilestones
+      const updatedMilestonesMngr = state.milestonesMngr.map((milestones, index) =>
+        index === state.selectedMilestonesIndex ? updatedMilestones : milestones
       );
-
+    
       // Update the state
       const updatedState: BitsOfMyLifeState = {
         ...state,
@@ -128,7 +123,7 @@ export class BitsOfMyLifeService {
 
     async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<Milestone> {
       // Get the selected milestones
-      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+      const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to edit the milestone.');
       }
@@ -157,9 +152,8 @@ export class BitsOfMyLifeService {
       };
     
       // Create a new updated manager
-      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
-        state.selectedMilestonesId,
-        updatedMilestones
+      const updatedMilestonesMngr = state.milestonesMngr.map((milestone, index) =>
+        index === state.selectedMilestonesIndex ? updatedMilestones : milestone
       );
     
       // Update the state
@@ -183,7 +177,7 @@ export class BitsOfMyLifeService {
    */
     async deleteMilestone(state: BitsOfMyLifeState, milestoneId: string): Promise<string> {
       // Find the selected milestones
-      const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+      const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
         throw new Error('Selected Milestones not found. Unable to remove the milestone.');
       }
@@ -200,9 +194,8 @@ export class BitsOfMyLifeService {
       };
 
       // Create a new updated manager
-      const updatedMilestonesMngr = new Map(state.milestonesMngr).set(
-        state.selectedMilestonesId,
-        updatedMilestones
+      const updatedMilestonesMngr = state.milestonesMngr.map((milestone, index) =>
+        index === state.selectedMilestonesIndex ? updatedMilestones : milestone
       );
 
       // Update the state

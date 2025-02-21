@@ -5,12 +5,12 @@ export type BitsOfMyLifeState = {
     milestonesMngr: MilestonesMngr;
     timelinesMngr: TimelinesMngr;
     
-    selectedMilestonesId: number;
+    selectedMilestonesIndex: number;
     selectedTimelineIndex: number;
 }
 
 export type SelectedBitsOfMyLifeState = {
-    milestonesId: number;
+    milestonesIndex: number;
     milestonesName: string;
     timelineIndex: number
     timelineName: string;

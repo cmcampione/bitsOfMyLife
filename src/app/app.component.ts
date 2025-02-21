@@ -69,7 +69,7 @@ export class AppComponent {
   deleteBitMyLife(id: string) {
     const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
     if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ id }));
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
     }
   }
 

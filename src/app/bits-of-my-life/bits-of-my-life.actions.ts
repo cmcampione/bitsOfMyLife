@@ -11,7 +11,7 @@ export const milestoneAdded = createAction('[BitOfMyLife] Add Milestone Success'
 export const editMilestone = createAction('[BitsOfMyLife] Edit Milestone', props<{ milestoneToEdit: MilestoneToEdit }>());
 export const milestoneEdited = createAction('[BitsOfMyLife] Edit Milestone Success', props<{ updatedMilestone: Milestone }>());
 
-export const deleteMilestone = createAction("[BitOfMyLife] Delete Milestone", props<{ id: string }>());
+export const deleteMilestone = createAction("[BitOfMyLife] Delete Milestone", props<{ milestoneIdToRemove: string }>());
 export const milestoneDeleted = createAction('[BitOfMyLife] Delete Milestone Success', props<{ milestoneIdToRemove: string }>());
 
 export const selectOrAddNextTimeline = createAction('[BitsOfMyLife] Select or Add Next Timeline');

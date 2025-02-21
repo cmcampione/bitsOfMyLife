@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life.state';
-import { defaultMilestonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
+import { defaultMilestonesName, defaultTimelineIndex, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Create moment objects for the two dates
@@ -37,10 +37,10 @@ export const selectSelectedBitsOfMyLife = createSelector(
       note: 'Now', // TODO: localize
     };
 
-    const selectedMilestones = state.milestonesMngr.get(state.selectedMilestonesId);
+    const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
     
     const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
-    const timelineMainDate = (selectedTimeline?.mainDate || state.selectedTimelineIndex === defaultTimelineId) || now;  
+    const timelineMainDate = (selectedTimeline?.mainDate || state.selectedTimelineIndex === defaultTimelineIndex) || now;  
     const timelineName = selectedTimeline?.name || defaultTimelineName;
 
     const todayBitOfMyLife: BitOfMyLife = {
@@ -51,7 +51,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
     // If there are no selected milestones, return only today's bit
     if (!selectedMilestones) {
       return {
-        milestonesId: state.selectedMilestonesId,        
+        milestonesIndex: state.selectedMilestonesIndex,        
         milestonesName: defaultMilestonesName,
         timelineIndex: state.selectedTimelineIndex,
         timelineName: defaultTimelineName,
@@ -74,7 +74,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
       );
 
     return {
-      milestonesId: state.selectedMilestonesId,
+      milestonesIndex: state.selectedMilestonesIndex,
       milestonesName: selectedMilestones.name,
       timelineIndex: state.selectedTimelineIndex,
       timelineMainDate,

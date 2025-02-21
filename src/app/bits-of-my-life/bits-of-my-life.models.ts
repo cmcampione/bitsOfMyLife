@@ -8,7 +8,7 @@ export type Milestones = {
     name: string;
     milestones: ReadonlyArray<Milestone>;
 }
-export type MilestonesMngr = ReadonlyMap<number, Milestones>;
+export type MilestonesMngr = ReadonlyArray<Milestones>;
 
 export type MilestoneToAdd = {
     date: Date;
@@ -36,6 +36,3 @@ export type BitOfMyLife = {
     milestone: Milestone;
     diff: Elapse
 }
-
-
-

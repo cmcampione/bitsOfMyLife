@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
-import { NgxTimelineModule, NgxTimelineEvent } from '@frxjs/ngx-timeline';
 import { Store } from '@ngrx/store';
 
 import { IonHeader, IonInput } from '@ionic/angular/standalone';
@@ -22,7 +21,7 @@ import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [NgxTimelineModule, AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
+  imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
     IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel, IonInput, IonIcon, IonModal],
   templateUrl: './app.component.html',

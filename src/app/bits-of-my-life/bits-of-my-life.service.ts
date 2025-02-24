@@ -182,15 +182,17 @@ export class BitsOfMyLifeService {
         throw new Error('Selected Milestones not found. Unable to remove the milestone.');
       }
 
-      // Filter to remove the milestone with the specified ID
-      const filteredMilestones = selectedMilestones.milestones.filter(
-        (milestone) => milestone.id !== milestoneId
-      );
+      // Find the milestone to delete
+      const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestoneId);
+      if (milestoneIndex === -1) {
+        throw new Error('Milestone not found. Unable to delete the milestone.');
+      }
 
       // Update the selected milestones
       const updatedMilestones: Milestones = {
         ...selectedMilestones,
-        milestones: filteredMilestones,
+        milestones: [...selectedMilestones.milestones.slice(0, milestoneIndex), 
+          ...selectedMilestones.milestones.slice(milestoneIndex + 1)],
       };
 
       // Create a new updated manager
@@ -237,14 +239,17 @@ export class BitsOfMyLifeService {
       if (state.selectedTimelineIndex > 0) {
           const prevTimelineIndex = state.selectedTimelineIndex - 1;
           const updatedState = { ...state, selectedTimelineIndex: prevTimelineIndex };
+
           await this.saveState(updatedState);
-          return {isSelected: true, timelineIndex: prevTimelineIndex, timeline: state.timelinesMngr[prevTimelineIndex] };
+          
+          return { isSelected: true, timelineIndex: prevTimelineIndex, timeline: state.timelinesMngr[prevTimelineIndex] };
       }
 
       // If we are already at the first index, create a new timeline
       const newTimeline: Timeline = { name: 'New Prev Timeline', mainDate: new Date() };
       const updatedTimelinesMngr = [newTimeline, ...state.timelinesMngr];
       const updatedState = { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: 0 };
+
       await this.saveState(updatedState);
       
       return { isSelected: false, timelineIndex: 0, timeline: newTimeline };

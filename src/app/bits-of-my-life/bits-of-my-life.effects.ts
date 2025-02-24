@@ -3,7 +3,9 @@ import { Store } from "@ngrx/store";
 import { catchError, from, map, of, switchMap, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
-import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline } from "./bits-of-my-life.actions";
+import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, 
+    milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, 
+    selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline } from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 

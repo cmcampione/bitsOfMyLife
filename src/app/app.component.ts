@@ -1,15 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { PageTransitionComponent } from './hs.component'
 
-import { IonHeader, IonInput } from '@ionic/angular/standalone';
-import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, 
-  IonCardTitle, IonButton, IonItem, IonLabel, IonModal, IonButtons } from '@ionic/angular/standalone';
+import { IonHeader, IonInput, IonItemSliding } from '@ionic/angular/standalone';
+import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, IonNote, 
+  IonCardTitle, IonButton, IonItem, IonItemOption, IonItemOptions, IonList, IonLabel, IonModal, IonButtons, IonInfiniteScroll,
+  IonInfiniteScrollContent, IonFab, IonFabButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { trash, create } from 'ionicons/icons';
+import { trash, create, pencil, add } from 'ionicons/icons';
 
 import { AppState, selectAppState } from './global/globalMng';
 
@@ -18,15 +20,19 @@ import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions'
 import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 
+
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
-    IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel, IonInput, IonIcon, IonModal],
+    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons, IonNote, IonFab, IonFabButton,
+    IonCardHeader, IonCardTitle, IonButton, IonList, IonItem, IonItemOptions, IonItemOption, IonItemSliding, IonLabel, IonInput, IonIcon, IonModal, 
+    IonInfiniteScroll, IonInfiniteScrollContent, PageTransitionComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
+
 export class AppComponent {
 
   title = 'bitsOfMyLife';
@@ -46,8 +52,11 @@ export class AppComponent {
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
-      addIcons({ trash, create });
+      addIcons({ trash, create, pencil, add });
   }
+
+  @ViewChild('pageTransition') pageTransition!: PageTransitionComponent;
+
 
   ngOnInit() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
@@ -105,5 +114,5 @@ export class AppComponent {
   nextTimeline() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
   }
+  
 }
-

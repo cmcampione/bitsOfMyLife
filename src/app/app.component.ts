@@ -92,19 +92,23 @@ export class AppComponent {
   }
   
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
+    if (bitOfMyLife.milestone.id === todayMilestoneId) {
+      console.error('Invalid ID for updating BitOfMyLife');
+      return
+    }
     this.formatedDate = bitOfMyLife.milestone.date.toISOString().split('T')[0];
     this.editingMilestone = { ...bitOfMyLife.milestone, date: bitOfMyLife.milestone.date };
     this.isEditBitOfMyLifeModalOpen = true;
   }
 
   updateBitOfMyLife(): void {
-    if (this.editingMilestone.id != "") {
-      this.editingMilestone.date = new Date(this.formatedDate);
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: this.editingMilestone }));
-      this.editingMilestone = { id: "", date: new Date(), note: '' };  // Reset after update
-    } else {
+    if (this.editingMilestone.id === todayMilestoneId) {
       console.error('Invalid ID for updating BitOfMyLife');
+      return
     }
+    this.editingMilestone.date = new Date(this.formatedDate);
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: this.editingMilestone }));
+    this.editingMilestone = { id: "", date: new Date(), note: '' };  // Reset after update
     this.isEditBitOfMyLifeModalOpen = false;
   }
 
@@ -113,6 +117,10 @@ export class AppComponent {
   }
 
   deleteBitOfMyLife(id: string) {
+    if (id === todayMilestoneId) {
+      console.error('Invalid ID for delete BitOfMyLife');
+      return
+    }
     const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
@@ -125,10 +133,10 @@ export class AppComponent {
   }
 
   updateTimeline(): void {
-      this.editingTimeline.mainDate = new Date(this.formatedDate);
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
-      this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
-      this.isEditTimelineModalOpen = false;
+    this.editingTimeline.mainDate = new Date(this.formatedDate);
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
+    this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
+    this.isEditTimelineModalOpen = false;
   }
 
   closeEditTimelineDialog() {
@@ -136,11 +144,13 @@ export class AppComponent {
   }
 
   deleteSelectedTimeline() {
-    if (this.selectedTimelineId !== defaultTimelineId) {
-      const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
-      if (userConfirmed) {
-        this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());
-      }
+    if (this.selectedTimelineId === defaultTimelineId) {
+      console.error('Invalid ID for delete Timeline');
+      return
+    }
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
+    if (userConfirmed) {
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());
     }
   }
 

@@ -5,7 +5,11 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, 
     milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, 
-    selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline } from "./bits-of-my-life.actions";
+    selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline, 
+    editSelectedTimeline,
+    selectedTimelineEdited,
+    deleteSelectedTimeline,
+    selectedTimelineDeleted} from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { updateAppState } from "../global/globalMng";
 
@@ -143,6 +147,48 @@ export class BitsOfMyLifeEffects {
                         error: {
                             code: 5,
                             description: 'Errore durante la cancellazione di un BitOfMyLife',
+                        },
+                    },
+                }));
+            })))
+        )
+    );
+
+    editSelectedTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(editSelectedTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([{ timelineToEdit }, currentState]) =>
+            from(this.bitsOfMyLifeService.editSelectedTimeline(currentState, timelineToEdit)).pipe(
+            map((updatedTimeline) => selectedTimelineEdited({ updatedTimeline })),
+            catchError((error) => {
+                console.error('Errore durante la modifica della Timeline selezionata:', error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 6,
+                            description: 'Errore durante la modifica della Timeline selezionata',
+                        },
+                    },
+                }));
+            })))
+        )
+    );
+
+    deleteSelectedTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(deleteSelectedTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
+        switchMap(([{ timelineIndexToRemove }, currentState]) =>
+            from(this.bitsOfMyLifeService.deleteSelectedTimeline(currentState, timelineIndexToRemove)).pipe(
+            map((timelineIndexToRemove) => selectedTimelineDeleted({ timelineIndexToRemove })),
+            catchError((error) => {
+                console.error('Errore durante la cancellazione della Timeline selezionata:', error);
+                return of(updateAppState({
+                    state: {
+                        error: {
+                            code: 6,
+                            description: 'Errore durante la cancellazione della Timeline selezionata',
                         },
                     },
                 }));

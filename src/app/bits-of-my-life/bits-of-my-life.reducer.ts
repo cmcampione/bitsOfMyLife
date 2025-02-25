@@ -47,6 +47,8 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
 export const bitsOfMyLifeReducer = createReducer(
     initialBitsOfMyLifeState,    
     
+    on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
+
     on(BitsOfMyLifeActions.milestoneAdded, (state, { newMilestone }) => {
         
         // Get the selected milestones
@@ -71,35 +73,7 @@ export const bitsOfMyLifeReducer = createReducer(
             ...state,
             milestonesMngr: updatedMilestonesMngr,
         };
-    }),
-    on(BitsOfMyLifeActions.milestoneDeleted,(state, { milestoneIdToRemove }) => {  
-       // Find the selected milestones
-      const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
-      if (!selectedMilestones) {
-        return state; // Any potential error is handled by the effects
-      }
-
-      // Filter to remove the milestone with the specified ID
-      const filteredMilestones = selectedMilestones.milestones.filter(
-        (milestone) => milestone.id !== milestoneIdToRemove
-      );
-
-      // Update the selected milestones
-      const updatedMilestones: Milestones = {
-        ...selectedMilestones,
-        milestones: filteredMilestones,
-      };
-
-      // Create a new updated manager
-      const updatedMilestonesMngr = state.milestonesMngr.map((milestone, index) => 
-        index === state.selectedMilestonesIndex ? updatedMilestones : milestone
-      );
-      // Update the state
-      return {
-        ...state,
-        milestonesMngr: updatedMilestonesMngr,
-      };
-    }),
+    }),    
     on(BitsOfMyLifeActions.milestoneEdited, (state, { updatedMilestone }) => {
         // Get the selected milestones
         const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
@@ -133,8 +107,67 @@ export const bitsOfMyLifeReducer = createReducer(
             ...state,
             milestonesMngr: updatedMilestonesMngr,
         };
+    }),    
+    on(BitsOfMyLifeActions.milestoneDeleted,(state, { milestoneIdToRemove }) => {  
+        // Find the selected milestones
+       const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
+       if (!selectedMilestones) {
+         return state; // Any potential error is handled by the effects
+       }
+ 
+       // Filter to remove the milestone with the specified ID
+       const filteredMilestones = selectedMilestones.milestones.filter(
+         (milestone) => milestone.id !== milestoneIdToRemove
+       );
+ 
+       // Update the selected milestones
+       const updatedMilestones: Milestones = {
+         ...selectedMilestones,
+         milestones: filteredMilestones,
+       };
+ 
+       // Create a new updated manager
+       const updatedMilestonesMngr = state.milestonesMngr.map((milestone, index) => 
+         index === state.selectedMilestonesIndex ? updatedMilestones : milestone
+       );
+       // Update the state
+       return {
+         ...state,
+         milestonesMngr: updatedMilestonesMngr,
+       };
     }),
-    on(BitsOfMyLifeActions.stateLoaded, (state, { state: loadedState }) => ({ ...loadedState })),
+
+    on(BitsOfMyLifeActions.selectedTimelineEdited, (state, { updatedTimeline }) => {
+        // Find the selected timeline
+        const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
+        if (!selectedTimeline) {
+            return state; // Any potential error is handled by the effects
+        }
+        
+        const updatedTimelinesMngr = state.timelinesMngr.map((timeline, index) =>
+            index === state.selectedTimelineIndex ? updatedTimeline : timeline
+        );
+    
+        const updatedState: BitsOfMyLifeState = {
+            ...state,
+            timelinesMngr: updatedTimelinesMngr,
+        };
+        
+        return updatedState;
+    }),
+    on(BitsOfMyLifeActions.selectedTimelineDeleted, (state, { timelineIndexToRemove }) => {
+        // Find the selected timeline
+        const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
+        if (!selectedTimeline) {
+            return state; // Any potential error is handled by the effects
+        }
+        const updatedTimelinesMngr = state.timelinesMngr.filter((timeline, index) => index !== timelineIndexToRemove);
+        const updatedState: BitsOfMyLifeState = {
+            ...state,
+            timelinesMngr: updatedTimelinesMngr,
+        };
+        return updatedState;
+    }),
     on(BitsOfMyLifeActions.timelineSelectedOrAdded, (state, { isSelected, timelineIndex, timeline }) => { 
         
         if (isSelected)

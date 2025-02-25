@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
-import { initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
+import { defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
 import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BitsOfMyLifeService {
-    
+        
     private readonly storageKey = 'bitsOfMyLifeState';
   
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
@@ -211,6 +211,43 @@ export class BitsOfMyLifeService {
 
       // Return the updated state
       return milestoneId;
+    }
+
+    async editSelectedTimeline(state: BitsOfMyLifeState, timelineToEdit: Timeline): Promise<Timeline> {
+      
+      if (state.selectedTimelineIndex < 0 || state.selectedTimelineIndex >= state.timelinesMngr.length) {
+        throw new Error("Critical error");
+      }
+
+      const updatedTimelinesMngr = state.timelinesMngr.map((timeline, index) =>
+        index === state.selectedTimelineIndex ? timelineToEdit : timeline
+      );
+
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        timelinesMngr: updatedTimelinesMngr,
+      };
+
+      await this.saveState(updatedState);
+
+      return timelineToEdit;
+    }
+
+    async deleteSelectedTimeline(state: BitsOfMyLifeState, timelineIndexToRemove: number): Promise<number> {
+      if (state.selectedTimelineIndex < 0 || state.selectedTimelineIndex === defaultTimelineIndex || state.selectedTimelineIndex >= state.timelinesMngr.length) {
+        throw new Error("Critical error");
+      }
+
+      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline, index) => index !== timelineIndexToRemove);
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        timelinesMngr: updatedTimelinesMngr,
+        selectedTimelineIndex: defaultTimelineIndex,
+      };
+
+      await this.saveState(updatedState);
+
+      return 0;
     }
 
     async selectOrAddNextTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {

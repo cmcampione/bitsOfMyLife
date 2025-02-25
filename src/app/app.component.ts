@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Time } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { trash, create } from 'ionicons/icons';
 
 import { AppState, selectAppState } from './global/globalMng';
 
-import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
@@ -38,11 +38,14 @@ export class AppComponent {
 
   formatedDate: string = '';
 
+  editingTimeline: Timeline = { name: '', mainDate: new Date() };
+  isEditTimelineModalOpen = false;
+
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
-  isAddModalOpen = false;
+  isAddBitOfMyLifeModalOpen = false;
 
   editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
-  isEditModalOpen = false;
+  isEditBitOfMyLifeModalOpen = false;
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -56,24 +59,24 @@ export class AppComponent {
   addBitOfMyLife(): void {
     this.newMilestone.date = new Date();
     this.formatedDate = this.newMilestone.date.toISOString().split('T')[0];
-    this.isAddModalOpen = true;
+    this.isAddBitOfMyLifeModalOpen = true;
   }
 
   addedBitOfMyLife(): void {
     this.newMilestone.date = new Date(this.formatedDate);
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newMilestone }));
     this.newMilestone = { date: new Date(), note: '' };
-    this.isAddModalOpen = false;
+    this.isAddBitOfMyLifeModalOpen = false;
   }
 
-  closeAddDialog() {
-    this.isAddModalOpen = false;
+  closeAddBitOfMyLigeDialog() {
+    this.isAddBitOfMyLifeModalOpen = false;
   }
   
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
     this.formatedDate = bitOfMyLife.milestone.date.toISOString().split('T')[0];
     this.editingMilestone = { ...bitOfMyLife.milestone, date: bitOfMyLife.milestone.date };
-    this.isEditModalOpen = true;
+    this.isEditBitOfMyLifeModalOpen = true;
   }
 
   updateBitOfMyLife(): void {
@@ -84,18 +87,37 @@ export class AppComponent {
     } else {
       console.error('Invalid ID for updating BitOfMyLife');
     }
-    this.isEditModalOpen = false;
+    this.isEditBitOfMyLifeModalOpen = false;
   }
 
-  closeEditDialog() {
-    this.isEditModalOpen = false;
+  closeEditBitOfMyLifeDialog() {
+    this.isEditBitOfMyLifeModalOpen = false;
   }
 
-  deleteBitMyLife(id: string) {
+  deleteBitOfMyLife(id: string) {
     const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
     }
+  }
+
+  editTimeline(): void {
+    this.selectedBitsOfMyLifeState$.subscribe(state => {
+      this.editingTimeline = {mainDate: state.timelineMainDate, name: state.timelineName};
+      this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
+    });
+    this.isEditTimelineModalOpen = true;
+  }
+
+  updateTimeline(): void {
+      this.editingTimeline.mainDate = new Date(this.formatedDate);
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
+      this.editingTimeline = { mainDate: new Date(), name: '' };  // Reset after update
+      this.isEditTimelineModalOpen = false;
+  }
+
+  closeEditTimelineDialog() {
+    this.isEditTimelineModalOpen = false;
   }
 
   prevTimeline() {

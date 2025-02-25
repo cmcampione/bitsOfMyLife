@@ -22,9 +22,13 @@
       <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
       <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
 
-      <ion-button (click)="editTimeline()">
+      <ion-button (click)="editSelectedTimeline()">
         <ion-icon name="create" slot="icon-only"></ion-icon>
-      </ion-button>      
+      </ion-button>
+
+      <ion-button *ngIf="selectedTimelineIndex !== defaultTimelineIndex" (click)="deleteSelectedTimeline()">
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
 
       <ion-button (click)="prevTimeline()">Prev</ion-button>
       <ion-button (click)="nextTimeline()">Next</ion-button>

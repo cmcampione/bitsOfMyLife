@@ -41,7 +41,6 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     
     selectedMilestonesIndex: defaultMilestonesIndex,
     selectedTimelineIndex: defaultTimelineIndex
-    //selectedTimelineIndex: 1
 }
 
 export const bitsOfMyLifeReducer = createReducer(
@@ -165,6 +164,7 @@ export const bitsOfMyLifeReducer = createReducer(
         const updatedState: BitsOfMyLifeState = {
             ...state,
             timelinesMngr: updatedTimelinesMngr,
+            selectedTimelineIndex: defaultTimelineIndex
         };
         return updatedState;
     }),

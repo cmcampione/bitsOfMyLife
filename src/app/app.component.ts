@@ -36,6 +36,7 @@ export class AppComponent {
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
 
   todayMilestoneId = todayMilestoneId;
+  defaultTimelineIndex = defaultTimelineIndex;
 
   formatedDate: string = '';
 
@@ -59,7 +60,6 @@ export class AppComponent {
     this.selectedBitsOfMyLifeState$.subscribe(state => {
       this.selectedTimelineIndex = state.timelineIndex;
       this.editingTimeline = {mainDate: state.timelineMainDate, name: state.timelineName};
-      this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
     });
 
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
@@ -112,7 +112,8 @@ export class AppComponent {
     }
   }
 
-  editTimeline(): void {
+  editSelectedTimeline(): void {
+    this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
     this.isEditTimelineModalOpen = true;
   }
 
@@ -127,10 +128,12 @@ export class AppComponent {
     this.isEditTimelineModalOpen = false;
   }
 
-  deleteTimeline(id: string) {
-    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
-    if (userConfirmed) {
-      //this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline({ milestoneIdToRemove: id }));
+  deleteSelectedTimeline() {
+    if (this.selectedTimelineIndex !== defaultTimelineIndex) {
+      const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
+      if (userConfirmed) {
+        this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());
+      }
     }
   }
 

@@ -17,6 +17,7 @@ import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline } from './bits-o
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
+import { defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
 @Component({
   selector: 'app-root',
@@ -38,6 +39,7 @@ export class AppComponent {
 
   formatedDate: string = '';
 
+  selectedTimelineIndex = 0;
   editingTimeline: Timeline = { name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
 
@@ -53,6 +55,13 @@ export class AppComponent {
   }
 
   ngOnInit() {
+
+    this.selectedBitsOfMyLifeState$.subscribe(state => {
+      this.selectedTimelineIndex = state.timelineIndex;
+      this.editingTimeline = {mainDate: state.timelineMainDate, name: state.timelineName};
+      this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
+    });
+
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
   }
 
@@ -95,17 +104,15 @@ export class AppComponent {
   }
 
   deleteBitOfMyLife(id: string) {
-    const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
-    if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
+    if (this.selectedTimelineIndex !== defaultTimelineIndex) {      
+      const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
+      if (userConfirmed) {
+        this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());
+      }
     }
   }
 
   editTimeline(): void {
-    this.selectedBitsOfMyLifeState$.subscribe(state => {
-      this.editingTimeline = {mainDate: state.timelineMainDate, name: state.timelineName};
-      this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
-    });
     this.isEditTimelineModalOpen = true;
   }
 
@@ -118,6 +125,13 @@ export class AppComponent {
 
   closeEditTimelineDialog() {
     this.isEditTimelineModalOpen = false;
+  }
+
+  deleteTimeline(id: string) {
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
+    if (userConfirmed) {
+      //this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline({ milestoneIdToRemove: id }));
+    }
   }
 
   prevTimeline() {

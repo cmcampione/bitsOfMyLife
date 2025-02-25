@@ -233,12 +233,12 @@ export class BitsOfMyLifeService {
       return timelineToEdit;
     }
 
-    async deleteSelectedTimeline(state: BitsOfMyLifeState, timelineIndexToRemove: number): Promise<number> {
+    async deleteSelectedTimeline(state: BitsOfMyLifeState): Promise<number> {
       if (state.selectedTimelineIndex < 0 || state.selectedTimelineIndex === defaultTimelineIndex || state.selectedTimelineIndex >= state.timelinesMngr.length) {
         throw new Error("Critical error");
       }
 
-      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline, index) => index !== timelineIndexToRemove);
+      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline, index) => index !== state.selectedTimelineIndex);
       const updatedState: BitsOfMyLifeState = {
         ...state,
         timelinesMngr: updatedTimelinesMngr,

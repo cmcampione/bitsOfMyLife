@@ -8,6 +8,7 @@ import * as BitsOfMyLifeActions from './bits-of-my-life.actions';
 export const defaultMilestonesIndex = 0;
 export const defaultMilestonesName = 'Default';
 
+export const defaultTimelineId = "9f747525-b203-4e22-b200-a20f0dd37ed1";
 export const defaultTimelineIndex = 0;
 export const defaultTimelineName = 'Up to today, it has passed or still remains';//TODO: Localize
 
@@ -25,11 +26,13 @@ const defaultMilestones: Milestones = {
 }
 
 const defaultTimeline: Timeline = {
+    id: defaultTimelineId,
     name: defaultTimelineName,
     mainDate: new Date
 }
 
 const dummyTimeline: Timeline = {
+    id: "9f747525-b203-4e22-b200-a20f0dd37ed2",
     name: "Sono passati o passeranno", //TODO: Localize
     mainDate: new Date("1962-08-19")
 }
@@ -40,6 +43,8 @@ export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     timelinesMngr: [defaultTimeline, dummyTimeline],
     
     selectedMilestonesIndex: defaultMilestonesIndex,
+    
+    selectedTimelineId: defaultTimelineId,
     selectedTimelineIndex: defaultTimelineIndex
 }
 
@@ -164,6 +169,7 @@ export const bitsOfMyLifeReducer = createReducer(
         const updatedState: BitsOfMyLifeState = {
             ...state,
             timelinesMngr: updatedTimelinesMngr,
+            selectedTimelineId: defaultTimelineId,
             selectedTimelineIndex: defaultTimelineIndex
         };
         return updatedState;
@@ -174,7 +180,9 @@ export const bitsOfMyLifeReducer = createReducer(
             return { ...state, selectedTimelineIndex: timelineIndex }
         
         const updatedTimelinesMngr = [...state.timelinesMngr.slice(0,timelineIndex), timeline, ...state.timelinesMngr.slice(timelineIndex)];        
-        return { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: timelineIndex };
+        return { ...state, timelinesMngr: updatedTimelinesMngr, 
+            selectedTimelineId: timeline.id,
+            selectedTimelineIndex: timelineIndex };
     }),
     // ToDo: To remove?
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))

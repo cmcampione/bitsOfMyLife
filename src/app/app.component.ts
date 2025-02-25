@@ -17,7 +17,7 @@ import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline } from './bits-o
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
 import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
-import { defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
+import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
 @Component({
   selector: 'app-root',
@@ -37,11 +37,13 @@ export class AppComponent {
 
   todayMilestoneId = todayMilestoneId;
   defaultTimelineIndex = defaultTimelineIndex;
+  defaultTimelineId = defaultTimelineId;
 
   formatedDate: string = '';
 
   selectedTimelineIndex = 0;
-  editingTimeline: Timeline = { name: '', mainDate: new Date() };
+  selectedTimelineId = '';
+  editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
 
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
@@ -59,7 +61,8 @@ export class AppComponent {
 
     this.selectedBitsOfMyLifeState$.subscribe(state => {
       this.selectedTimelineIndex = state.timelineIndex;
-      this.editingTimeline = {mainDate: state.timelineMainDate, name: state.timelineName};
+      this.selectedTimelineId = state.timelineId;
+      this.editingTimeline = {id: state.timelineId, mainDate: state.timelineMainDate, name: state.timelineName};
     });
 
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
@@ -104,11 +107,9 @@ export class AppComponent {
   }
 
   deleteBitOfMyLife(id: string) {
-    if (this.selectedTimelineIndex !== defaultTimelineIndex) {      
-      const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
-      if (userConfirmed) {
-        this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());
-      }
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
+    if (userConfirmed) {
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
     }
   }
 
@@ -120,7 +121,7 @@ export class AppComponent {
   updateTimeline(): void {
       this.editingTimeline.mainDate = new Date(this.formatedDate);
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
-      this.editingTimeline = { mainDate: new Date(), name: '' };  // Reset after update
+      this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
       this.isEditTimelineModalOpen = false;
   }
 
@@ -129,7 +130,7 @@ export class AppComponent {
   }
 
   deleteSelectedTimeline() {
-    if (this.selectedTimelineIndex !== defaultTimelineIndex) {
+    if (this.selectedTimelineId !== defaultTimelineId) {
       const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
       if (userConfirmed) {
         this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());

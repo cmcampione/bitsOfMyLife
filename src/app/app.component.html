@@ -19,6 +19,7 @@
       <p>Milestones name: {{ (selectedBitsOfMyLifeState$ | async)?.milestonesName }}</p>
       <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
       <p>Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineIndex }}</p>
+      <p>Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineId }}</p>
       <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
       <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
 
@@ -26,7 +27,7 @@
         <ion-icon name="create" slot="icon-only"></ion-icon>
       </ion-button>
 
-      <ion-button *ngIf="selectedTimelineIndex !== defaultTimelineIndex" (click)="deleteSelectedTimeline()">
+      <ion-button *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
         <ion-icon name="trash" slot="icon-only"></ion-icon>
       </ion-button>
 

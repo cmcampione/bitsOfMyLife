@@ -22,6 +22,7 @@ export type MilestoneToEdit = {
 }
 
 export type Timeline = {
+    id: string;
     name: string;
     mainDate: Date;
 }

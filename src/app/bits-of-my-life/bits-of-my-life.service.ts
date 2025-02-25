@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
-import { defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
+import { defaultTimelineId, defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
 import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
+import { select } from '@ngrx/store';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class BitsOfMyLifeService {
         milestonesMngr: state.milestonesMngr,
         timelinesMngr: state.timelinesMngr,
         selectedMilestonesIndex: state.selectedMilestonesIndex,
+        selectedTimelineId: state.selectedTimelineId,
         selectedTimelineIndex: state.selectedTimelineIndex
       });
     }
@@ -38,6 +40,7 @@ export class BitsOfMyLifeService {
           mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
           })),
         selectedMilestonesIndex: parsed.selectedMilestonesIndex,
+        selectedTimelineId: parsed.selectedTimelineId,
         selectedTimelineIndex: parsed.selectedTimelineIndex
       };
     }
@@ -234,7 +237,7 @@ export class BitsOfMyLifeService {
     }
 
     async deleteSelectedTimeline(state: BitsOfMyLifeState): Promise<number> {
-      if (state.selectedTimelineIndex < 0 || state.selectedTimelineIndex === defaultTimelineIndex || state.selectedTimelineIndex >= state.timelinesMngr.length) {
+      if (state.selectedTimelineId === defaultTimelineId) {
         throw new Error("Critical error");
       }
 
@@ -242,6 +245,7 @@ export class BitsOfMyLifeService {
       const updatedState: BitsOfMyLifeState = {
         ...state,
         timelinesMngr: updatedTimelinesMngr,
+        selectedTimelineId: defaultTimelineId,
         selectedTimelineIndex: defaultTimelineIndex,
       };
 
@@ -256,14 +260,18 @@ export class BitsOfMyLifeService {
       let selected = true
   
       if (nextTimelineIndex === state.timelinesMngr.length) {
-          const newTimeline: Timeline = { name: 'New Next Timeline', mainDate: new Date() };
+          const newTimeline: Timeline = {
+            id: crypto.randomUUID(),
+            name: 'New Next Timeline', 
+            mainDate: new Date() };
           updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];          
           selected = false
       }
   
       const updatedState: BitsOfMyLifeState = { 
           ...state, 
-          timelinesMngr: updatedTimelinesMngr, 
+          timelinesMngr: updatedTimelinesMngr,
+          selectedTimelineId: updatedTimelinesMngr[nextTimelineIndex].id,
           selectedTimelineIndex: nextTimelineIndex 
       };
   
@@ -275,7 +283,9 @@ export class BitsOfMyLifeService {
     async selectOrAddPrevTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
       if (state.selectedTimelineIndex > 0) {
           const prevTimelineIndex = state.selectedTimelineIndex - 1;
-          const updatedState = { ...state, selectedTimelineIndex: prevTimelineIndex };
+          const updatedState = { ...state, 
+            selectedTimelineId: state.timelinesMngr[prevTimelineIndex].id,
+            selectedTimelineIndex: prevTimelineIndex };
 
           await this.saveState(updatedState);
           
@@ -283,9 +293,16 @@ export class BitsOfMyLifeService {
       }
 
       // If we are already at the first index, create a new timeline
-      const newTimeline: Timeline = { name: 'New Prev Timeline', mainDate: new Date() };
+      const newTimeline: Timeline = { 
+        id: crypto.randomUUID(),
+        name: 'New Prev Timeline', 
+        mainDate: new Date() 
+      };
       const updatedTimelinesMngr = [newTimeline, ...state.timelinesMngr];
-      const updatedState = { ...state, timelinesMngr: updatedTimelinesMngr, selectedTimelineIndex: 0 };
+      const updatedState = { ...state, 
+        timelinesMngr: updatedTimelinesMngr, 
+        selectedTimelineId: newTimeline.id,
+        selectedTimelineIndex: 0 };
 
       await this.saveState(updatedState);
       

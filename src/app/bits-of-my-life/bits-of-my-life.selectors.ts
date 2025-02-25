@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life.state';
-import { defaultMilestonesName, defaultTimelineIndex, defaultTimelineName } from './bits-of-my-life.reducer';
+import { defaultMilestonesName, defaultTimelineId, defaultTimelineIndex, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Create moment objects for the two dates
@@ -40,7 +40,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
     const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
     
     const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
-    const timelineMainDate = (selectedTimeline?.mainDate || state.selectedTimelineIndex === defaultTimelineIndex) || now;  
+    const timelineMainDate = (selectedTimeline?.mainDate || state.selectedTimelineId === defaultTimelineId) || now;  
     const timelineName = selectedTimeline?.name || defaultTimelineName;
 
     const todayBitOfMyLife: BitOfMyLife = {
@@ -53,6 +53,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
       return {
         milestonesIndex: state.selectedMilestonesIndex,        
         milestonesName: defaultMilestonesName,
+        timelineId: selectedTimeline.id,
         timelineIndex: state.selectedTimelineIndex,
         timelineName: defaultTimelineName,
         timelineMainDate: timelineMainDate,
@@ -76,6 +77,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
     return {
       milestonesIndex: state.selectedMilestonesIndex,
       milestonesName: selectedMilestones.name,
+      timelineId: selectedTimeline.id,
       timelineIndex: state.selectedTimelineIndex,
       timelineMainDate,
       timelineName,

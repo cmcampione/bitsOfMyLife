@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { CommonModule, Time } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
@@ -7,9 +7,9 @@ import { Store } from '@ngrx/store';
 
 import { IonHeader, IonInput } from '@ionic/angular/standalone';
 import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, 
-  IonCardTitle, IonButton, IonItem, IonLabel, IonModal, IonButtons } from '@ionic/angular/standalone';
+  IonCardTitle, IonButton, IonItem, IonNote, IonList, IonLabel, IonModal, IonFab, IonFabButton, IonButtons, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { trash, create } from 'ionicons/icons';
+import { trash, create, pencil, add } from 'ionicons/icons';
 
 import { AppState, selectAppState } from './global/globalMng';
 
@@ -19,12 +19,17 @@ import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
+import { PageTransitionComponent } from './slide.component'
+
+
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
-    IonCardHeader, IonCardTitle, IonButton, IonItem, IonLabel, IonInput, IonIcon, IonModal],
+    IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, IonList, IonLabel, IonInput, IonIcon, IonModal, 
+    IonFab, IonFabButton,
+    PageTransitionComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -52,8 +57,10 @@ export class AppComponent {
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
-      addIcons({ trash, create });
+      addIcons({ trash, create, pencil, add });
   }
+
+  @ViewChild('pageTransition') pageTransition!: PageTransitionComponent;
 
   ngOnInit() {
 

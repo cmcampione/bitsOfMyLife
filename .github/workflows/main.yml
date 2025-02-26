@@ -1,0 +1,40 @@
+name: Build and Deploy Angular to FTP
+
+on:
+  push:
+    branches:
+      - main  # Cambia il branch se necessario
+  workflow_dispatch:  # Permette l'avvio manuale
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18  # Cambia alla versione richiesta dal tuo progetto
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular App
+        run: npx ng build --configuration=production
+
+      - name: Upload to FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: dist/your-angular-app/  # Cambia con il nome della cartella di build
+          server-dir: ${{ secrets.FTP_TARGET_DIR }}
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/dist/**

@@ -40,21 +40,23 @@ export class AppComponent {
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
 
   todayMilestoneId = todayMilestoneId;
+
   defaultTimelineIndex = defaultTimelineIndex;
   defaultTimelineId = defaultTimelineId;
 
   formatedDate: string = '';
-
-  selectedTimelineIndex = 0;
-  selectedTimelineId = '';
-  editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
-  isEditTimelineModalOpen = false;
 
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
   isAddBitOfMyLifeModalOpen = false;
 
   editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
   isEditBitOfMyLifeModalOpen = false;
+
+  selectedTimelineIndex = defaultTimelineIndex;
+  selectedTimelineId = defaultTimelineId;
+
+  editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
+  isEditTimelineModalOpen = false;
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -87,7 +89,7 @@ export class AppComponent {
     this.isAddBitOfMyLifeModalOpen = false;
   }
 
-  closeAddBitOfMyLigeDialog() {
+  closeAddBitOfMyLifeDialog() {
     this.isAddBitOfMyLifeModalOpen = false;
   }
   

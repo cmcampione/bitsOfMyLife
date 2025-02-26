@@ -5,6 +5,7 @@ export type Milestone = {
     note: string
 }
 export type Milestones = {
+    //id: string;
     name: string;
     milestones: ReadonlyArray<Milestone>;
 }

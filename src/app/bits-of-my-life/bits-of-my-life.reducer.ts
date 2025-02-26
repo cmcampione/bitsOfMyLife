@@ -39,6 +39,7 @@ const dummyTimeline: Timeline = {
 
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     version: 1,
+    
     milestonesMngr: [defaultMilestones],
     timelinesMngr: [defaultTimeline, dummyTimeline],
     

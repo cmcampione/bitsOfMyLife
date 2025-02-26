@@ -12,7 +12,7 @@
 
 <app-horizontal-scroll #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
   <div>
-    <ion-card>
+    <ion-card style="height:30vh">
       <ion-card-header>
         <ion-card-title>Milestones</ion-card-title>
       </ion-card-header>
@@ -36,27 +36,50 @@
         <ion-button (click)="this.pageTransition.triggerNextTransition()">Next</ion-button>
       </ion-card-content>
     </ion-card>
-    <ion-content style="height: 50vh;">
-      <ion-list [inset]="true">
-        <ion-item [button]="true" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
-          <ion-label aria-hidden="true" >{{ bit.milestone.date | date:'dd/MM/yyyy' }}</ion-label>
-          <ion-label>
-            <strong>{{bit.milestone.note}}</strong><br/>
-            <ion-note color="medium" class="ion-text-wrap">
-              Years: {{ bit.diff.years }} | Months: {{ bit.diff.months }} | Days: {{ bit.diff.days }}
-            </ion-note>
-            </ion-label>
-            <ion-icon slot="end" name="pencil" *ngIf="bit.milestone.id !== todayMilestoneId" (click)="editBitOfMyLife(bit)"></ion-icon>
-            <ion-icon slot="end" name="trash"  *ngIf="bit.milestone.id !== todayMilestoneId" (click)="deleteBitOfMyLife(bit.milestone.id)"></ion-icon>
-        </ion-item>
-      </ion-list>
+  </div>
+</app-horizontal-scroll>
+<ion-content style="height:55vh">
+  <div class="timeline-container">
+    <ion-list lines="none">
+      <div class="timeline-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
+        <!-- Date outside the card -->
+        <div class="date-container" [ngClass]="{'today-date': bit.milestone.id === todayMilestoneId}">
+          <span class="date-text">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</span>
+        </div>
+        
+        <!-- Line and dot -->
+        <div class="timeline-line">
+          <div class="timeline-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
+        </div>
+        
+        <!-- Content card -->
+        <ion-card class="timeline-card" [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}">
+          <ion-card-content>
+            <div class="milestone-content">
+              <strong class="milestone-title">{{ bit.milestone.note }}</strong>
+              <ion-note class="time-diff">
+                Anni: {{ bit.diff.years }} | Mesi: {{ bit.diff.months }} | Giorni: {{ bit.diff.days }}
+              </ion-note>
+            </div>
+            
+            <!-- Action buttons -->
+            <div class="action-buttons" *ngIf="bit.milestone.id !== todayMilestoneId">
+              <ion-button fill="clear" class="edit-button" (click)="editBitOfMyLife(bit)">
+                <ion-icon name="pencil"></ion-icon>
+              </ion-button>
+              <ion-button fill="clear" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)">
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </ion-list>
     <ion-infinite-scroll>
       <ion-infinite-scroll-content></ion-infinite-scroll-content>
     </ion-infinite-scroll>
-    </ion-content>
-  </div>
-</app-horizontal-scroll>
-
+    </div> 
+</ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
   <ion-fab-button (click)="addBitOfMyLife()">
     <ion-icon name="add"></ion-icon>

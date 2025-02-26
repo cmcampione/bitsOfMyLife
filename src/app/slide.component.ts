@@ -16,14 +16,14 @@ import { CommonModule} from '@angular/common';
     styles: [`
       .page-container {
         width: 100%;
-        height: 100%;
+        height: auto;
         position: relative;
         overflow: hidden;
       }
       
       .page-content {
         width: 100%;
-        height: 100%;
+        height: auto;
         will-change: transform;
       }
     `]

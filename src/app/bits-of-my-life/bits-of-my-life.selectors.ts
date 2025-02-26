@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life.state';
-import { defaultMilestonesName, defaultTimelineId, defaultTimelineIndex, defaultTimelineName } from './bits-of-my-life.reducer';
+import { defaultMilestonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Create moment objects for the two dates

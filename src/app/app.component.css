@@ -13,7 +13,6 @@
   
   .today-item {
     margin-top: 8px;
-    margin-bottom: 32px;
   }
   
   .date-container {
@@ -33,7 +32,7 @@
     .date-text {
       color: var(--ion-color-success-shade);
       font-weight: 700;
-      font-size: 16px;
+      font-size: 14px;
     }
   }
   

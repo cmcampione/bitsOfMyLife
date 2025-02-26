@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { CommonModule, Time } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
@@ -93,6 +93,8 @@ export class AppComponent {
   
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
     if (bitOfMyLife.milestone.id === todayMilestoneId) {
+      // Not necessary to raise an error, but just to report in console
+      // UI should not allow to edit today milestone
       console.error('Invalid ID for updating BitOfMyLife');
       return
     }
@@ -103,6 +105,8 @@ export class AppComponent {
 
   updateBitOfMyLife(): void {
     if (this.editingMilestone.id === todayMilestoneId) {
+       // Not necessary to raise an error, but just to report in console
+       // UI should not allow to edit today milestone
       console.error('Invalid ID for updating BitOfMyLife');
       return
     }
@@ -117,6 +121,8 @@ export class AppComponent {
   }
 
   deleteBitOfMyLife(id: string) {
+    // Not necessary to raise an error, but just to report in console
+    // UI should not allow to delete today milestone
     if (id === todayMilestoneId) {
       console.error('Invalid ID for delete BitOfMyLife');
       return
@@ -132,18 +138,20 @@ export class AppComponent {
     this.isEditTimelineModalOpen = true;
   }
 
-  updateTimeline(): void {
+  updateSelectedTimeline(): void {
     this.editingTimeline.mainDate = new Date(this.formatedDate);
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
     this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
     this.isEditTimelineModalOpen = false;
   }
 
-  closeEditTimelineDialog() {
+  closeEditSelectedTimelineDialog() {
     this.isEditTimelineModalOpen = false;
   }
 
   deleteSelectedTimeline() {
+    // Not necessary to raise an error, but just to report in console
+    // UI should not allow to delete default timeline
     if (this.selectedTimelineId === defaultTimelineId) {
       console.error('Invalid ID for delete Timeline');
       return

@@ -3,6 +3,7 @@ import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
 import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
 import { select } from '@ngrx/store';
+import { time } from 'ionicons/icons';
 
 @Injectable({
   providedIn: 'root'
@@ -218,12 +219,8 @@ export class BitsOfMyLifeService {
 
     async editSelectedTimeline(state: BitsOfMyLifeState, timelineToEdit: Timeline): Promise<Timeline> {
       
-      if (state.selectedTimelineIndex < 0 || state.selectedTimelineIndex >= state.timelinesMngr.length) {
-        throw new Error("Critical error");
-      }
-
-      const updatedTimelinesMngr = state.timelinesMngr.map((timeline, index) =>
-        index === state.selectedTimelineIndex ? timelineToEdit : timeline
+      const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
+        timeline.id === state.selectedTimelineId ? timelineToEdit : timeline
       );
 
       const updatedState: BitsOfMyLifeState = {
@@ -236,12 +233,15 @@ export class BitsOfMyLifeService {
       return timelineToEdit;
     }
 
-    async deleteSelectedTimeline(state: BitsOfMyLifeState): Promise<number> {
+    async deleteSelectedTimeline(state: BitsOfMyLifeState): Promise<string> {
+
       if (state.selectedTimelineId === defaultTimelineId) {
         throw new Error("Critical error");
       }
 
-      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline, index) => index !== state.selectedTimelineIndex);
+      const selectedTimelineIdToRemove = state.selectedTimelineId;
+
+      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== state.selectedTimelineId);
       const updatedState: BitsOfMyLifeState = {
         ...state,
         timelinesMngr: updatedTimelinesMngr,
@@ -251,19 +251,21 @@ export class BitsOfMyLifeService {
 
       await this.saveState(updatedState);
 
-      return 0;
+      return selectedTimelineIdToRemove;
     }
 
     async selectOrAddNextTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
       let nextTimelineIndex = state.selectedTimelineIndex + 1;
       let updatedTimelinesMngr = state.timelinesMngr;
+
       let selected = true
   
       if (nextTimelineIndex === state.timelinesMngr.length) {
           const newTimeline: Timeline = {
             id: crypto.randomUUID(),
             name: 'New Next Timeline', 
-            mainDate: new Date() };
+            mainDate: new Date() 
+          };
           updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];          
           selected = false
       }

@@ -32,7 +32,7 @@ const defaultTimeline: Timeline = {
 }
 
 const dummyTimeline: Timeline = {
-    id: "9f747525-b203-4e22-b200-a20f0dd37ed2",
+    id: "7d11b7e7-e49c-4135-93c2-798d38b4f05d",
     name: "Sono passati o passeranno", //TODO: Localize
     mainDate: new Date("1962-08-19")
 }
@@ -95,9 +95,9 @@ export const bitsOfMyLifeReducer = createReducer(
         const updatedMilestones: Milestones = {
             ...selectedMilestones,
             milestones: [
-            ...selectedMilestones.milestones.slice(0, milestoneIndex),
-            updatedMilestone,
-            ...selectedMilestones.milestones.slice(milestoneIndex + 1),
+                ...selectedMilestones.milestones.slice(0, milestoneIndex),
+                updatedMilestone,
+                ...selectedMilestones.milestones.slice(milestoneIndex + 1),
             ],
         };
         
@@ -142,16 +142,10 @@ export const bitsOfMyLifeReducer = createReducer(
     }),
 
     on(BitsOfMyLifeActions.selectedTimelineEdited, (state, { updatedTimeline }) => {
-        // Find the selected timeline
-        const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
-        if (!selectedTimeline) {
-            return state; // Any potential error is handled by the effects
-        }
-        
-        const updatedTimelinesMngr = state.timelinesMngr.map((timeline, index) =>
-            index === state.selectedTimelineIndex ? updatedTimeline : timeline
+
+        const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
+            timeline.id === state.selectedTimelineId ? updatedTimeline : timeline
         );
-    
         const updatedState: BitsOfMyLifeState = {
             ...state,
             timelinesMngr: updatedTimelinesMngr,
@@ -159,13 +153,8 @@ export const bitsOfMyLifeReducer = createReducer(
         
         return updatedState;
     }),
-    on(BitsOfMyLifeActions.selectedTimelineDeleted, (state, { timelineIndexToRemove }) => {
-        // Find the selected timeline
-        const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
-        if (!selectedTimeline) {
-            return state; // Any potential error is handled by the effects
-        }
-        const updatedTimelinesMngr = state.timelinesMngr.filter((timeline, index) => index !== timelineIndexToRemove);
+    on(BitsOfMyLifeActions.selectedTimelineDeleted, (state, { timelineIdToRemove: timelineIdToRemove }) => {
+        const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== timelineIdToRemove);
         const updatedState: BitsOfMyLifeState = {
             ...state,
             timelinesMngr: updatedTimelinesMngr,
@@ -177,7 +166,11 @@ export const bitsOfMyLifeReducer = createReducer(
     on(BitsOfMyLifeActions.timelineSelectedOrAdded, (state, { isSelected, timelineIndex, timeline }) => { 
         
         if (isSelected)
-            return { ...state, selectedTimelineIndex: timelineIndex }
+            return { 
+            ...state, 
+            selectedTimelineId: timeline.id,
+            selectedTimelineIndex: timelineIndex 
+        }
         
         const updatedTimelinesMngr = [...state.timelinesMngr.slice(0,timelineIndex), timeline, ...state.timelinesMngr.slice(timelineIndex)];        
         return { ...state, timelinesMngr: updatedTimelinesMngr, 

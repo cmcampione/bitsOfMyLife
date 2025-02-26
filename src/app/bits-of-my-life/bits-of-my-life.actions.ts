@@ -18,7 +18,7 @@ export const editSelectedTimeline = createAction('[BitsOfMyLife] Edit Selected T
 export const selectedTimelineEdited = createAction('[BitsOfMyLife] Edit Selected Timeline Success', props<{ updatedTimeline: Timeline }>());
 
 export const deleteSelectedTimeline = createAction("[BitOfMyLife] Delete Selected Timeline");
-export const selectedTimelineDeleted = createAction('[BitsOfMyLife] Delete Timeline Success', props<{ timelineIndexToRemove: number }>());
+export const selectedTimelineDeleted = createAction('[BitsOfMyLife] Delete Selected Timeline Success', props<{ timelineIdToRemove: string }>());
 
 export const selectOrAddNextTimeline = createAction('[BitsOfMyLife] Select or Add Next Timeline');
 export const selectOrAddPrevTimeline = createAction('[BitsOfMyLife] Select or Add Prev Timeline');

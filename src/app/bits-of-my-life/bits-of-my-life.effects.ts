@@ -181,7 +181,7 @@ export class BitsOfMyLifeEffects {
         withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
         switchMap(([{  }, currentState]) =>
             from(this.bitsOfMyLifeService.deleteSelectedTimeline(currentState)).pipe(
-            map((timelineIndexToRemove) => selectedTimelineDeleted({ timelineIndexToRemove })),
+            map((timelineIdToRemove) => selectedTimelineDeleted({ timelineIdToRemove })),
             catchError((error) => {
                 console.error('Errore durante la cancellazione della Timeline selezionata:', error);
                 return of(updateAppState({

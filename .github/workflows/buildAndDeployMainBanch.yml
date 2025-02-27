@@ -23,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Build Angular App
-        run: npx ng build --configuration=production --base-href=/bitsOfMyLife/ --deploy-url=/bitsOfMyLife/
+        run: npx ng build --configuration=production --base-href=/bitsOfMyLife/browser/ --deploy-url=/bitsOfMyLife/browser/
 
       - name: Upload to FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4

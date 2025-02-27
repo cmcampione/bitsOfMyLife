@@ -3,16 +3,16 @@
     <ion-title>Bits of My Life</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<!--
 <ion-card *ngIf="appState$ | async as appState">
   <ion-card-content>
     <ion-text color="danger">Errore: {{ appState.error.description }}</ion-text>
   </ion-card-content>
 </ion-card>
-
+-->
 <app-horizontal-scroll #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
   <div>
-    <ion-card style="height:30vh">
+    <ion-card style="height:auto">
       <ion-card-header>
         <ion-card-title>Milestones</ion-card-title>
       </ion-card-header>
@@ -24,21 +24,21 @@
         <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
         <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
 
-        <ion-button (click)="editSelectedTimeline()">
+        <ion-button  shape="round" (click)="editSelectedTimeline()">
           <ion-icon name="create" slot="icon-only"></ion-icon>
         </ion-button>
-  
-        <ion-button *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
+            
+        <ion-button shape="round" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
           <ion-icon name="trash" slot="icon-only"></ion-icon>
         </ion-button>
-        
+
         <ion-button (click)="this.pageTransition.triggerPrevTransition()">Prev</ion-button>
         <ion-button (click)="this.pageTransition.triggerNextTransition()">Next</ion-button>
       </ion-card-content>
     </ion-card>
   </div>
 </app-horizontal-scroll>
-<ion-content style="height:55vh">
+<ion-content style="height:49vh">
   <div class="timeline-container">
     <ion-list lines="none">
       <div class="timeline-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
@@ -64,11 +64,11 @@
             
             <!-- Action buttons -->
             <div class="action-buttons" *ngIf="bit.milestone.id !== todayMilestoneId">
-              <ion-button fill="clear" class="edit-button" (click)="editBitOfMyLife(bit)">
-                <ion-icon name="pencil"></ion-icon>
+              <ion-button shape="round" class="edit-button" (click)="editBitOfMyLife(bit)">
+                <ion-icon slot="icon-only" name="pencil"></ion-icon>
               </ion-button>
-              <ion-button fill="clear" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)">
-                <ion-icon name="trash"></ion-icon>
+              <ion-button shape="round" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)">
+                <ion-icon slot="icon-only" name="trash"></ion-icon>
               </ion-button>
             </div>
           </ion-card-content>

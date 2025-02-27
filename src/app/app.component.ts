@@ -30,7 +30,7 @@ import { PageTransitionComponent } from './slide.component'
     IonFab, IonFabButton,
     PageTransitionComponent],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
 

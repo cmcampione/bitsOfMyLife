@@ -26,8 +26,8 @@ import { PageTransitionComponent } from './slide.component'
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
     IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
-    IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent, IonList, IonLabel, IonInput, IonIcon, IonModal, 
-    IonFab, IonFabButton,
+    IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent,
+    IonList, IonLabel, IonInput, IonIcon, IonModal, IonFab, IonFabButton,
     PageTransitionComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

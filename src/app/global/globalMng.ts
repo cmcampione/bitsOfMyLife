@@ -1,14 +1,8 @@
 import { on, createAction, createFeatureSelector, createReducer, props } from '@ngrx/store';
 
-// Models
-export type Error = {
-    code: number;
-    description: string
-}
-
 // State
 export type AppState = {
-    error: Error;
+    error: Error | null;
     //isLoggedIn: boolean
 }
 
@@ -17,10 +11,7 @@ export const selectAppState = createFeatureSelector<AppState>('AppState');
 
 // Reducers
 export const initialAppState : AppState = {
-    error: {
-        code: 0,
-        description: "No error"
-    }
+    error: null,
 }
 
 // Actions

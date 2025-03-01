@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
 import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
-import { select } from '@ngrx/store';
-import { time } from 'ionicons/icons';
 
 @Injectable({
   providedIn: 'root'
@@ -13,37 +11,47 @@ export class BitsOfMyLifeService {
     private readonly storageKey = 'bitsOfMyLifeState';
   
     private serializeBitsOfMyLifeState(state: BitsOfMyLifeState): string {
-      return JSON.stringify({
-        version: state.version,
-        milestonesMngr: state.milestonesMngr,
-        timelinesMngr: state.timelinesMngr,
-        selectedMilestonesIndex: state.selectedMilestonesIndex,
-        selectedTimelineId: state.selectedTimelineId,
-        selectedTimelineIndex: state.selectedTimelineIndex
-      });
+      try {
+          return JSON.stringify({
+          version: state.version,
+          milestonesMngr: state.milestonesMngr,
+          timelinesMngr: state.timelinesMngr,
+          selectedMilestonesIndex: state.selectedMilestonesIndex,
+          selectedTimelineId: state.selectedTimelineId,
+          selectedTimelineIndex: state.selectedTimelineIndex
+        });
+      }
+      catch(error) {        
+        throw new Error(String(error), {cause: 1});
+      }
     }
   
     private deserializeBitsOfMyLifeState(json: string): BitsOfMyLifeState {
       const parsed = JSON.parse(json);
-  
-      return {
-        version: parsed.version,
+      try {
+        return {
+          version: parsed.version,
 
-        milestonesMngr: parsed.milestonesMngr.map((milestones: Milestones) => ({
-          ...milestones,
-          milestones: milestones.milestones.map((milestone: Milestone) => ({
-            ...milestone,
-            date: new Date(milestone.date) // Convert ISO string to Date
-          }))})),
+          milestonesMngr: parsed.milestonesMngr.map((milestones: Milestones) => ({
+            ...milestones,
+            milestones: milestones.milestones.map((milestone: Milestone) => ({
+              ...milestone,
+              date: new Date(milestone.date) // Convert ISO string to Date
+            }))})),
 
-        timelinesMngr: parsed.timelinesMngr.map((timeline: Timeline) => ({
-          ...timeline,
-          mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
-          })),
-        selectedMilestonesIndex: parsed.selectedMilestonesIndex,
-        selectedTimelineId: parsed.selectedTimelineId,
-        selectedTimelineIndex: parsed.selectedTimelineIndex
-      };
+          timelinesMngr: parsed.timelinesMngr.map((timeline: Timeline) => ({
+            ...timeline,
+            mainDate: new Date(timeline.mainDate) // Convert ISO string to Date
+            })),
+
+          selectedMilestonesIndex: parsed.selectedMilestonesIndex,
+          selectedTimelineId: parsed.selectedTimelineId,
+          selectedTimelineIndex: parsed.selectedTimelineIndex
+        };
+      }
+      catch(error) {        
+        throw new Error(String(error), {cause: 2});
+      }
     }
   
     /** Saves the current state to localStorage asynchronously.
@@ -51,14 +59,8 @@ export class BitsOfMyLifeService {
     */
     // Todo: To check, don't know if useful for public access
     async saveState(state: BitsOfMyLifeState): Promise<void> {
-        try {
-            const serializedState = this.serializeBitsOfMyLifeState(state);
-            await Promise.resolve(localStorage.setItem(this.storageKey, serializedState));
-        } catch (error) {
-            console.error('Error saving state:', error);
-            // Rethrow the exception to be handled by the caller
-            throw new Error(`Critical error saving state`);
-        }
+      const serializedState = this.serializeBitsOfMyLifeState(state);
+      await Promise.resolve(localStorage.setItem(this.storageKey, serializedState));
     }
    
     /**
@@ -66,19 +68,12 @@ export class BitsOfMyLifeService {
       * @returns The deserialized state or a default empty object.
       */
     async loadState(): Promise<BitsOfMyLifeState> {
-        try {
-            const serializedState = await Promise.resolve(localStorage.getItem(this.storageKey));
-            if (serializedState) {
-                return this.deserializeBitsOfMyLifeState(serializedState);
-            }
-            // No saved data, return default state
-            return this.getDefaultState();
-        } catch (error) {
-            console.error('Error loading state:', error);
-    
-            // If it's a parsing or access issue, rethrow the exception
-            throw new Error(`Critical error loading state`);
-        }
+      const serializedState = await Promise.resolve(localStorage.getItem(this.storageKey));
+      if (serializedState) {
+          return this.deserializeBitsOfMyLifeState(serializedState);
+      }
+      // No saved data, return default state
+      return this.getDefaultState();
     }
 
     /**
@@ -98,7 +93,7 @@ export class BitsOfMyLifeService {
       // Get the selected milestones
       const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
-        throw new Error('Selected Milestones not found. Unable to add the milestone.');
+        throw new Error('Selected Milestones not found. Unable to add the Milestone.',{cause: 3});
       }
 
       // Update the selected milestones with the new Milestone
@@ -129,13 +124,13 @@ export class BitsOfMyLifeService {
       // Get the selected milestones
       const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
-        throw new Error('Selected Milestones not found. Unable to edit the milestone.');
+        throw new Error('Selected Milestones not found. Unable to edit the milestone.', {cause: 4});
       }
     
       // Find the milestone to edit
       const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestoneToEdit.id);
       if (milestoneIndex === -1) {
-        throw new Error('Milestone not found. Unable to edit the milestone.');
+        throw new Error('Milestone not found. Unable to edit the milestone.', {cause: 5});
       }
     
       // Create the new milestone with the edited data
@@ -183,13 +178,13 @@ export class BitsOfMyLifeService {
       // Find the selected milestones
       const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {
-        throw new Error('Selected Milestones not found. Unable to remove the milestone.');
+        throw new Error('Selected Milestones not found. Unable to remove the milestone.', {cause: 6});
       }
 
       // Find the milestone to delete
       const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === milestoneId);
       if (milestoneIndex === -1) {
-        throw new Error('Milestone not found. Unable to delete the milestone.');
+        throw new Error('Milestone not found. Unable to delete the milestone.', {cause: 7});
       }
 
       // Update the selected milestones
@@ -236,7 +231,7 @@ export class BitsOfMyLifeService {
     async deleteSelectedTimeline(state: BitsOfMyLifeState): Promise<string> {
 
       if (state.selectedTimelineId === defaultTimelineId) {
-        throw new Error("Critical error");
+        throw new Error("Critical error", { cause: 8 });
       }
 
       const selectedTimelineIdToRemove = state.selectedTimelineId;

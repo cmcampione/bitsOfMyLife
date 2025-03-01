@@ -29,13 +29,9 @@ export class BitsOfMyLifeEffects {
                 from(this.bitsOfMyLifeService.loadState()).pipe(
                     map(state => stateLoaded({ state })),
                     catchError(error => {
-                        console.error('Errore durante il caricamento dello stato:', error);
                         return of(updateAppState({
                             state: {
-                                error: {
-                                    code: 1,
-                                    description: "Errore durante il caricamento dello stato"
-                                }
+                                error
                             }
                         }));
                     })
@@ -53,13 +49,9 @@ export class BitsOfMyLifeEffects {
                 from(this.bitsOfMyLifeService.saveState(currentState)).pipe(
                     map(() => stateSaved({ state: currentState })), // Dispatch di successo
                     catchError(error => {
-                        console.error('Errore durante il salvataggio dello stato:', error);
                         return of(updateAppState({
                             state: {
-                                error: {
-                                    code: 2,
-                                    description: "Errore durante il salvataggio dello stato",
-                                },
+                                error
                             },
                         }));
                     })
@@ -75,13 +67,9 @@ export class BitsOfMyLifeEffects {
                 switchMap(() => 
                     from(this.bitsOfMyLifeService.clearState()).pipe(
                         catchError(error => {
-                            console.error('Errore durante la cancellazione dello stato:', error);
                             return of(updateAppState({
                                 state: {
-                                    error: {
-                                        code: 3,
-                                        description: "Errore durante la cancellazione dello stato",
-                                    },
+                                    error
                                 },
                             }));
                         })
@@ -99,13 +87,9 @@ export class BitsOfMyLifeEffects {
             from(this.bitsOfMyLifeService.addMilestone(currentState, milestoneToAdd)).pipe(
             map((newMilestone) => milestoneAdded({ newMilestone: newMilestone })),
             catchError((error) => {
-                console.error("Errore durante l'aggiunta di un BitOfMyLife:", error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 4,
-                            description: "Errore durante l'aggiunta di un BitOfMyLife",
-                        },
+                        error
                     },
                 }));
             })))
@@ -120,13 +104,9 @@ export class BitsOfMyLifeEffects {
             from(this.bitsOfMyLifeService.editMilestone(currentState, milestoneToEdit)).pipe(
             map((updatedMilestone) => milestoneEdited({ updatedMilestone })),
             catchError((error) => {
-                console.error("Errore durante la modifica di un BitOfMyLife:", error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 6,
-                            description: "Errore durante la modifica di un BitOfMyLife",
-                        },
+                        error
                     },
                 }));
             })))
@@ -144,10 +124,7 @@ export class BitsOfMyLifeEffects {
                 console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 5,
-                            description: 'Errore durante la cancellazione di un BitOfMyLife',
-                        },
+                        error
                     },
                 }));
             })))
@@ -162,13 +139,9 @@ export class BitsOfMyLifeEffects {
             from(this.bitsOfMyLifeService.editSelectedTimeline(currentState, timelineToEdit)).pipe(
             map((updatedTimeline) => selectedTimelineEdited({ updatedTimeline })),
             catchError((error) => {
-                console.error('Errore durante la modifica della Timeline selezionata:', error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 6,
-                            description: 'Errore durante la modifica della Timeline selezionata',
-                        },
+                        error
                     },
                 }));
             })))
@@ -183,14 +156,9 @@ export class BitsOfMyLifeEffects {
             from(this.bitsOfMyLifeService.deleteSelectedTimeline(currentState)).pipe(
             map((timelineIdToRemove) => selectedTimelineDeleted({ timelineIdToRemove })),
             catchError((error) => {
-                console.error('Errore durante la cancellazione della Timeline selezionata:', error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 6,
-                            description: 'Errore durante la cancellazione della Timeline selezionata',
-                        },
-                    },
+                        error                    },
                 }));
             })))
         )
@@ -204,13 +172,9 @@ export class BitsOfMyLifeEffects {
             from(this.bitsOfMyLifeService.selectOrAddNextTimeline(currentState)).pipe(
             map((selectedOrCreatedTimeline) => timelineSelectedOrAdded(selectedOrCreatedTimeline)),
             catchError((error) => {
-                console.error('Errore durante la selezione o la creazione della prossima Timeline:', error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 7,
-                            description: 'Errore durante la selezione o la creazione della prossima Timeline',
-                        },
+                        error
                     },
                 }));
             })))
@@ -225,13 +189,9 @@ export class BitsOfMyLifeEffects {
             from(this.bitsOfMyLifeService.selectOrAddPrevTimeline(currentState)).pipe(
             map((selectedTimeline) => timelineSelectedOrAdded(selectedTimeline)),
             catchError((error) => {
-                console.error('Errore durante la selezione della Timeline precedente:', error);
                 return of(updateAppState({
                     state: {
-                        error: {
-                            code: 8,
-                            description: 'Errore durante la selezione della Timeline precedente',
-                        },
+                        error
                     },
                 }));
             })))

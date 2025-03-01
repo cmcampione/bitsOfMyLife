@@ -3,13 +3,14 @@
     <ion-title>Bits of My Life</ion-title>
   </ion-toolbar>
 </ion-header>
-<!--
+
 <ion-card *ngIf="appState$ | async as appState">
   <ion-card-content>
-    <ion-text color="danger">Errore: {{ appState.error.description }}</ion-text>
+    <p><ion-text color="danger">Errore code: {{ appState.error?.cause }}</ion-text></p>
+    <p><ion-text color="danger">Errore message: {{ appState.error?.message }}</ion-text></p>
   </ion-card-content>
 </ion-card>
--->
+
 <app-horizontal-scroll #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
   <div>
     <ion-card style="height:auto">

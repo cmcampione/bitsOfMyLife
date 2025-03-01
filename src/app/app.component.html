@@ -100,7 +100,7 @@
     <ion-content>
       <ion-item>
         <ion-label position="floating">Date</ion-label>
-        <ion-input type="date" [ngModel]="editingTimeline.mainDate | date:'yyyy-MM-dd'" 
+        <ion-input [disabled]="selectedTimelineId === defaultTimelineId"  type="date" [ngModel]="editingTimeline.mainDate | date:'yyyy-MM-dd'" 
                   (ngModelChange)="formatedDate = $event">
         </ion-input>
       </ion-item>

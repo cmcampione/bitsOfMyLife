@@ -59,6 +59,7 @@ export const bitsOfMyLifeReducer = createReducer(
         // Get the selected milestones
         const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
         if (!selectedMilestones) {
+            console.error('No selected milestones found. Unable to add the milestone. Code: 9');
             return state; // Any potential error is handled by the effects
         }
 
@@ -83,13 +84,15 @@ export const bitsOfMyLifeReducer = createReducer(
         // Get the selected milestones
         const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
         if (!selectedMilestones) {
-            return state; // Any potential error is handled by the effects
+            console.error('No selected milestones found. Unable to edit the milestone. Code: 10');
+            return state; // Reducer must be pure
         }
         
         // Find the milestone to edit
         const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === updatedMilestone.id);
         if (milestoneIndex === -1) {
-            throw new Error('Milestone not found. Unable to edit the milestone.');
+            console.error('Milestone not found. Unable to edit the milestone. Code: 11');
+            throw state; // Reducer must be pure
         }
             
         // Update the list of milestones
@@ -117,7 +120,8 @@ export const bitsOfMyLifeReducer = createReducer(
         // Find the selected milestones
        const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
        if (!selectedMilestones) {
-         return state; // Any potential error is handled by the effects
+            console.error('No selected milestones found. Unable to delete the milestone. Code: 12');
+            return state; // Reducer must be pure
        }
  
        // Filter to remove the milestone with the specified ID

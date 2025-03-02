@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">bits-of-my-life</string>
+    <string name="title_activity_main">bits-of-my-life</string>
+    <string name="package_name">org.thingshub.bitsofmylife</string>
+    <string name="custom_url_scheme">org.thingshub.bitsofmylife</string>
+</resources>

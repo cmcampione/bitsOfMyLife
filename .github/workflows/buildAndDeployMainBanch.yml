@@ -17,10 +17,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # Cambia alla versione richiesta dal tuo progetto
+          node-version: 20.17.0  # Cambia alla versione richiesta dal tuo progetto
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --force
 
       - name: Build Angular App
         run: npx ng build --configuration=production --base-href=/bitsOfMyLife/browser/ --deploy-url=/bitsOfMyLife/browser/

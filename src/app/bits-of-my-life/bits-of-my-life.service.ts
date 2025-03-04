@@ -236,17 +236,51 @@ export class BitsOfMyLifeService {
 
       const selectedTimelineIdToRemove = state.selectedTimelineId;
 
-      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== state.selectedTimelineId);
+      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== selectedTimelineIdToRemove);
       const updatedState: BitsOfMyLifeState = {
         ...state,
         timelinesMngr: updatedTimelinesMngr,
         selectedTimelineId: defaultTimelineId,
-        selectedTimelineIndex: defaultTimelineIndex,
+        selectedTimelineIndex: updatedTimelinesMngr.findIndex((timeline) => timeline.id === defaultTimelineId),
       };
 
       await this.saveState(updatedState);
 
       return selectedTimelineIdToRemove;
+    }
+
+    async selectOrAddPrevTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
+      if (state.selectedTimelineIndex > 0) {
+          const prevTimelineIndex = state.selectedTimelineIndex - 1;
+          const prevTimeline = state.timelinesMngr[prevTimelineIndex];
+          const updatedState = {
+            ...state, 
+            selectedTimelineId: prevTimeline.id,
+            selectedTimelineIndex: prevTimelineIndex
+          };
+
+          await this.saveState(updatedState);
+          
+          return { isSelected: true, timelineIndex: prevTimelineIndex, timeline: prevTimeline };
+      }
+
+      // If we are already at the first index, create a new timeline
+      const newTimeline: Timeline = { 
+        id: crypto.randomUUID(),
+        name: 'New Prev Timeline', 
+        mainDate: new Date() 
+      };
+      const updatedTimelinesMngr = [newTimeline, ...state.timelinesMngr];
+      const updatedState = {
+        ...state, 
+        timelinesMngr: updatedTimelinesMngr, 
+        selectedTimelineId: newTimeline.id,
+        selectedTimelineIndex: 0
+      };
+
+      await this.saveState(updatedState);
+      
+      return { isSelected: false, timelineIndex: 0, timeline: newTimeline };
     }
 
     async selectOrAddNextTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
@@ -276,36 +310,7 @@ export class BitsOfMyLifeService {
   
       return {isSelected : selected, timelineIndex: nextTimelineIndex, timeline: updatedTimelinesMngr[nextTimelineIndex] };
     }
-  
-    async selectOrAddPrevTimeline(state: BitsOfMyLifeState): Promise<{isSelected: boolean; timelineIndex: number; timeline: Timeline }> {
-      if (state.selectedTimelineIndex > 0) {
-          const prevTimelineIndex = state.selectedTimelineIndex - 1;
-          const updatedState = { ...state, 
-            selectedTimelineId: state.timelinesMngr[prevTimelineIndex].id,
-            selectedTimelineIndex: prevTimelineIndex };
-
-          await this.saveState(updatedState);
-          
-          return { isSelected: true, timelineIndex: prevTimelineIndex, timeline: state.timelinesMngr[prevTimelineIndex] };
-      }
-
-      // If we are already at the first index, create a new timeline
-      const newTimeline: Timeline = { 
-        id: crypto.randomUUID(),
-        name: 'New Prev Timeline', 
-        mainDate: new Date() 
-      };
-      const updatedTimelinesMngr = [newTimeline, ...state.timelinesMngr];
-      const updatedState = { ...state, 
-        timelinesMngr: updatedTimelinesMngr, 
-        selectedTimelineId: newTimeline.id,
-        selectedTimelineIndex: 0 };
-
-      await this.saveState(updatedState);
       
-      return { isSelected: false, timelineIndex: 0, timeline: newTimeline };
-    }
-    
     /**
      * Clears the state from localStorage asynchronously.
      */

@@ -31,6 +31,12 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
+        ame: Set up Java 21  # O usa 17 se necessario
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
       - name: Set up Java and Android SDK
         uses: android-actions/setup-android@v3
 

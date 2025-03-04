@@ -40,7 +40,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
     const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
     
     const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
-    const timelineMainDate = (selectedTimeline?.mainDate || state.selectedTimelineId === defaultTimelineId) || now;  
+    const timelineMainDate = (state.selectedTimelineId === defaultTimelineId) ? now : (selectedTimeline?.mainDate ?? now);
     const timelineName = selectedTimeline?.name || defaultTimelineName;
 
     const todayBitOfMyLife: BitOfMyLife = {

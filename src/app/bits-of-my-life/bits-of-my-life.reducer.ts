@@ -164,7 +164,7 @@ export const bitsOfMyLifeReducer = createReducer(
             ...state,
             timelinesMngr: updatedTimelinesMngr,
             selectedTimelineId: defaultTimelineId,
-            selectedTimelineIndex: defaultTimelineIndex
+            selectedTimelineIndex: updatedTimelinesMngr.findIndex((timeline) => timeline.id === defaultTimelineId)
         };
         return updatedState;
     }),
@@ -178,9 +178,12 @@ export const bitsOfMyLifeReducer = createReducer(
         }
         
         const updatedTimelinesMngr = [...state.timelinesMngr.slice(0,timelineIndex), timeline, ...state.timelinesMngr.slice(timelineIndex)];        
-        return { ...state, timelinesMngr: updatedTimelinesMngr, 
+        return {
+            ...state,
+            timelinesMngr: updatedTimelinesMngr, 
             selectedTimelineId: timeline.id,
-            selectedTimelineIndex: timelineIndex };
+            selectedTimelineIndex: timelineIndex
+        };
     }),
     // ToDo: To remove?
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))

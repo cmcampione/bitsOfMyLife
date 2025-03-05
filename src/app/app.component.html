@@ -3,18 +3,18 @@
     <ion-title>Bits of My Life</ion-title>
   </ion-toolbar>
 </ion-header>
-
-<ion-card *ngIf="appState$ | async as appState">
-  <ion-card-content>
-    <p><ion-text color="danger">Errore code: {{ appState.error?.cause }}</ion-text></p>
-    <p><ion-text color="danger">Errore message: {{ appState.error?.message }}</ion-text></p>
-  </ion-card-content>
-</ion-card>
-
+<div *ngIf="isDev()">
+  <ion-card *ngIf="appState$ | async as appState">
+    <ion-card-content>
+      <p><ion-text color="danger">Errore code: {{ appState.error?.cause }}</ion-text></p>
+      <p><ion-text color="danger">Errore message: {{ appState.error?.message }}</ion-text></p>
+    </ion-card-content>
+  </ion-card>
+</div>>
 <app-horizontal-scroll #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
   <div>
     <ion-card style="height:auto">
-      <ion-card-header>
+      <ion-card-header *ngIf="isDev()">
         <ion-card-title>Milestones</ion-card-title>
       </ion-card-header>
       <ion-card-content>
@@ -29,15 +29,12 @@
         <div *ngIf="!isDev()">
           <p>{{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
         </div>
-
         <ion-button  shape="round" (click)="editSelectedTimeline()">
           <ion-icon name="create" slot="icon-only"></ion-icon>
-        </ion-button>
-            
+        </ion-button>            
         <ion-button shape="round" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
           <ion-icon name="trash" slot="icon-only"></ion-icon>
         </ion-button>
-
         <ion-button (click)="this.pageTransition.triggerPrevTransition()">Prev</ion-button>
         <ion-button (click)="this.pageTransition.triggerNextTransition()">Next</ion-button>
       </ion-card-content>

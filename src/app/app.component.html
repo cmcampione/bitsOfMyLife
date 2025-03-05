@@ -27,7 +27,7 @@
           <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
         </div>
         <div *ngIf="!isDev()">
-          <p>{{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+          <p>Dal {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }} ({{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}) sono passati o mancano</p>
         </div>
         <ion-button  shape="round" (click)="editSelectedTimeline()">
           <ion-icon name="create" slot="icon-only"></ion-icon>

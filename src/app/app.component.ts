@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, isDevMode, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
@@ -33,6 +33,8 @@ import { PageTransitionComponent } from './slide.component'
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+
+  isDev = signal(isDevMode());
 
   title = 'bitsOfMyLife';
   

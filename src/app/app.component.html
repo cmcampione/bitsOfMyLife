@@ -18,12 +18,17 @@
         <ion-card-title>Milestones</ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <p>Milestones name: {{ (selectedBitsOfMyLifeState$ | async)?.milestonesName }}</p>
-        <p>Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineIndex }}</p>
-        <p>Timeline id: {{ (selectedBitsOfMyLifeState$ | async)?.timelineId }}</p>
-        <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
-        <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
-        <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
+        <div *ngIf="isDev()">
+          <p>Milestones name: {{ (selectedBitsOfMyLifeState$ | async)?.milestonesName }}</p>
+          <p>Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineIndex }}</p>
+          <p>Timeline id: {{ (selectedBitsOfMyLifeState$ | async)?.timelineId }}</p>
+          <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
+          <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+          <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
+        </div>
+        <div *ngIf="!isDev()">
+          <p>{{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
+        </div>
 
         <ion-button  shape="round" (click)="editSelectedTimeline()">
           <ion-icon name="create" slot="icon-only"></ion-icon>

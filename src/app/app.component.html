@@ -29,10 +29,10 @@
         <div>
           <p>Dal {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }} ({{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}) sono passati o mancano</p>
         </div>
-        <ion-button  shape="round" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="editSelectedTimeline()">
-          <ion-icon name="create" slot="icon-only"></ion-icon>
+        <ion-button  shape="round" class="edit-button" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="editSelectedTimeline()">
+          <ion-icon name="pencil" slot="icon-only"></ion-icon>
         </ion-button>            
-        <ion-button shape="round" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
+        <ion-button shape="round" lass="delete-button" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
           <ion-icon name="trash" slot="icon-only"></ion-icon>
         </ion-button>
         <ion-button (click)="this.pageTransition.triggerPrevTransition()">Prev</ion-button>

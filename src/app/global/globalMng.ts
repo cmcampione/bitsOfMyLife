@@ -3,7 +3,7 @@ import { on, createAction, createFeatureSelector, createReducer, props } from '@
 // State
 export type AppState = {
     error: Error | null;
-    //isLoggedIn: boolean
+    isLoggedIn: boolean
 }
 
 // Selectors
@@ -12,6 +12,7 @@ export const selectAppState = createFeatureSelector<AppState>('AppState');
 // Reducers
 export const initialAppState : AppState = {
     error: null,
+    isLoggedIn: false
 }
 
 // Actions

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { catchError, from, map, of, switchMap, withLatestFrom } from "rxjs";
+import { catchError, from, map, of, switchMap, combineLatest, withLatestFrom } from "rxjs";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, 
@@ -11,7 +11,7 @@ import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone
     deleteSelectedTimeline,
     selectedTimelineDeleted} from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
-import { updateAppState } from "../global/globalMng";
+import { selectAppState, updateAppState } from "../global/globalMng";
 
 // Effects
 @Injectable()
@@ -25,36 +25,29 @@ export class BitsOfMyLifeEffects {
     loadState$ = createEffect(() => 
         this.actions$.pipe(
             ofType(loadState),
-            switchMap(() => 
-                from(this.bitsOfMyLifeService.loadState()).pipe(
-                    map(state => stateLoaded({ state })),
-                    catchError(error => {
-                        return of(updateAppState({
-                            state: {
-                                error
-                            }
-                        }));
-                    })
+            switchMap(() => this.store.select(selectAppState).pipe(
+                switchMap(appState => 
+                    from(this.bitsOfMyLifeService.loadState()).pipe(
+                        map(state => stateLoaded({ state })),
+                        catchError(error => of(updateAppState({ state: { ...appState, error } }))))
+                    )
                 )
             )
         )
-    );
+    )
 
     // Todo: To check, don't know if useful
     saveState$ = createEffect(() =>
         this.actions$.pipe(
             ofType(saveState),
-            withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-            switchMap(([_, currentState]) =>
+            switchMap(() => combineLatest([
+                this.store.select(selectBitsOfMyLifeState), 
+                this.store.select(selectAppState)
+            ])),
+            switchMap(([currentState, appState]) =>
                 from(this.bitsOfMyLifeService.saveState(currentState)).pipe(
                     map(() => stateSaved({ state: currentState })), // Dispatch di successo
-                    catchError(error => {
-                        return of(updateAppState({
-                            state: {
-                                error
-                            },
-                        }));
-                    })
+                    catchError(error => of(updateAppState({ state: { ...appState, error } })))
                 )
             )
         )
@@ -62,33 +55,29 @@ export class BitsOfMyLifeEffects {
 
     // Todo: To check, don't know if useful
     clearState$ = createEffect(() =>
-            this.actions$.pipe(
-                ofType(clearState),
-                switchMap(() => 
-                    from(this.bitsOfMyLifeService.clearState()).pipe(
-                        catchError(error => {
-                            return of(updateAppState({
-                                state: {
-                                    error
-                                },
-                            }));
-                        })
-                    )
+        this.actions$.pipe(
+            ofType(clearState),
+            switchMap(() => this.store.select(selectAppState)), // Converte la Promise in Observable
+            switchMap(appState => 
+                from(this.bitsOfMyLifeService.clearState()).pipe(
+                    catchError(error => of(updateAppState({ state: { ...appState, error } })))
                 )
-            ),
+            )
+        ),
         { dispatch: false }
     );
-    
+        
     addMilestone$ = createEffect(() =>
         this.actions$.pipe(
         ofType(addMilestone),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ milestoneToAdd }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ milestoneToAdd }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.addMilestone(currentState, milestoneToAdd)).pipe(
             map((newMilestone) => milestoneAdded({ newMilestone: newMilestone })),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
+                        ...appState,
                         error
                     },
                 }));
@@ -99,13 +88,14 @@ export class BitsOfMyLifeEffects {
     editMilestone$ = createEffect(() =>
         this.actions$.pipe(
         ofType(editMilestone),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ milestoneToEdit }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ milestoneToEdit }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.editMilestone(currentState, milestoneToEdit)).pipe(
             map((updatedMilestone) => milestoneEdited({ updatedMilestone })),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
+                        ...appState,
                         error
                     },
                 }));
@@ -116,14 +106,15 @@ export class BitsOfMyLifeEffects {
     deleteMilestone$ = createEffect(() =>
         this.actions$.pipe(
         ofType(deleteMilestone),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ milestoneIdToRemove }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ milestoneIdToRemove }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.deleteMilestone(currentState, milestoneIdToRemove)).pipe(
             map((milestoneIdToRemove) => milestoneDeleted({ milestoneIdToRemove })),
             catchError((error) => {
                 console.error('Errore durante la cancellazione di un BitOfMyLife:', error);
                 return of(updateAppState({
                     state: {
+                        ...appState,
                         error
                     },
                 }));
@@ -134,13 +125,14 @@ export class BitsOfMyLifeEffects {
     editSelectedTimeline$ = createEffect(() =>
         this.actions$.pipe(
         ofType(editSelectedTimeline),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ timelineToEdit }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ timelineToEdit }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.editSelectedTimeline(currentState, timelineToEdit)).pipe(
             map((updatedTimeline) => selectedTimelineEdited({ updatedTimeline })),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
+                        ...appState,
                         error
                     },
                 }));
@@ -151,14 +143,16 @@ export class BitsOfMyLifeEffects {
     deleteSelectedTimeline$ = createEffect(() =>
         this.actions$.pipe(
         ofType(deleteSelectedTimeline),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{  }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([, currentState, appState]) =>
             from(this.bitsOfMyLifeService.deleteSelectedTimeline(currentState)).pipe(
             map((timelineIdToRemove) => selectedTimelineDeleted({ timelineIdToRemove })),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
-                        error                    },
+                        ...appState,
+                        error
+                    },
                 }));
             })))
         )
@@ -167,13 +161,14 @@ export class BitsOfMyLifeEffects {
     selectOrAddNextTimeline$ = createEffect(() =>
         this.actions$.pipe(
         ofType(selectOrAddNextTimeline),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([, currentState, appState]) =>
             from(this.bitsOfMyLifeService.selectOrAddNextTimeline(currentState)).pipe(
             map((selectedOrCreatedTimeline) => timelineSelectedOrAdded(selectedOrCreatedTimeline)),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
+                        ...appState,
                         error
                     },
                 }));
@@ -184,13 +179,14 @@ export class BitsOfMyLifeEffects {
     selectOrAddPrevTimeline$ = createEffect(() =>
         this.actions$.pipe(
         ofType(selectOrAddPrevTimeline),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState)),
-        switchMap(([{ }, currentState]) =>
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([, currentState, appState]) =>
             from(this.bitsOfMyLifeService.selectOrAddPrevTimeline(currentState)).pipe(
             map((selectedTimeline) => timelineSelectedOrAdded(selectedTimeline)),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
+                        ...appState,
                         error
                     },
                 }));

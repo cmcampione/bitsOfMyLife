@@ -54,10 +54,16 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
+      - name: Optimize APK with zipalign
+        run: |
+          $BUILD_TOOLS_VERSION/zipalign -f -v 4 \
+            android/app/build/outputs/apk/release/app-release-signed.apk \
+            android/app/build/outputs/apk/release/app-release-aligned.apk
+
       - name: Decode Keystore file
         run: |
           echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > android/app/release-key.jks
-
+          
       - name: Sign APK using apksigner
         run: |
           $BUILD_TOOLS_VERSION/apksigner sign \
@@ -74,12 +80,6 @@ jobs:
 
       - name: Debug - List APK files
         run: ls -l android/app/build/outputs/apk/release/
-
-      - name: Optimize APK with zipalign
-        run: |
-          $BUILD_TOOLS_VERSION/zipalign -f -v 4 \
-            android/app/build/outputs/apk/release/app-release-signed.apk \
-            android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Fix permissions
         run: chmod -R 777 android/app/build/outputs/apk/release/

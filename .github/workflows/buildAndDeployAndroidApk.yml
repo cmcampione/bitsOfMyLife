@@ -3,7 +3,7 @@ name: Build APK for Android
 on:
   push:
     branches:
-      - 12-implement-app  # Cambia con il nome del tuo branch principale tra le virgolette
+      - 12-implement-app  # Cambia con il nome del tuo branch principale
   pull_request:
     branches:
       - 12-implement-app
@@ -31,21 +31,14 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Set up Java 21  # O usa 17 se necessario
+      - name: Set up Java 21  # Usa Java 17 se necessario
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Set up Java and Android SDK
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-
-      - name: Install Android Build Tools (zipalign fix)
-        run: |
-          sdkmanager --install "build-tools;33.0.1"
-
-      - name: Verify zipalign existence
-        run: ls -l /usr/local/lib/android/sdk/build-tools/33.0.1/
 
       - name: Build Android APK
         run: |
@@ -53,20 +46,28 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
-      - name: Sign APK
+      - name: Decode Keystore file
         run: |
           echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > android/app/release-key.jks
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore android/app/release-key.jks \
-            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_ALIAS_PASSWORD }} \
-            android/app/build/outputs/apk/release/app-release-unsigned.apk \
-            release-key
+
+      - name: Sign APK using apksigner
+        run: |
+          /usr/local/lib/android/sdk/build-tools/33.0.1/apksigner sign \
+            --ks android/app/release-key.jks \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_ALIAS_PASSWORD }} \
+            --out android/app/build/outputs/apk/release/app-release-signed.apk \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk
+
+      - name: Verify APK Signature
+        run: |
+          /usr/local/lib/android/sdk/build-tools/33.0.1/apksigner verify --verbose \
+            android/app/build/outputs/apk/release/app-release-signed.apk
 
       - name: Optimize APK with zipalign
         run: |
           /usr/local/lib/android/sdk/build-tools/33.0.1/zipalign -v 4 \
-            android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            android/app/build/outputs/apk/release/app-release-signed.apk \
             android/app/build/outputs/apk/release/app-release.apk
 
       - name: Upload APK Artifact

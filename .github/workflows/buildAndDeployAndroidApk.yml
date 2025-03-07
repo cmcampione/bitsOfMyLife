@@ -40,6 +40,13 @@ jobs:
       - name: Set up Java and Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Android Build Tools (zipalign fix)
+        run: |
+          sdkmanager --install "build-tools;33.0.1"
+
+      - name: Verify zipalign existence
+        run: ls -l /usr/local/lib/android/sdk/build-tools/33.0.1/
+
       - name: Build Android APK
         run: |
           chmod +x android/gradlew
@@ -58,7 +65,7 @@ jobs:
 
       - name: Optimize APK with zipalign
         run: |
-          ${ANDROID_HOME}/build-tools/33.0.1/zipalign -v 4 \
+          /usr/local/lib/android/sdk/build-tools/33.0.1/zipalign -v 4 \
             android/app/build/outputs/apk/release/app-release-unsigned.apk \
             android/app/build/outputs/apk/release/app-release.apk
 

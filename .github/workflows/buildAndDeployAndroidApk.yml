@@ -57,8 +57,8 @@ jobs:
       - name: Optimize APK with zipalign
         run: |
           $BUILD_TOOLS_VERSION/zipalign -f -v 4 \
-            android/app/build/outputs/apk/release/app-release-signed.apk \
-            android/app/build/outputs/apk/release/app-release-aligned.apk
+          android/app/build/outputs/apk/release/app-release-unsigned.apk \
+          android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Decode Keystore file
         run: |
@@ -71,7 +71,7 @@ jobs:
             --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
             --key-pass pass:${{ secrets.KEY_ALIAS_PASSWORD }} \
             --out android/app/build/outputs/apk/release/app-release-signed.apk \
-            android/app/build/outputs/apk/release/app-release-unsigned.apk
+            android/app/build/outputs/apk/release/app-release-aligned.apk
 
       - name: Verify APK Signature
         run: |

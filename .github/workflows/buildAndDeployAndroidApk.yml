@@ -3,10 +3,10 @@ name: Build APK for Android
 on:
   push:
     branches:
-      - 12-implement-app  # Cambia con il nome del tuo branch principale
+      - main  # Cambia con il nome del tuo branch principale
   pull_request:
     branches:
-      - 12-implement-app
+      - main
 
 jobs:
   build:

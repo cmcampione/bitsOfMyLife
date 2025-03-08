@@ -1,0 +1,69 @@
+name: Build APK for Android
+
+on:
+  push:
+    branches:
+      - 12-implement-app  # Cambia con il nome del tuo branch principale tra le virgolette
+  pull_request:
+    branches:
+      - 12-implement-app
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.17.0   # Usa la versione richiesta dal tuo progetto
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Build Angular app
+        run: npm run build --if-present
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+
+      - name: Set up Java 21  # O usa 17 se necessario
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: Set up Java and Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Build Android APK
+        run: |
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleRelease
+
+      - name: Sign APK
+        run: |
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > android/app/release-key.jks
+          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
+            -keystore android/app/release-key.jks \
+            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
+            -keypass ${{ secrets.KEY_ALIAS_PASSWORD }} \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            release-key
+
+      - name: Optimize APK with zipalign
+        run: |
+          ${ANDROID_HOME}/build-tools/33.0.1/zipalign -v 4 \
+            android/app/build/outputs/apk/release/app-release-unsigned.apk \
+            android/app/build/outputs/apk/release/app-release.apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/app-release.apk

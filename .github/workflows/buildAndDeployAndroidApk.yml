@@ -3,10 +3,10 @@ name: Build APK for Android
 on:
   push:
     branches:
-      - main  # Cambia con il nome del tuo branch principale tra le virgolette
+      - 12-implement-app  # Cambia con il nome del tuo branch principale
   pull_request:
     branches:
-      - main
+      - 12-implement-app
 
 jobs:
   build:
@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install Node.js
         uses: actions/setup-node@v3
@@ -31,14 +31,22 @@ jobs:
       - name: Sync Capacitor
         run: npx cap sync android
 
-      - name: Set up Java 21  # O usa 17 se necessario
+      - name: Set up Java 21  # Usa Java 17 se necessario
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: Set up Java and Android SDK
+      - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+
+      - name: Install Android Build Tools
+        run: sdkmanager "build-tools;34.0.0"
+
+      - name: Find Latest Build Tools Version
+        run: |
+          BUILD_TOOLS_VERSION=$(ls -d /usr/local/lib/android/sdk/build-tools/* | sort -V | tail -n 1)
+          echo "BUILD_TOOLS_VERSION=$BUILD_TOOLS_VERSION" >> $GITHUB_ENV
 
       - name: Build Android APK
         run: |
@@ -46,24 +54,38 @@ jobs:
           cd android
           ./gradlew assembleRelease
 
-      - name: Sign APK
-        run: |
-          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > android/app/release-key.jks
-          jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 \
-            -keystore android/app/release-key.jks \
-            -storepass ${{ secrets.KEYSTORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_ALIAS_PASSWORD }} \
-            android/app/build/outputs/apk/release/app-release-unsigned.apk \
-            release-key
-
       - name: Optimize APK with zipalign
         run: |
-          ${ANDROID_HOME}/build-tools/33.0.1/zipalign -v 4 \
-            android/app/build/outputs/apk/release/app-release-unsigned.apk \
-            android/app/build/outputs/apk/release/app-release.apk
+          $BUILD_TOOLS_VERSION/zipalign -f -v 4 \
+          android/app/build/outputs/apk/release/app-release-unsigned.apk \
+          android/app/build/outputs/apk/release/app-release-aligned.apk
+
+      - name: Decode Keystore file
+        run: |
+          echo "${{ secrets.KEYSTORE_FILE }}" | base64 --decode > android/app/release-key.jks
+          
+      - name: Sign APK using apksigner
+        run: |
+          $BUILD_TOOLS_VERSION/apksigner sign \
+            --ks android/app/release-key.jks \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_ALIAS_PASSWORD }} \
+            --out android/app/build/outputs/apk/release/app-release-signed.apk \
+            android/app/build/outputs/apk/release/app-release-aligned.apk
+
+      - name: Verify APK Signature
+        run: |
+          $BUILD_TOOLS_VERSION/apksigner verify --verbose \
+            android/app/build/outputs/apk/release/app-release-signed.apk
+
+      - name: Debug - List APK files
+        run: ls -l android/app/build/outputs/apk/release/
+
+      - name: Fix permissions
+        run: chmod -R 777 android/app/build/outputs/apk/release/
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release.apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: android/app/build/outputs/apk/release/app-release-signed.apk

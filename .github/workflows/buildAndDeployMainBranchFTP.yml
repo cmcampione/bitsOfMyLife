@@ -1,10 +1,10 @@
-name: Build and Deploy Angular to FTP
+name: Build and Deploy Main Branch to FTP
 
 on:
   push:
     branches:
       - main  # Cambia il branch se necessario
-  workflow_dispatch:  # Permette l'avvio manuale
+  # workflow_dispatch:  # Permette l'avvio manuale
 
 jobs:
   build:

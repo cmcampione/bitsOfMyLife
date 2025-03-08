@@ -1,12 +1,9 @@
-name: Build APK for Android
+name: Build and Deploy Main Branch APK for Android
 
 on:
   push:
     branches:
       - main  # Cambia con il nome del tuo branch principale
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:

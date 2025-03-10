@@ -2,7 +2,7 @@ import { Component, isDevMode, signal, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { IonHeader, IonInput } from '@ionic/angular/standalone';
@@ -59,6 +59,8 @@ export class AppComponent {
 
   editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
+
+  selectedBitsOfMyLifeStateSubscription: Subscription = new Subscription();
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
@@ -69,13 +71,17 @@ export class AppComponent {
 
   ngOnInit() {
 
-    this.selectedBitsOfMyLifeState$.subscribe(state => {
+    this.selectedBitsOfMyLifeStateSubscription = this.selectedBitsOfMyLifeState$.subscribe(state => {
       this.selectedTimelineIndex = state.timelineIndex;
       this.selectedTimelineId = state.timelineId;
       this.editingTimeline = {id: state.timelineId, mainDate: state.timelineMainDate, name: state.timelineName};
     });
 
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
+  }
+
+  ngOnDestroy() {
+    this.selectedBitsOfMyLifeStateSubscription.unsubscribe();
   }
 
   addBitOfMyLife(): void {

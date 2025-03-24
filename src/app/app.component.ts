@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { IonHeader, IonInput } from '@ionic/angular/standalone';
-import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, 
+import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, IonCol, IonRow, IonGrid, IonAvatar, 
   IonCardTitle, IonButton, IonItem, IonNote, IonList, IonLabel, IonModal, IonFab, IonFabButton, IonButtons, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { trash, create, pencil, add } from 'ionicons/icons';
+import { trash, create, pencil, add, arrowForwardCircleOutline, arrowBackCircleOutline, arrowBackOutline, arrowForwardOutline } from 'ionicons/icons';
 
 import { AppState, selectAppState } from './global/globalMng';
 
@@ -25,7 +25,7 @@ import { PageTransitionComponent } from './slide.component'
   selector: 'app-root',
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons, IonCol, IonRow, IonGrid, IonAvatar,
     IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent,
     IonList, IonLabel, IonInput, IonIcon, IonModal, IonFab, IonFabButton,
     PageTransitionComponent],
@@ -37,7 +37,7 @@ export class AppComponent {
   isDev = signal(isDevMode());
 
   title = 'bitsOfMyLife';
-  
+  today = new Date();
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
 
@@ -62,7 +62,7 @@ export class AppComponent {
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
-      addIcons({ trash, create, pencil, add });
+      addIcons({ trash, create, pencil, add, arrowForwardOutline, arrowBackOutline });
   }
 
   @ViewChild('pageTransition') pageTransition!: PageTransitionComponent;

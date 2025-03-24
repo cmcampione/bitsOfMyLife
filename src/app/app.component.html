@@ -1,94 +1,101 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Bits of My Life</ion-title>
-  </ion-toolbar>
-</ion-header>
-<div *ngIf="isDev()">
-  <ion-card *ngIf="appState$ | async as appState">
-    <ion-card-content>
-      <p><ion-text color="danger">Errore code: {{ appState.error?.cause }}</ion-text></p>
-      <p><ion-text color="danger">Errore message: {{ appState.error?.message }}</ion-text></p>
-    </ion-card-content>
-  </ion-card>
-</div>
-<app-horizontal-scroll #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
-  <div>
-    <ion-card style="height:auto">
-      <ion-card-header *ngIf="isDev()">
-        <ion-card-title>Milestones</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div *ngIf="isDev()">
-          <p>Milestones name: {{ (selectedBitsOfMyLifeState$ | async)?.milestonesName }}</p>
-          <p>Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineIndex }}</p>
-          <p>Timeline id: {{ (selectedBitsOfMyLifeState$ | async)?.timelineId }}</p>
-          <p>Timeline name: {{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</p>
-          <p>Timeline main date: {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }}</p>
-          <p>Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }}</p>
-        </div>
-        <div>
-          <p>Dal {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'dd/MM/yyyy' }} ({{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}) sono passati o mancano</p>
-        </div>
-        <ion-button  shape="round" class="edit-button" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="editSelectedTimeline()">
-          <ion-icon name="pencil" slot="icon-only"></ion-icon>
-        </ion-button>            
-        <ion-button shape="round" lass="delete-button" *ngIf="selectedTimelineId !== defaultTimelineId" (click)="deleteSelectedTimeline()">
-          <ion-icon name="trash" slot="icon-only"></ion-icon>
-        </ion-button>
-        <ion-button (click)="this.pageTransition.triggerPrevTransition()">Prev</ion-button>
-        <ion-button (click)="this.pageTransition.triggerNextTransition()">Next</ion-button>
-      </ion-card-content>
-    </ion-card>
+<!-- weather.page.html -->
+<ion-content>
+  <!-- Landscape illustration with mascot -->
+  <div class="landscape-illustration">
+  <div class="mascot"></div>
   </div>
-</app-horizontal-scroll>
-<ion-content style="height:49vh">
-  <div class="timeline-container">
-    <ion-list lines="none">
-      <div class="timeline-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
-        <!-- Date outside the card -->
-        <div class="date-container" [ngClass]="{'today-date': bit.milestone.id === todayMilestoneId}">
-          <span class="date-text">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</span>
-        </div>
-        
-        <!-- Line and dot -->
-        <div class="timeline-line">
-          <div class="timeline-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
-        </div>
-        
-        <!-- Content card -->
-        <ion-card class="timeline-card" [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}">
-          <ion-card-content>
-            <div class="milestone-content">
-              <strong class="milestone-title">{{ bit.milestone.note }}</strong>
-              <ion-note class="time-diff">
-                Anni: {{ bit.diff.years }} | Mesi: {{ bit.diff.months }} | Giorni: {{ bit.diff.days }}
-              </ion-note>
-            </div>
-            
-            <!-- Action buttons -->
-            <div class="action-buttons" *ngIf="bit.milestone.id !== todayMilestoneId">
-              <ion-button shape="round" class="edit-button" (click)="editBitOfMyLife(bit)">
-                <ion-icon slot="icon-only" name="pencil"></ion-icon>
-              </ion-button>
-              <ion-button shape="round" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)">
-                <ion-icon slot="icon-only" name="trash"></ion-icon>
-              </ion-button>
-            </div>
-          </ion-card-content>
-        </ion-card>
+  <!-- Header with search location -->
+  <div class="location-header">
+  <div class="search-container">
+    <div class="search-box">
+      <ion-icon name="location-outline" class="location-icon"></ion-icon>
+      <div class="location-text">Ricerca</div>
+      <ion-avatar class="user-avatar">
+        <img src="assets/avatar.png">
+      </ion-avatar>
+    </div>
+  </div>
+  </div>
+   <!-- Current weather -->
+   <app-horizontal-scroll id="scrollHeader" #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
+    <div class="current-weather">
+      <div class="ora-label">
+        {{ (selectedBitsOfMyLifeState$ | async)?.timelineMainDate | date:'EEEE dd MMMM yyyy' }}
       </div>
-    </ion-list>
-    <ion-infinite-scroll>
-      <ion-infinite-scroll-content></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
-    </div> 
+      <div class="main-temp-container">
+        <div class="main-temp">{{ (selectedBitsOfMyLifeState$ | async)?.timelineName }}</div>
+      </div>
+      
+      <div class="min-max-temp">
+      </div>
+
+      <div class="weather-description">
+        <div class="condition"></div>
+        <div class="perceived-temp" *ngIf="isDev()">
+          <div>
+            <p>DEBUG: Timeline index: {{ (selectedBitsOfMyLifeState$ | async)?.timelineIndex }} Timeline id: {{ (selectedBitsOfMyLifeState$ | async)?.timelineId }} Timelines lenght: {{ (selectedBitsOfMyLifeState$ | async)?.timelinesLenght }} </p>
+          </div>
+        </div>
+      </div>
+      <div id="nextPrevButtons">
+        <ion-button shape="round" (click)="this.pageTransition.triggerPrevTransition()" fill="outline" class="csButtonHeader">
+          <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-button shape="round" (click)="this.pageTransition.triggerNextTransition()" fill="outline" class="csButtonHeader">
+          <ion-icon slot="icon-only" name="arrow-forward-outline"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
+  </app-horizontal-scroll>
+
+  <div class="weather-container">
+   
+   
+    <div class="forecast-section">
+      <div class="section-title">Oggi</div>
+      <div class="days-forecast-list">
+        
+        <div class="day-row">
+          <div class="day-name">
+            {{ today | date:'EEEE dd MMMM yyyy' }} <br/>
+            <small>Oggi</small>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  
+    <div class="forecast-section">
+      <div class="section-title">Altre date</div>
+      <div class="days-forecast-list">
+        
+        <div class="day-row" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
+          <div class="day-name">
+            {{ bit.milestone.date | date:'EEEE dd MMMM yyyy' }} <br/>
+            <small>Anni: {{ bit.diff.years }} | Mesi: {{ bit.diff.months }} | Giorni: {{ bit.diff.days }}</small>
+          </div>
+          <div class="day-forecast">
+            <div class="temp-range">
+              <div class="action-buttons" *ngIf="bit.milestone.id !== todayMilestoneId">
+                <ion-button shape="round" class="edit-button" (click)="editBitOfMyLife(bit)" fill="outline" size="small">
+                  <ion-icon slot="icon-only" name="pencil"></ion-icon>
+                </ion-button>
+                <ion-button shape="round" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)" fill="outline" size="small">
+                  <ion-icon slot="icon-only" name="trash"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button (click)="addBitOfMyLife()">
+  <ion-fab-button (click)="addBitOfMyLife()" color="">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>
-
 <ion-modal [isOpen]="isEditTimelineModalOpen" [canDismiss]="!isEditTimelineModalOpen">
   <ng-template>
     <ion-header>

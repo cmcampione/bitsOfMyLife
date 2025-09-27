@@ -59,13 +59,13 @@ export class AppComponent {
 
   editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
+
+  @ViewChild('pageTransition') pageTransition!: PageTransitionComponent;
   
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>) {
       addIcons({ trash, create, pencil, add });
   }
-
-  @ViewChild('pageTransition') pageTransition!: PageTransitionComponent;
 
   ngOnInit() {
 

@@ -57,7 +57,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
         timelineIndex: state.selectedTimelineIndex,
         timelineName: defaultTimelineName,
         timelineMainDate: timelineMainDate,
-        timelinesLenght: state.timelinesMngr.length,
+        timelinesLength: state.timelinesMngr.length,
         bitsOfMyLife: [todayBitOfMyLife],
       };
     }
@@ -81,7 +81,7 @@ export const selectSelectedBitsOfMyLife = createSelector(
       timelineIndex: state.selectedTimelineIndex,
       timelineMainDate,
       timelineName,
-      timelinesLenght: state.timelinesMngr.length,
+      timelinesLength: state.timelinesMngr.length,
       bitsOfMyLife,
     };
   }

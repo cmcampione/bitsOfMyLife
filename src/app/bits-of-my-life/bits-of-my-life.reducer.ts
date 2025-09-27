@@ -92,7 +92,7 @@ export const bitsOfMyLifeReducer = createReducer(
         const milestoneIndex = selectedMilestones.milestones.findIndex((milestone) => milestone.id === updatedMilestone.id);
         if (milestoneIndex === -1) {
             console.error('Milestone not found. Unable to edit the milestone. Code: 11');
-            throw state; // Reducer must be pure
+            return state; // Reducer must be pure
         }
             
         // Update the list of milestones

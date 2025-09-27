@@ -23,7 +23,7 @@ export type SelectedBitsOfMyLifeState = {
     timelineName: string;
     timelineMainDate: Date;
     
-    timelinesLenght: number;
+    timelinesLength: number;
     
     bitsOfMyLife: ReadonlyArray<BitOfMyLife>
 }

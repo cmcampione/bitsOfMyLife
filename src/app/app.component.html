@@ -14,7 +14,8 @@
   </div>
   <app-horizontal-scroll #pageTransition (swipeNext)="nextTimeline()" (swipePrev)="prevTimeline()">
     
-    <ion-item lines="none" *ngIf="selectedBitsOfMyLifeState$ | async as state" class="timeline-item">
+    <ion-item lines="none" *ngIf="selectedBitsOfMyLifeState$ | async as state" class="timeline-item"
+      class="timeline-item background-image">
       <ion-label class="timeline-label">
         <div class="header-row">
           <!-- Subtitle a sinistra -->

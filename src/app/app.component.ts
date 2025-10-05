@@ -6,10 +6,10 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { IonHeader, IonInput } from '@ionic/angular/standalone';
-import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonCardHeader, 
+import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardSubtitle, IonCardContent, IonText, IonCardHeader, 
   IonCardTitle, IonButton, IonItem, IonNote, IonList, IonLabel, IonModal, IonFab, IonFabButton, IonButtons, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { trash, create, pencil, add } from 'ionicons/icons';
+import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  } from 'ionicons/icons';
 
 import { AppState, selectAppState } from './global/globalMng';
 
@@ -25,7 +25,7 @@ import { PageTransitionComponent } from './slide.component'
   selector: 'app-root',
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardContent, IonText, IonButtons,
+    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardSubtitle, IonCardContent, IonText, IonButtons,
     IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent,
     IonList, IonLabel, IonInput, IonIcon, IonModal, IonFab, IonFabButton,
     PageTransitionComponent],
@@ -34,7 +34,11 @@ import { PageTransitionComponent } from './slide.component'
 })
 export class AppComponent {
 
-  isDev = signal(isDevMode());
+  backIcon = chevronBackOutline;
+  forwardIcon = chevronForwardOutline;
+
+  //isDev = signal(isDevMode());
+  isDev = signal(false);
 
   title = 'bitsOfMyLife';
   

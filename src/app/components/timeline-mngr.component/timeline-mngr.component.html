@@ -1,0 +1,18 @@
+<div class="card-scroll" (scroll)="onScroll($event)">
+  <div class="card-container">
+    <ion-card
+      *ngFor="let timeline of timelinesMngr; let i = index"
+      #cardEl
+      [class.selected]="i === selectedIndex"
+      (click)="selectCard(i)"
+    >
+      <ion-card-header>
+        <ion-card-title>{{ timeline.name }}</ion-card-title>
+        <ion-card-subtitle>
+          {{ timeline.mainDate | date: 'dd/MM/yyyy' }}
+        </ion-card-subtitle>
+      </ion-card-header>
+    </ion-card>
+  </div>
+</div>
+

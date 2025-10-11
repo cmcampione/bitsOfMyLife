@@ -1,0 +1,23 @@
+.card-scroll {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.card-container {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+}
+
+ion-card {
+  transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
+  opacity: 0.7;
+}
+
+ion-card.selected {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+}

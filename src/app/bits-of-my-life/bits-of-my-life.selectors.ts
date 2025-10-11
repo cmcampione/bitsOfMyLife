@@ -25,6 +25,14 @@ export const todayMilestoneId = "";
 
 export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
+export const selectTimelineManager = createSelector(
+  selectBitsOfMyLifeState,
+  (state: BitsOfMyLifeState) => state.timelinesMngr
+);
+export const selectMilestonesManager = createSelector(
+  selectBitsOfMyLifeState,
+  (state: BitsOfMyLifeState) => state.milestonesMngr
+);
 export const selectSelectedBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): SelectedBitsOfMyLifeState => {

@@ -1,104 +1,42 @@
-/* timeline.component.scss */
-.timeline-container {
-    position: relative;
-    padding: 16px 0;
-    margin: 0 auto;
+html, body, ion-app, ion-content {
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
-.timeline-info {
-  margin-top: 1rem;
-  font-size: 1rem;
-  line-height: 1.4;
-}
-
-.debug-info {
-  font-size: 0.85rem;
-  color: #777;
-  margin-bottom: 1rem;
-}
-
-/* -------------- */
-
-.timeline-item.background-image {
-  --background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  color: white;
-}
-
-/* 
-.timeline-item.background-image {
-  position: relative;
-  background: url('assets/images/bg-timeline.jpg') no-repeat center/cover;
-  color: white;
-  border-radius: 12px;
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  height: 100%;
   overflow: hidden;
-  --background: transparent;
-}
-*/
-
-.timeline-item.background-image::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.45);
-  z-index: 1;
 }
 
-.timeline-item {
-  --padding-start: 1rem;
-  --inner-padding-end: 1rem;
-  align-items: flex-start;
+@media (min-width: 900px) {
+  .two-col {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
 }
 
-/* 
-.timeline-label {
+.col {
   display: flex;
   flex-direction: column;
-  width: 100%;
-}
-*/
-
-.timeline-label {
-  position: relative;
-  z-index: 2;
+  padding: 16px;
+  box-sizing: border-box;
+  background: var(--ion-background-color, #fff);
+  border-left: 1px solid rgba(0, 0, 0, 0.06);
+  overflow: auto;
 }
 
-.header-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+.col-header {
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
-.timeline-subtitle {
-  font-size: 1rem;
-  font-style: italic;
-  white-space: normal; // può andare su più righe
-}
-
-.timeline-date {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  text-align: right;
-}
-
-.day-of-week {
-  font-size: 0.9rem;
-  opacity: 0.7;
-}
-
-.day-and-month {
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-.year {
-  font-size: 1rem;
-  color: var(--ion-color-medium);
-}
-
-.actions {
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: flex-end;
-  gap: 0.3rem;
+.card {
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  background: #fff;
 }

@@ -13,13 +13,14 @@ import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  
 
 import { AppState, selectAppState } from './global/globalMng';
 
-import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline } from './bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline, TimelinesMngr } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
-import { todayMilestoneId, selectSelectedBitsOfMyLife } from './bits-of-my-life/bits-of-my-life.selectors';
+import { todayMilestoneId, selectSelectedBitsOfMyLife, selectBitsOfMyLifeState, selectTimelineManager } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
 import { PageTransitionComponent } from './slide.component'
+import { TimeliMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
 
 @Component({
   selector: 'app-root',
@@ -28,7 +29,8 @@ import { PageTransitionComponent } from './slide.component'
     IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardSubtitle, IonCardContent, IonText, IonButtons,
     IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent,
     IonList, IonLabel, IonInput, IonIcon, IonModal, IonFab, IonFabButton,
-    PageTransitionComponent],
+    PageTransitionComponent,
+  TimeliMngrComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
@@ -44,6 +46,7 @@ export class AppComponent {
   
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
+  timelinesMngr$: Observable<TimelinesMngr> = this.bitsOfMyLifeStore.select(selectTimelineManager);
 
   todayMilestoneId = todayMilestoneId;
 
@@ -176,6 +179,11 @@ export class AppComponent {
 
   nextTimeline() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
+  }
+
+  onTimelineSelected(timeline: Timeline) {
+    console.log('Timeline selezionata:', timeline);
+    //this.store.dispatch(selectTimeline({ id: timeline.id }));
   }
 }
 

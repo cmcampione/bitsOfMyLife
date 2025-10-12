@@ -3,7 +3,7 @@
     <ion-card
       *ngFor="let timeline of timelinesMngr; let i = index"
       #cardEl
-      [class.selected]="i === selectedIndex"
+      [class.selected]="i === selectedTimelineIndex"
       (click)="selectCard(i)"
     >
       <ion-card-header>

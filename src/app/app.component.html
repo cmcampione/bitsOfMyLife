@@ -14,8 +14,8 @@
       
       <app-timeline-manager
         [timelinesMngr$]="timelinesMngr$"
-        [selectedIndex] = "selectedTimelineIndex"
-        (timelineIndex)="onTimelineSelected($event)"
+        [selectedTimelineIndex] = "selectedTimelineIndex"
+        (timelineIndexSelected)="onTimelineSelected($event)"
       ></app-timeline-manager>
 
     </div>

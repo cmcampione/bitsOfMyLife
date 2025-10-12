@@ -25,8 +25,8 @@ import { TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy {
   @Input() timelinesMngr$: Observable<TimelinesMngr> | null = null;
-  @Input() selectedIndex = 0;
-  @Output() timelineIndex = new EventEmitter<number>();
+  @Input() selectedTimelineIndex = 0;
+  @Output() timelineIndexSelected = new EventEmitter<number>();
 
   @ViewChildren('cardEl', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
 
@@ -71,9 +71,9 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
   }
 
   selectCard(index: number) {
-    if (this.selectedIndex !== index && this.timelinesMngr[index]) {
-      this.selectedIndex = index;
-      this.timelineIndex.emit(index);
+    if (this.selectedTimelineIndex !== index && this.timelinesMngr[index]) {
+      this.selectedTimelineIndex = index;
+      this.timelineIndexSelected.emit(index);
     }
   }
 }

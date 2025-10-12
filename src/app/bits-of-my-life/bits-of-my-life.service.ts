@@ -310,6 +310,25 @@ export class BitsOfMyLifeService {
   
       return {isSelected : selected, timelineIndex: nextTimelineIndex, timeline: updatedTimelinesMngr[nextTimelineIndex] };
     }
+
+    async selectTimeline(state: BitsOfMyLifeState, timelineIndex: number): Promise<{timelineIndex: number}> {
+      let updatedTimelinesMngr = state.timelinesMngr;
+
+      if (timelineIndex < 0 || timelineIndex >= state.timelinesMngr.length) {
+        throw new Error('Timeline index out of bounds. Unable to select the timeline.', {cause: 13});
+      }
+  
+      const updatedState: BitsOfMyLifeState = { 
+          ...state, 
+          timelinesMngr: updatedTimelinesMngr,
+          selectedTimelineId: updatedTimelinesMngr[timelineIndex].id,
+          selectedTimelineIndex: timelineIndex 
+      };
+  
+      await this.saveState(updatedState);
+  
+      return {timelineIndex: timelineIndex };
+    }
       
     /**
      * Clears the state from localStorage asynchronously.

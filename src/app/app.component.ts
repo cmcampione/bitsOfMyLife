@@ -21,6 +21,7 @@ import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-
 
 import { PageTransitionComponent } from './slide.component'
 import { TimeliMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
+import { selectTimeline } from './bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
   selector: 'app-root',
@@ -39,8 +40,8 @@ export class AppComponent {
   backIcon = chevronBackOutline;
   forwardIcon = chevronForwardOutline;
 
-  //isDev = signal(isDevMode());
-  isDev = signal(false);
+  isDev = signal(isDevMode());
+  //isDev = signal(false);
 
   title = 'bitsOfMyLife';
   
@@ -181,9 +182,9 @@ export class AppComponent {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
   }
 
-  onTimelineSelected(timeline: Timeline) {
-    console.log('Timeline selezionata:', timeline);
-    //this.store.dispatch(selectTimeline({ id: timeline.id }));
+  onTimelineSelected(timelineIndex: number) {
+    console.log('Timeline selezionata:', timelineIndex);
+    this.bitsOfMyLifeStore.dispatch(selectTimeline({ timelineIndex}));
   }
 }
 

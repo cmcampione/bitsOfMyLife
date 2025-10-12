@@ -9,7 +9,9 @@ import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone
     editSelectedTimeline,
     selectedTimelineEdited,
     deleteSelectedTimeline,
-    selectedTimelineDeleted} from "./bits-of-my-life.actions";
+    selectedTimelineDeleted,
+    selectTimeline,
+    timelineSelected} from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { selectAppState, updateAppState } from "../global/globalMng";
 
@@ -193,4 +195,24 @@ export class BitsOfMyLifeEffects {
             })))
         )
     );
+
+    selecTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(selectTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ timelineIndex }, currentState, appState]) =>
+            from(this.bitsOfMyLifeService.selectTimeline(currentState, timelineIndex)).pipe(
+            map((timelineIndex) => timelineSelected(timelineIndex)),
+            catchError((error) => {
+                return of(updateAppState({
+                    state: {
+                        ...appState,
+                        error
+                    },
+                }));
+            })))
+        )
+    );
 }
+
+

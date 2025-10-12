@@ -24,6 +24,9 @@ export const selectOrAddNextTimeline = createAction('[BitsOfMyLife] Select or Ad
 export const selectOrAddPrevTimeline = createAction('[BitsOfMyLife] Select or Add Prev Timeline');
 export const timelineSelectedOrAdded = createAction('[BitsOfMyLife] Selected or Added Timeline', props<{ isSelected: boolean; timelineIndex: number; timeline: Timeline}>());
 
+export const selectTimeline = createAction('[BitsOfMyLife] Select Timeline', props<{ timelineIndex: number}>());
+export const timelineSelected = createAction('[BitsOfMyLife] Timeline Selected', props<{ timelineIndex: number }>());
+
 // Todo: To check, don't know if useful
 export const saveState = createAction('[BitsOfMyLife] Save State');
 // Todo: To check, don't know if useful

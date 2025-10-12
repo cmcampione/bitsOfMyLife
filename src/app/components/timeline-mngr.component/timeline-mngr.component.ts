@@ -13,7 +13,7 @@ import {
 import { NgFor, DatePipe} from '@angular/common';
 import { IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
 import { Observable, Subscription } from 'rxjs';
-import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
+import { TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
 
 @Component({
     selector: 'app-timeline-manager',
@@ -25,11 +25,11 @@ import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.m
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy {
   @Input() timelinesMngr$: Observable<TimelinesMngr> | null = null;
-  @Output() timelineSelected = new EventEmitter<Timeline>();
+  @Input() selectedIndex = 0;
+  @Output() timelineIndex = new EventEmitter<number>();
 
   @ViewChildren('cardEl', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
 
-  selectedIndex = 0;
   timelinesMngr: TimelinesMngr = [];
 
   private sub?: Subscription;
@@ -73,8 +73,8 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
   selectCard(index: number) {
     if (this.selectedIndex !== index && this.timelinesMngr[index]) {
       this.selectedIndex = index;
-      this.timelineSelected.emit(this.timelinesMngr[index]);
-  }
+      this.timelineIndex.emit(index);
+    }
   }
 }
 

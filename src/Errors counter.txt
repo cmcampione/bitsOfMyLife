@@ -1,1 +1,1 @@
-Errors counter = 12
+Errors counter = 14

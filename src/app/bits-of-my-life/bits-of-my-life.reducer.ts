@@ -185,6 +185,18 @@ export const bitsOfMyLifeReducer = createReducer(
             selectedTimelineIndex: timelineIndex
         };
     }),
+    on(BitsOfMyLifeActions.timelineSelected, (state, { timelineIndex }) => { 
+        const selectedTimeline = state.timelinesMngr[timelineIndex];
+        if (!selectedTimeline) {
+            console.error('No selected timeline found. Unable to select the timeline. Code: 14');
+            return state; // Reducer must be pure
+        }
+        return { 
+            ...state, 
+            selectedTimelineId: selectedTimeline.id,
+            selectedTimelineIndex: timelineIndex 
+        }
+    }),
     // ToDo: To remove?
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

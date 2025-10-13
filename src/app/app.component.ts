@@ -21,7 +21,7 @@ import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-
 
 import { PageTransitionComponent } from './slide.component'
 import { TimeliMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
-import { selectTimeline } from './bits-of-my-life/bits-of-my-life.actions';
+import { selectTimelineById as selectTimelineById } from './bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
   selector: 'app-root',
@@ -183,9 +183,23 @@ export class AppComponent {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
   }
 
-  onTimelineSelected(timelineId: string) {
+  onTimelineIdSelected(timelineId: string) {
     console.log('Timeline selezionata:', timelineId);
-    this.bitsOfMyLifeStore.dispatch(selectTimeline({ timelineId}));
+    this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
   }
+
+  onTimelineIdDeleted(timelineId: string) {
+    // Not necessary to raise an error, but just to report in console
+    // UI should not allow to delete default timeline
+    if (timelineId === defaultTimelineId) {
+      console.error('Invalid ID for delete Timeline');
+      return
+    }
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
+    if (userConfirmed) {
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteTimelineById({ timelineId }));
+    }
+  }
+
 }
 

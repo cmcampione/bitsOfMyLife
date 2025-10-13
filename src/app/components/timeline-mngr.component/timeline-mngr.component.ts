@@ -15,7 +15,7 @@ import { IonButton, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHe
 import { addIcons } from 'ionicons';
 import { trash, create, pencil, add } from 'ionicons/icons';
 import { TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
-import { defaultTimelineId, defaultTimelineIndex } from '../../bits-of-my-life/bits-of-my-life.reducer';
+import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer';
 
 @Component({
     selector: 'app-timeline-manager',
@@ -29,10 +29,10 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
   @Input() timelinesMngr$: Observable<TimelinesMngr> | null = null;
   @Input() selectedTimelineId: string = "";
   @Output() timelineIdSelected = new EventEmitter<string>();
+  @Output() timelineIdDeleted = new EventEmitter<string>();
 
   @ViewChildren('cardEl', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
 
-  defaultTimelineIndex = defaultTimelineIndex;
   defaultTimelineId = defaultTimelineId;
 
   timelinesMngr: TimelinesMngr = [];
@@ -83,20 +83,21 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
   }
 
   selectCard(id: string) {
-  
     const index = this.timelinesMngr.findIndex(t => t.id === id);
-
-    if (index !== -1 && this.selectedTimelineId !== id) {
-      
+    if (index !== -1 && this.selectedTimelineId !== id) {      
       this.selectedTimelineId = id;
       this.timelineIdSelected.emit(id);
     }
-}
+  }
 
   editSelectedTimeline(): void {
   }
 
-  deleteSelectedTimeline() : void {
+  deleteTimelineById(id: string) : void {
+    const index = this.timelinesMngr.findIndex(t => t.id === id);
+    if (index !== -1 && id !== defaultTimelineId) {
+      this.timelineIdDeleted.emit(id);
+    }
   }
 }
 

@@ -311,7 +311,7 @@ export class BitsOfMyLifeService {
       return {isSelected : selected, timelineIndex: nextTimelineIndex, timeline: updatedTimelinesMngr[nextTimelineIndex] };
     }
 
-    async selectTimeline(state: BitsOfMyLifeState, timelineId: string): Promise<{ timelineId: string }> {
+    async selectTimelineById(state: BitsOfMyLifeState, timelineId: string): Promise<{ timelineId: string }> {
       const timelineIndex = state.timelinesMngr.findIndex(t => t.id === timelineId);
 
       if (timelineIndex === -1) {
@@ -328,6 +328,56 @@ export class BitsOfMyLifeService {
       await this.saveState(updatedState);
 
       return { timelineId };
+    }
+
+    async deleteTimelineById(state: BitsOfMyLifeState, timelineId: string): Promise<string> {
+
+      if (timelineId === defaultTimelineId) {
+        throw new Error("Critical error", { cause: 14 });
+      }
+
+      const timelineIndex = state.timelinesMngr.findIndex(t => t.id === timelineId);
+
+      if (timelineIndex === -1) {
+        throw new Error('Timeline ID not found. Unable to delete the timeline.', { cause: 15 });
+      }
+
+      const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== timelineId);
+
+      let newSelectedTimelineId = state.selectedTimelineId;
+      let newSelectedTimelineIndex = state.selectedTimelineIndex;
+
+      // If the deleted timeline was the selected one, update the selection
+      if (state.selectedTimelineId === timelineId) {
+        if (updatedTimelinesMngr.length > 0) {
+          // Select the previous timeline if possible, otherwise the next one
+          if (timelineIndex > 0) {
+            newSelectedTimelineId = updatedTimelinesMngr[timelineIndex - 1].id;
+            newSelectedTimelineIndex = timelineIndex - 1;
+          } else {
+            newSelectedTimelineId = updatedTimelinesMngr[0].id;
+            newSelectedTimelineIndex = 0;
+          }
+        } else {
+          // If no timelines are left, revert to default
+          newSelectedTimelineId = defaultTimelineId;
+          newSelectedTimelineIndex = defaultTimelineIndex;
+        }
+      } else if (timelineIndex < state.selectedTimelineIndex) {
+        // If a timeline before the selected one was deleted, adjust the index
+        newSelectedTimelineIndex -= 1;
+      }
+
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        timelinesMngr: updatedTimelinesMngr,
+        selectedTimelineId: newSelectedTimelineId,
+        selectedTimelineIndex: newSelectedTimelineIndex
+      };
+
+      await this.saveState(updatedState);
+
+      return timelineId;
     }
       
     /**

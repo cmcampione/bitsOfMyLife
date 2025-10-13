@@ -10,8 +10,10 @@ import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone
     selectedTimelineEdited,
     deleteSelectedTimeline,
     selectedTimelineDeleted,
-    selectTimeline,
-    timelineSelected} from "./bits-of-my-life.actions";
+    selectTimelineById,
+    timelineSelected,
+    deleteTimelineById,
+    timelineDeleted} from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { selectAppState, updateAppState } from "../global/globalMng";
 
@@ -196,14 +198,33 @@ export class BitsOfMyLifeEffects {
         )
     );
 
-    selecTimeline$ = createEffect(() =>
+    selecTimelineById$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(selectTimeline),
+        ofType(selectTimelineById),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
         switchMap(([{ timelineId }, currentState, appState]) =>
-            from(this.bitsOfMyLifeService.selectTimeline(currentState, timelineId)).pipe(
+            from(this.bitsOfMyLifeService.selectTimelineById(currentState, timelineId)).pipe(
             map((timelineId) => timelineSelected(timelineId)),
             catchError((error) => {
+                return of(updateAppState({
+                    state: {
+                        ...appState,
+                        error
+                    },
+                }));
+            })))
+        )
+    );
+
+    deleteTimelineById$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(deleteTimelineById),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ timelineId }, currentState, appState]) =>
+            from(this.bitsOfMyLifeService.deleteTimelineById(currentState, timelineId)).pipe(
+            map((timelineIdToRemove) => timelineDeleted({ timelineIdToRemove })),
+            catchError((error) => {
+                console.error('Errore durante la cancellazione di un Timeline:', error);
                 return of(updateAppState({
                     state: {
                         ...appState,

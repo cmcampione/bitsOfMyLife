@@ -38,7 +38,7 @@ const dummyTimeline: Timeline = {
 }
 
 const dummyTimeline1: Timeline = {
-    id: "7d11b7e7-e49c-4135-93c2-798d38b4f05d",
+    id: "7d11b7e7-e49c-4135-93c2-798d38b4f051",
     name: "Sono passati o passeranno", //TODO: Localize
     mainDate: new Date("1962-08-19")
 }
@@ -204,6 +204,16 @@ export const bitsOfMyLifeReducer = createReducer(
             selectedTimelineId: timelineId,
             selectedTimelineIndex: timelineIndex
         };
+    }),
+    on(BitsOfMyLifeActions.timelineDeleted, (state, { timelineIdToRemove }) => {
+        const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== timelineIdToRemove);
+        const updatedState: BitsOfMyLifeState = {
+            ...state,
+            timelinesMngr: updatedTimelinesMngr,
+            selectedTimelineId: defaultTimelineId,
+            selectedTimelineIndex: updatedTimelinesMngr.findIndex((timeline) => timeline.id === defaultTimelineId)
+        };
+        return updatedState;
     }),
 
     // ToDo: To remove?

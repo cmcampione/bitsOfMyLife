@@ -200,9 +200,9 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(selectTimeline),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
-        switchMap(([{ timelineIndex }, currentState, appState]) =>
-            from(this.bitsOfMyLifeService.selectTimeline(currentState, timelineIndex)).pipe(
-            map((timelineIndex) => timelineSelected(timelineIndex)),
+        switchMap(([{ timelineId }, currentState, appState]) =>
+            from(this.bitsOfMyLifeService.selectTimeline(currentState, timelineId)).pipe(
+            map((timelineId) => timelineSelected(timelineId)),
             catchError((error) => {
                 return of(updateAppState({
                     state: {

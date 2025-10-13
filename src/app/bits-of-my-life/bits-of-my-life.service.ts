@@ -311,23 +311,23 @@ export class BitsOfMyLifeService {
       return {isSelected : selected, timelineIndex: nextTimelineIndex, timeline: updatedTimelinesMngr[nextTimelineIndex] };
     }
 
-    async selectTimeline(state: BitsOfMyLifeState, timelineIndex: number): Promise<{timelineIndex: number}> {
-      let updatedTimelinesMngr = state.timelinesMngr;
+    async selectTimeline(state: BitsOfMyLifeState, timelineId: string): Promise<{ timelineId: string }> {
+      const timelineIndex = state.timelinesMngr.findIndex(t => t.id === timelineId);
 
-      if (timelineIndex < 0 || timelineIndex >= state.timelinesMngr.length) {
-        throw new Error('Timeline index out of bounds. Unable to select the timeline.', {cause: 13});
+      if (timelineIndex === -1) {
+        throw new Error('Timeline ID not found. Unable to select the timeline.', { cause: 13 });
       }
-  
+
       const updatedState: BitsOfMyLifeState = { 
-          ...state, 
-          timelinesMngr: updatedTimelinesMngr,
-          selectedTimelineId: updatedTimelinesMngr[timelineIndex].id,
-          selectedTimelineIndex: timelineIndex 
+        ...state, 
+        timelinesMngr: state.timelinesMngr,
+        selectedTimelineId: timelineId,
+        selectedTimelineIndex: timelineIndex
       };
-  
+
       await this.saveState(updatedState);
-  
-      return {timelineIndex: timelineIndex };
+
+      return { timelineId };
     }
       
     /**

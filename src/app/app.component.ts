@@ -15,7 +15,7 @@ import { AppState, selectAppState } from './global/globalMng';
 
 import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline, TimelinesMngr } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
-import { todayMilestoneId, selectSelectedBitsOfMyLife, selectBitsOfMyLifeState, selectTimelineManager } from './bits-of-my-life/bits-of-my-life.selectors';
+import { todayMilestoneId, selectSelectedBitsOfMyLife, selectBitsOfMyLifeState, selectTimelinesMngr } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
@@ -47,7 +47,7 @@ export class AppComponent {
   
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
-  timelinesMngr$: Observable<TimelinesMngr> = this.bitsOfMyLifeStore.select(selectTimelineManager);
+  timelinesMngr$: Observable<TimelinesMngr> = this.bitsOfMyLifeStore.select(selectTimelinesMngr);
 
   todayMilestoneId = todayMilestoneId;
 
@@ -80,6 +80,7 @@ export class AppComponent {
     this.selectedBitsOfMyLifeState$.subscribe(state => {
       this.selectedTimelineIndex = state.timelineIndex;
       this.selectedTimelineId = state.timelineId;
+
       this.editingTimeline = {id: state.timelineId, mainDate: state.timelineMainDate, name: state.timelineName};
     });
 
@@ -182,9 +183,9 @@ export class AppComponent {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
   }
 
-  onTimelineSelected(timelineIndex: number) {
-    console.log('Timeline selezionata:', timelineIndex);
-    this.bitsOfMyLifeStore.dispatch(selectTimeline({ timelineIndex}));
+  onTimelineSelected(timelineId: string) {
+    console.log('Timeline selezionata:', timelineId);
+    this.bitsOfMyLifeStore.dispatch(selectTimeline({ timelineId}));
   }
 }
 

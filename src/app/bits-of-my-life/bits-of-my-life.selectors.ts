@@ -25,11 +25,14 @@ export const todayMilestoneId = "";
 
 export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>('BitsOfMyLifeState');
 
-export const selectTimelineManager = createSelector(
+export const selectTimelinesMngr = createSelector(
   selectBitsOfMyLifeState,
-  (state: BitsOfMyLifeState) => state.timelinesMngr
+  (state: BitsOfMyLifeState) =>
+    [...state.timelinesMngr].sort(
+      (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
+    )
 );
-export const selectMilestonesManager = createSelector(
+export const selectMilestonesMngr = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState) => state.milestonesMngr
 );

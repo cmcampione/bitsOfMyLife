@@ -37,11 +37,17 @@ const dummyTimeline: Timeline = {
     mainDate: new Date("1962-08-19")
 }
 
+const dummyTimeline1: Timeline = {
+    id: "7d11b7e7-e49c-4135-93c2-798d38b4f05d",
+    name: "Sono passati o passeranno", //TODO: Localize
+    mainDate: new Date("1962-08-19")
+}
+
 export const initialBitsOfMyLifeState: BitsOfMyLifeState = {
     version: 1,
     
     milestonesMngr: [defaultMilestones],
-    timelinesMngr: [defaultTimeline, dummyTimeline],
+    timelinesMngr: [defaultTimeline, dummyTimeline, dummyTimeline1],
     
     selectedMilestonesIndex: defaultMilestonesIndex,
     
@@ -185,18 +191,21 @@ export const bitsOfMyLifeReducer = createReducer(
             selectedTimelineIndex: timelineIndex
         };
     }),
-    on(BitsOfMyLifeActions.timelineSelected, (state, { timelineIndex }) => { 
-        const selectedTimeline = state.timelinesMngr[timelineIndex];
-        if (!selectedTimeline) {
+    on(BitsOfMyLifeActions.timelineSelected, (state, { timelineId }) => { 
+        const timelineIndex = state.timelinesMngr.findIndex(t => t.id === timelineId);
+        
+        if (timelineIndex === -1) {
             console.error('No selected timeline found. Unable to select the timeline. Code: 14');
-            return state; // Reducer must be pure
+            return state; // Reducer deve essere puro
         }
+
         return { 
             ...state, 
-            selectedTimelineId: selectedTimeline.id,
-            selectedTimelineIndex: timelineIndex 
-        }
+            selectedTimelineId: timelineId,
+            selectedTimelineIndex: timelineIndex
+        };
     }),
+
     // ToDo: To remove?
     on(BitsOfMyLifeActions.clearState, () => ({ ...initialBitsOfMyLifeState }))
 );

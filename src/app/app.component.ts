@@ -21,7 +21,6 @@ import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-
 
 import { PageTransitionComponent } from './slide.component'
 import { TimeliMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
-import { selectTimelineById as selectTimelineById } from './bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
   selector: 'app-root',

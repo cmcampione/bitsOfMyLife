@@ -24,3 +24,29 @@
   </div>
 </div>
 
+<ion-modal [isOpen]="isEditTimelineModalOpen" [canDismiss]="!isEditTimelineModalOpen">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Modifica Timeline</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeEditSelectedTimelineDialog()">Chiudi</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>      
+    <ion-content>
+      <ion-item>
+        <ion-label position="floating">Date</ion-label>
+        <ion-input [disabled]="selectedTimelineId === defaultTimelineId"  type="date" [ngModel]="editingTimeline.mainDate | date:'yyyy-MM-dd'" 
+                  (ngModelChange)="formatedDate = $event">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Note</ion-label>
+        <ion-input type="text" [(ngModel)]="editingTimeline.name"></ion-input>
+      </ion-item>
+      <ion-button expand="full" (click)="updateSelectedTimeline()">Update</ion-button>
+    </ion-content>
+  </ng-template>
+</ion-modal>
+

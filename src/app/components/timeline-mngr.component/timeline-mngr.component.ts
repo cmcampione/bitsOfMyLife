@@ -7,28 +7,32 @@ import {
   ViewChildren
 } from '@angular/core';
 import { NgFor, NgIf, DatePipe} from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { IonButton, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle } from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trash, create, pencil, add } from 'ionicons/icons';
-import { TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
+import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
 import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer';
 import { selectSelectedTimelineId, selectTimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
 import { Store } from '@ngrx/store';
-import { deleteTimelineById, selectTimelineById } from '../../bits-of-my-life/bits-of-my-life.actions';
+import { deleteTimelineById, editSelectedTimeline, selectTimelineById } from '../../bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
     selector: 'app-timeline-manager',
     templateUrl: './timeline-mngr.component.html',
     styleUrls: ['./timeline-mngr.component.scss'],
     standalone: true,
-    imports: [NgFor, NgIf, DatePipe,
-    IonButton, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent]})
+    imports: [NgFor, NgIf, DatePipe, FormsModule, 
+    IonButton, IonInput, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent,
+    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy {
 
   @ViewChildren('cardEl', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
+
+  formatedDate: string = '';
 
   defaultTimelineId = defaultTimelineId;
 
@@ -40,6 +44,9 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
 
   private subTimelinesMngr?: Subscription;
   private subselectedTimelineId?: Subscription;
+
+  editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
+  isEditTimelineModalOpen = false;
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
       addIcons({ trash, create, pencil, add });
@@ -97,11 +104,26 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.selectedTimelineId = timelineId;
-      this.bitsOfMyLifeStore.dispatch(selectTimelineById({  timelineId }));
+      const timeline = this.timelinesMngr[index];
+      this.editingTimeline = {id: timeline.id, mainDate: timeline.mainDate, name: timeline.name};
+      this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
     }
   }
 
+  closeEditSelectedTimelineDialog() {
+    this.isEditTimelineModalOpen = false;
+  }
+
+  updateSelectedTimeline(): void {
+      this.editingTimeline.mainDate = new Date(this.formatedDate);
+      this.bitsOfMyLifeStore.dispatch(editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
+      this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
+      this.isEditTimelineModalOpen = false;
+  }
+  
   editSelectedTimeline(): void {
+    this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
+    this.isEditTimelineModalOpen = true;
   }
 
   deleteTimelineById(timelineId: string) : void {

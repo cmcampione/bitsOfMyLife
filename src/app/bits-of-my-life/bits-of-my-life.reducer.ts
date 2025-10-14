@@ -77,8 +77,7 @@ export const bitsOfMyLifeReducer = createReducer(
 
         // Create a new updated manager
         const updatedMilestonesMngr = state.milestonesMngr.map((milestones, index) =>
-            index === state.selectedMilestonesIndex ? updatedMilestones : milestones
-        );
+            index === state.selectedMilestonesIndex ? updatedMilestones : milestones);
           
         // Update the state
         return {
@@ -152,18 +151,6 @@ export const bitsOfMyLifeReducer = createReducer(
        };
     }),
 
-    on(BitsOfMyLifeActions.selectedTimelineEdited, (state, { updatedTimeline }) => {
-
-        const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
-            timeline.id === state.selectedTimelineId ? updatedTimeline : timeline
-        );
-        const updatedState: BitsOfMyLifeState = {
-            ...state,
-            timelinesMngr: updatedTimelinesMngr,
-        };
-        
-        return updatedState;
-    }),
     on(BitsOfMyLifeActions.selectedTimelineDeleted, (state, { timelineIdToRemove: timelineIdToRemove }) => {
         const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== timelineIdToRemove);
         const updatedState: BitsOfMyLifeState = {
@@ -191,6 +178,7 @@ export const bitsOfMyLifeReducer = createReducer(
             selectedTimelineIndex: timelineIndex
         };
     }),
+    
     on(BitsOfMyLifeActions.timelineSelected, (state, { timelineId }) => { 
         const timelineIndex = state.timelinesMngr.findIndex(t => t.id === timelineId);
         
@@ -204,6 +192,28 @@ export const bitsOfMyLifeReducer = createReducer(
             selectedTimelineId: timelineId,
             selectedTimelineIndex: timelineIndex
         };
+    }),
+    on(BitsOfMyLifeActions.timelineAdded, (state, { newTimeline }) => {
+        const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];
+        const updatedState: BitsOfMyLifeState = {
+            ...state,
+            timelinesMngr: updatedTimelinesMngr,
+            selectedTimelineId: newTimeline.id,
+            selectedTimelineIndex: updatedTimelinesMngr.length - 1
+        };
+        return updatedState;
+    }),
+    on(BitsOfMyLifeActions.timelineUpdated, (state, { updatedTimeline }) => {
+
+        const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
+            timeline.id === state.selectedTimelineId ? updatedTimeline : timeline
+        );
+        const updatedState: BitsOfMyLifeState = {
+            ...state,
+            timelinesMngr: updatedTimelinesMngr,
+        };
+        
+        return updatedState;
     }),
     on(BitsOfMyLifeActions.timelineDeleted, (state, { timelineIdToRemove }) => {
         const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== timelineIdToRemove);

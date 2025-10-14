@@ -6,14 +6,16 @@ import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, 
     milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, 
     selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline, 
-    editSelectedTimeline,
-    selectedTimelineEdited,
+    updateTimeline,
+    timelineUpdated,
     deleteSelectedTimeline,
     selectedTimelineDeleted,
     selectTimelineById,
     timelineSelected,
     deleteTimelineById,
-    timelineDeleted} from "./bits-of-my-life.actions";
+    timelineDeleted,
+    timelineAdded,
+    addTimeline} from "./bits-of-my-life.actions";
 import { selectBitsOfMyLifeState } from "./bits-of-my-life.selectors";
 import { selectAppState, updateAppState } from "../global/globalMng";
 
@@ -126,24 +128,6 @@ export class BitsOfMyLifeEffects {
         )
     );
 
-    editSelectedTimeline$ = createEffect(() =>
-        this.actions$.pipe(
-        ofType(editSelectedTimeline),
-        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
-        switchMap(([{ timelineToEdit }, currentState, appState]) =>
-            from(this.bitsOfMyLifeService.editSelectedTimeline(currentState, timelineToEdit)).pipe(
-            map((updatedTimeline) => selectedTimelineEdited({ updatedTimeline })),
-            catchError((error) => {
-                return of(updateAppState({
-                    state: {
-                        ...appState,
-                        error
-                    },
-                }));
-            })))
-        )
-    );
-
     deleteSelectedTimeline$ = createEffect(() =>
         this.actions$.pipe(
         ofType(deleteSelectedTimeline),
@@ -205,6 +189,42 @@ export class BitsOfMyLifeEffects {
         switchMap(([{ timelineId }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.selectTimelineById(currentState, timelineId)).pipe(
             map((timelineId) => timelineSelected(timelineId)),
+            catchError((error) => {
+                return of(updateAppState({
+                    state: {
+                        ...appState,
+                        error
+                    },
+                }));
+            })))
+        )
+    );
+
+    addTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(addTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ timelineToAdd }, currentState, appState]) =>
+            from(this.bitsOfMyLifeService.addTimeline(currentState, timelineToAdd)).pipe(
+            map((newTimeline) => timelineAdded({ newTimeline })),
+            catchError((error) => {
+                return of(updateAppState({
+                    state: {
+                        ...appState,
+                        error
+                    },
+                }));
+            })))
+        )
+    );
+
+    updateTimeline$ = createEffect(() =>
+        this.actions$.pipe(
+        ofType(updateTimeline),
+        withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
+        switchMap(([{ timelineToEdit }, currentState, appState]) =>
+            from(this.bitsOfMyLifeService.updateTimeline(currentState, timelineToEdit)).pipe(
+            map((updatedTimeline) => timelineUpdated({ updatedTimeline })),
             catchError((error) => {
                 return of(updateAppState({
                     state: {

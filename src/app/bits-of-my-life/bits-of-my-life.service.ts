@@ -212,22 +212,6 @@ export class BitsOfMyLifeService {
       return milestoneId;
     }
 
-    async editSelectedTimeline(state: BitsOfMyLifeState, timelineToEdit: Timeline): Promise<Timeline> {
-      
-      const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
-        timeline.id === state.selectedTimelineId ? timelineToEdit : timeline
-      );
-
-      const updatedState: BitsOfMyLifeState = {
-        ...state,
-        timelinesMngr: updatedTimelinesMngr,
-      };
-
-      await this.saveState(updatedState);
-
-      return timelineToEdit;
-    }
-
     async deleteSelectedTimeline(state: BitsOfMyLifeState): Promise<string> {
 
       if (state.selectedTimelineId === defaultTimelineId) {
@@ -328,6 +312,42 @@ export class BitsOfMyLifeService {
       await this.saveState(updatedState);
 
       return { timelineId };
+    }
+
+    async addTimeline(state: BitsOfMyLifeState, timelineToAdd: Timeline): Promise<Timeline> {
+      
+      const newTimeline: Timeline = {
+        ...timelineToAdd,
+        id: crypto.randomUUID(),
+      };
+
+      const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        timelinesMngr: updatedTimelinesMngr,
+        selectedTimelineId: newTimeline.id,
+        selectedTimelineIndex: updatedTimelinesMngr.length - 1
+      };
+
+      await this.saveState(updatedState);
+
+      return newTimeline;
+    }
+
+    async updateTimeline(state: BitsOfMyLifeState, timelineToEdit: Timeline): Promise<Timeline> {
+      
+      const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
+        timeline.id === state.selectedTimelineId ? timelineToEdit : timeline
+      );
+
+      const updatedState: BitsOfMyLifeState = {
+        ...state,
+        timelinesMngr: updatedTimelinesMngr,
+      };
+
+      await this.saveState(updatedState);
+
+      return timelineToEdit;
     }
 
     async deleteTimelineById(state: BitsOfMyLifeState, timelineId: string): Promise<string> {

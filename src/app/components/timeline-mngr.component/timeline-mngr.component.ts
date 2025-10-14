@@ -9,24 +9,24 @@ import {
 import { NgFor, NgIf, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonFab, IonFabButton } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { trash, create, pencil, add } from 'ionicons/icons';
+import { add, trash, create, pencil } from 'ionicons/icons';
 import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
 import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer';
 import { selectSelectedTimelineId, selectTimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
 import { Store } from '@ngrx/store';
-import { deleteTimelineById, editSelectedTimeline, selectTimelineById } from '../../bits-of-my-life/bits-of-my-life.actions';
+import { deleteTimelineById, updateTimeline, selectTimelineById, addMilestone, addTimeline } from '../../bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
     selector: 'app-timeline-manager',
     templateUrl: './timeline-mngr.component.html',
     styleUrls: ['./timeline-mngr.component.scss'],
     standalone: true,
-    imports: [NgFor, NgIf, DatePipe, FormsModule, 
+    imports: [NgFor, NgIf, DatePipe, FormsModule,
     IonButton, IonInput, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent,
-    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
+    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel, IonFab, IonFabButton]})
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy {
 
@@ -44,6 +44,9 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
 
   private subTimelinesMngr?: Subscription;
   private subselectedTimelineId?: Subscription;
+
+  newTimeline: Timeline = { id: '', name: '', mainDate: new Date()};
+  isAddTimelineModalOpen = false;
 
   editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
@@ -108,18 +111,35 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     }
   }
 
-  closeEditSelectedTimelineDialog() {
+  closeAddTimelineDialog() {
+    this.isAddTimelineModalOpen = false;
+  }
+
+  addedTimeline(): void {
+      this.newTimeline.mainDate = new Date(this.formatedDate);
+      this.bitsOfMyLifeStore.dispatch(addTimeline({ timelineToAdd: this.newTimeline }));
+      this.newTimeline = { id: '', mainDate: new Date(), name: '' };
+      this.isAddTimelineModalOpen = false;
+  }
+
+  addTimeline(): void {
+    this.newTimeline.mainDate = new Date();
+    this.formatedDate = this.newTimeline.mainDate.toISOString().split('T')[0];
+    this.isAddTimelineModalOpen = true;
+  }
+
+  closeEditTimelineDialog() {
     this.isEditTimelineModalOpen = false;
   }
 
-  updateSelectedTimeline(): void {
+  updateTimeline(): void {
       this.editingTimeline.mainDate = new Date(this.formatedDate);
-      this.bitsOfMyLifeStore.dispatch(editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
+      this.bitsOfMyLifeStore.dispatch(updateTimeline({ timelineToEdit: this.editingTimeline }));
       this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
       this.isEditTimelineModalOpen = false;
   }
   
-  editSelectedTimeline(timelineId: string): void {
+  editTimelineById(timelineId: string): void {
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && defaultTimelineId !== timelineId) {
       const timeline = this.timelinesMngr[index];

@@ -152,7 +152,7 @@ export class AppComponent {
 
   updateSelectedTimeline(): void {
     this.editingTimeline.mainDate = new Date(this.formatedDate);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editSelectedTimeline({ timelineToEdit: this.editingTimeline }));
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.updateTimeline({ timelineToEdit: this.editingTimeline }));
     this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
     this.isEditTimelineModalOpen = false;
   }

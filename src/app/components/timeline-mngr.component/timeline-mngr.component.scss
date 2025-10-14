@@ -1,3 +1,4 @@
+/* 🔸 Contenitore card scrollabile */
 .card-scroll {
   height: 100%;
   overflow-y: auto;
@@ -9,15 +10,31 @@
   flex-direction: column;
   padding: 16px;
   gap: 12px;
+  overflow-x: hidden;
 }
 
+/* 🔸 Stile card ioniche */
 ion-card {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   transition: transform 0.3s, box-shadow 0.3s, opacity 0.3s;
   opacity: 0.7;
 }
 
 ion-card.selected {
-  transform: scale(1.05);
+  /* Se vuoi effetto selezione senza creare overflow orizzontale */
+  transform: scale(1.02);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   opacity: 1;
+  max-width: 95%;
+  margin: 0 auto;
+}
+
+.local-fab {
+  position: fixed;
+  bottom: 16px;
+  right: 44%;                /* 👈 aggiustato per 1.2fr / 0.8fr */
+  transform: translateX(50%);
+  z-index: 1000;
 }

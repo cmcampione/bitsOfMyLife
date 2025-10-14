@@ -5,7 +5,7 @@ import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { IonHeader, IonInput } from '@ionic/angular/standalone';
+import { IonHeader, IonInput, IonApp } from '@ionic/angular/standalone';
 import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardSubtitle, IonCardContent, IonText, IonCardHeader, 
   IonCardTitle, IonButton, IonItem, IonNote, IonList, IonLabel, IonModal, IonFab, IonFabButton, IonButtons, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
@@ -30,7 +30,7 @@ import { TimeliMngrComponent } from './components/timeline-mngr.component/timeli
     IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent,
     IonList, IonLabel, IonInput, IonIcon, IonModal, IonFab, IonFabButton,
     PageTransitionComponent,
-  TimeliMngrComponent],
+    TimeliMngrComponent, IonApp],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

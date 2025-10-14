@@ -15,7 +15,7 @@ import { AppState, selectAppState } from './global/globalMng';
 
 import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit, Timeline, TimelinesMngr } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
-import { todayMilestoneId, selectSelectedBitsOfMyLife, selectBitsOfMyLifeState, selectTimelinesMngr } from './bits-of-my-life/bits-of-my-life.selectors';
+import { todayMilestoneId, selectSelectedBitsOfMyLife, selectTimelinesMngr } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
@@ -162,43 +162,12 @@ export class AppComponent {
     this.isEditTimelineModalOpen = false;
   }
 
-  deleteSelectedTimeline() {
-    // Not necessary to raise an error, but just to report in console
-    // UI should not allow to delete default timeline
-    if (this.selectedTimelineId === defaultTimelineId) {
-      console.error('Invalid ID for delete Timeline');
-      return
-    }
-    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
-    if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteSelectedTimeline());
-    }
-  }
-
   prevTimeline() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddPrevTimeline());
   }
 
   nextTimeline() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
-  }
-
-  onTimelineIdSelected(timelineId: string) {
-    console.log('Timeline selezionata:', timelineId);
-    this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
-  }
-
-  onTimelineIdDeleted(timelineId: string) {
-    // Not necessary to raise an error, but just to report in console
-    // UI should not allow to delete default timeline
-    if (timelineId === defaultTimelineId) {
-      console.error('Invalid ID for delete Timeline');
-      return
-    }
-    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
-    if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteTimelineById({ timelineId }));
-    }
   }
 
 }

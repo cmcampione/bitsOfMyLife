@@ -32,10 +32,15 @@ export const selectTimelinesMngr = createSelector(
       (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
     )
 );
+export const selectSelectedTimelineId = createSelector(
+  selectBitsOfMyLifeState,
+  (state: BitsOfMyLifeState) => state.selectedTimelineId
+);
 export const selectMilestonesMngr = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState) => state.milestonesMngr
 );
+
 export const selectSelectedBitsOfMyLife = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): SelectedBitsOfMyLifeState => {

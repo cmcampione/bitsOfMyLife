@@ -1,11 +1,8 @@
 import {
   Component,
   ElementRef,
-  EventEmitter,
-  Input,
   OnDestroy,
   OnInit,
-  Output,
   QueryList,
   ViewChildren
 } from '@angular/core';
@@ -16,6 +13,10 @@ import { addIcons } from 'ionicons';
 import { trash, create, pencil, add } from 'ionicons/icons';
 import { TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
 import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer';
+import { selectSelectedTimelineId, selectTimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
+import { BitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
+import { Store } from '@ngrx/store';
+import { deleteTimelineById, selectTimelineById } from '../../bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
     selector: 'app-timeline-manager',
@@ -26,36 +27,46 @@ import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer
     IonButton, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent]})
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy {
-  @Input() timelinesMngr$: Observable<TimelinesMngr> | null = null;
-  @Input() selectedTimelineId: string = "";
-  @Output() timelineIdSelected = new EventEmitter<string>();
-  @Output() timelineIdDeleted = new EventEmitter<string>();
 
   @ViewChildren('cardEl', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
 
   defaultTimelineId = defaultTimelineId;
 
   timelinesMngr: TimelinesMngr = [];
+  timelinesMngr$: Observable<TimelinesMngr> = this.bitsOfMyLifeStore.select(selectTimelinesMngr);
 
-  private sub?: Subscription;
+  selectedTimelineId: string = defaultTimelineId;
+  selectedTimelineId$: Observable<string> = this.bitsOfMyLifeStore.select(selectSelectedTimelineId);
 
-  constructor() {
+  private subTimelinesMngr?: Subscription;
+  private subselectedTimelineId?: Subscription;
+
+  constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
       addIcons({ trash, create, pencil, add });
   }
   
   ngOnInit() {
     if (this.timelinesMngr$) {
-      this.sub = this.timelinesMngr$.subscribe((data) => {
+      this.subTimelinesMngr = this.timelinesMngr$.subscribe((data) => {
         this.timelinesMngr = data;
         if (this.timelinesMngr.length > 0) {
           this.selectCard(this.selectedTimelineId);
         }
       });
     }
+    if (this.selectedTimelineId$) {
+      this.subselectedTimelineId = this.selectedTimelineId$.subscribe((id) => {
+        if (id) {
+          this.selectedTimelineId = id;
+          this.selectCard(id);
+        }
+      });
+    }
   }
 
   ngOnDestroy() {
-    this.sub?.unsubscribe();
+    this.subselectedTimelineId?.unsubscribe();
+    this.subTimelinesMngr?.unsubscribe();
   }
 
   onScroll(event: any) {
@@ -82,21 +93,27 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     }
   }
 
-  selectCard(id: string) {
-    const index = this.timelinesMngr.findIndex(t => t.id === id);
-    if (index !== -1 && this.selectedTimelineId !== id) {      
-      this.selectedTimelineId = id;
-      this.timelineIdSelected.emit(id);
+  selectCard(timelineId: string) {
+    const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
+    if (index !== -1 && this.selectedTimelineId !== timelineId) {      
+      this.selectedTimelineId = timelineId;
+      this.bitsOfMyLifeStore.dispatch(selectTimelineById({  timelineId }));
     }
   }
 
   editSelectedTimeline(): void {
   }
 
-  deleteTimelineById(id: string) : void {
-    const index = this.timelinesMngr.findIndex(t => t.id === id);
-    if (index !== -1 && id !== defaultTimelineId) {
-      this.timelineIdDeleted.emit(id);
+  deleteTimelineById(timelineId: string) : void {
+    // Not necessary to raise an error, but just to report in console
+    // UI should not allow to delete default timeline
+    if (timelineId === defaultTimelineId) {
+      console.error('Invalid ID for delete Timeline');
+      return
+    }
+    const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
+    if (userConfirmed) {
+      this.bitsOfMyLifeStore.dispatch(deleteTimelineById({ timelineId }));
     }
   }
 }

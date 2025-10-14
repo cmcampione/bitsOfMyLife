@@ -104,8 +104,6 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.selectedTimelineId = timelineId;
-      const timeline = this.timelinesMngr[index];
-      this.editingTimeline = {id: timeline.id, mainDate: timeline.mainDate, name: timeline.name};
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
     }
   }
@@ -121,9 +119,14 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
       this.isEditTimelineModalOpen = false;
   }
   
-  editSelectedTimeline(): void {
-    this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
-    this.isEditTimelineModalOpen = true;
+  editSelectedTimeline(timelineId: string): void {
+    const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
+    if (index !== -1 && defaultTimelineId !== timelineId) {
+      const timeline = this.timelinesMngr[index];
+      this.editingTimeline = {id: timeline.id, mainDate: timeline.mainDate, name: timeline.name};
+      this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
+      this.isEditTimelineModalOpen = true;
+    }
   }
 
   deleteTimelineById(timelineId: string) : void {

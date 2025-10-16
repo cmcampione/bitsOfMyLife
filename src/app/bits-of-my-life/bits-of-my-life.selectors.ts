@@ -27,11 +27,28 @@ export const selectBitsOfMyLifeState = createFeatureSelector<BitsOfMyLifeState>(
 
 export const selectTimelinesMngr = createSelector(
   selectBitsOfMyLifeState,
-  (state: BitsOfMyLifeState) =>
-    [...state.timelinesMngr].sort(
+  (state: BitsOfMyLifeState) => {
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // azzera ore, minuti, secondi e millisecondi per confronto
+
+    const timelinesMngrUpdated = state.timelinesMngr.map(tl => {
+      if (tl.id === defaultTimelineId) {
+        const tlDate = new Date(tl.mainDate);
+        tlDate.setHours(0, 0, 0, 0);
+
+        // aggiorna solo se la data è diversa da oggi
+        return tlDate.getTime() !== today.getTime() ? { ...tl, mainDate: new Date() } : tl;
+      }
+      return tl;
+    });
+
+    return timelinesMngrUpdated.sort(
       (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
-    )
+    );
+  }
 );
+
 export const selectSelectedTimelineId = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState) => state.selectedTimelineId

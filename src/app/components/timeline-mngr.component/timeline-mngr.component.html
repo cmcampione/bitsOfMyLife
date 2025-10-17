@@ -5,10 +5,10 @@
     <div class="slider-container" #sliderContainer *ngIf="timelinesMngr?.length" (scroll)="onScroll($event)">
       <div
         class="slider-item"
-        *ngFor="let timeline of timelinesMngr; let i = index"
-        [id]="'timeline-' + i"
+        *ngFor="let timeline of timelinesMngr;"
+        [id]="timeline.id"
         [class.active]="timeline.id === selectedTimelineId"
-        (click)="onCardClick(i)"
+        (click)="onCardClick(timeline.id)"
         >
         <ion-card
           [class.selected]="timeline.id === selectedTimelineId">

@@ -51,8 +51,6 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
   editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
 
-  currentIndex = 0;
-
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
       addIcons({ trash, create, pencil, add });
   }
@@ -61,28 +59,21 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
     if (this.timelinesMngr$) {
       this.subTimelinesMngr = this.timelinesMngr$.subscribe((data) => {
         this.timelinesMngr = data;
-                  const index = this.timelinesMngr.findIndex(t => t.id === this.selectedTimelineId);
-          if (index !== -1) {
-            this.currentIndex = index;
-            setTimeout(() => {
-              this.scrollCardToCenter(index);
-            });
-          }
+        setTimeout(() => {
+          this.scrollCardToCenter(this.selectedTimelineId);
+        });
       });
     }
+
     if (this.selectedTimelineId$) {
-        this.subselectedTimelineId = this.selectedTimelineId$.subscribe((id) => {
-          if (id) {
-            this.selectedTimelineId = id;
-            const index = this.timelinesMngr.findIndex(t => t.id === this.selectedTimelineId);
-            if (index !== -1) {
-              this.currentIndex = index;
-              setTimeout(() => {
-                this.scrollCardToCenter(index);
-              });
-            }
-          }
-        });
+      this.subselectedTimelineId = this.selectedTimelineId$.subscribe((id) => {
+        if (id) {
+          this.selectedTimelineId = id;
+          setTimeout(() => {
+            this.scrollCardToCenter(this.selectedTimelineId);
+          });
+        }
+      });
     }
   }
 
@@ -94,7 +85,7 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
   }
 
-  selectCard(timelineId: string) {
+  private selectCard(timelineId: string) {
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
@@ -179,17 +170,18 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
     */
   }
 
-  onCardClick(index: number) {
-    const timeline = this.timelinesMngr[index];
-    if (timeline) {
-      this.selectCard(timeline.id);
-    }
+  onCardClick(timelineId: string) {
+      this.selectCard(timelineId);
   }
 
-  private scrollCardToCenter(index: number) {
+  private scrollCardToCenter(timelineId: string) {
     if (!this.sliderContainerRef) return;
+    
+    const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
+    if (index === -1) return;
+
     const container = this.sliderContainerRef.nativeElement;
-    const cardEl = document.getElementById(`timeline-${index}`);
+    const cardEl = document.getElementById(timelineId);
     if (!cardEl) return;
 
     const containerCenter = container.clientWidth / 2;

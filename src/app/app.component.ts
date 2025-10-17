@@ -19,7 +19,7 @@ import { todayMilestoneId, selectSelectedBitsOfMyLife, selectTimelinesMngr } fro
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-of-my-life.reducer';
 
-import { PageTransitionComponent } from './slide.component'
+import { PageTransitionComponent } from './components/slide.component'
 import { TimeliMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
 
 @Component({

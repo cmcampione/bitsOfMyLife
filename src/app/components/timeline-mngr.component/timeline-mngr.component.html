@@ -1,28 +1,33 @@
-
-<div class="card-scroll" (scroll)="onScroll($event)">
-  <div class="card-container">
-    <ion-card
-      *ngFor="let timeline of timelinesMngr"
-      #cardEl
-      [class.selected]="timeline.id === selectedTimelineId"
-      (click)="selectCard(timeline.id)"
-    >
-      <ion-card-header>
-        <ion-card-title>{{ timeline.name }}</ion-card-title>
-        <ion-card-subtitle>
-          {{ timeline.mainDate | date: 'dd/MM/yyyy' }}
-        </ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-          <ion-button shape="round" class="edit-button" *ngIf="timeline.id !== defaultTimelineId" (click)="editTimelineById(timeline.id)">
-            <ion-icon name="pencil" slot="icon-only"></ion-icon>
-          </ion-button>            
-          <ion-button shape="round" lass="delete-button" *ngIf="timeline.id !== defaultTimelineId" (click)="deleteTimelineById(timeline.id)">
-            <ion-icon name="trash" slot="icon-only"></ion-icon>
-          </ion-button>
-      </ion-card-content>
-    </ion-card>
-  </div>
+<div class="slider-wrapper">
+    <!-- sfumature ai bordi -->
+    <div class="fade fade-left"></div>
+    <div class="fade fade-right"></div>
+    <div class="slider-container" #sliderContainer *ngIf="timelinesMngr?.length" (scroll)="onScroll($event)">
+      <div
+        class="slider-item"
+        *ngFor="let timeline of timelinesMngr; let i = index"
+        [id]="'timeline-' + i"
+        [class.active]="i === currentIndex">
+        <ion-card
+          [class.selected]="timeline.id === selectedTimelineId"
+          (click)="selectCard(timeline.id)">
+          <ion-card-header>
+            <ion-card-title>{{ timeline.name }}</ion-card-title>
+            <ion-card-subtitle>
+              {{ timeline.mainDate | date: 'dd/MM/yyyy' }}
+            </ion-card-subtitle>
+          </ion-card-header>
+          <ion-card-content>
+              <ion-button shape="round" class="edit-button" *ngIf="timeline.id !== defaultTimelineId" (click)="editTimelineById(timeline.id)">
+                <ion-icon name="pencil" slot="icon-only"></ion-icon>
+              </ion-button>            
+              <ion-button shape="round" lass="delete-button" *ngIf="timeline.id !== defaultTimelineId" (click)="deleteTimelineById(timeline.id)">
+                <ion-icon name="trash" slot="icon-only"></ion-icon>
+              </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
 </div>
 
 <!-- FAB fisso in basso nella colonna -->

@@ -4,6 +4,7 @@ import {
   OnDestroy,
   OnInit,
   QueryList,
+  ViewChild,
   ViewChildren
 } from '@angular/core';
 import { NgFor, NgIf, DatePipe} from '@angular/common';
@@ -30,7 +31,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById, addMilestone, a
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy {
 
-  @ViewChildren('cardEl', { read: ElementRef }) cardElements!: QueryList<ElementRef>;
+  @ViewChild('sliderContainer', { static: false }) sliderContainerRef?: ElementRef<HTMLDivElement>;
 
   formatedDate: string = '';
 
@@ -50,6 +51,8 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
 
   editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
+
+  currentIndex = 0;
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
       addIcons({ trash, create, pencil, add });
@@ -79,34 +82,15 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     this.subTimelinesMngr?.unsubscribe();
   }
 
-  onScroll(event: any) {
-    const scrollContainer = event.target;
-    const containerCenter = scrollContainer.clientHeight / 2;
-    let closestIndex = 0;
-    let closestDistance = Number.MAX_VALUE;
-
-    this.cardElements.forEach((el, index) => {
-      const cardRect = el.nativeElement.getBoundingClientRect();
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const cardCenter = cardRect.top - containerRect.top + cardRect.height / 2;
-      const distance = Math.abs(cardCenter - containerCenter);
-
-      if (distance < closestDistance) {
-        closestDistance = distance;
-        closestIndex = index;
-      }
-    });
-
-    const closestId = this.timelinesMngr[closestIndex]?.id;
-    if (closestId) {
-      this.selectCard(closestId);
-    }
+  ngAfterViewInit() {
+    setTimeout(() => this.updateCurrentIndex(), 0);
   }
 
   selectCard(timelineId: string) {
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.selectedTimelineId = timelineId;
+      this.currentIndex = index;
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
     }
   }
@@ -160,6 +144,35 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(deleteTimelineById({ timelineId }));
     }
+  }
+
+  onScroll(event: Event) {
+    this.updateCurrentIndex();
+  }
+
+  private updateCurrentIndex() {
+    if (!this.sliderContainerRef) return; // 🔥 fix dell'errore
+
+    const container = this.sliderContainerRef.nativeElement;
+    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+
+    let closestIndex = 0;
+    let minDistance = Number.MAX_VALUE;
+
+    this.timelinesMngr.forEach((_, i) => {
+      const cardEl = document.getElementById(`timeline-${i}`);
+      if (!cardEl) return;
+
+      const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
+      const distance = Math.abs(containerCenter - cardCenter);
+
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = i;
+      }
+    });
+
+    this.selectCard(this.timelinesMngr[closestIndex].id);
   }
 }
 

@@ -8,57 +8,51 @@
   -->
 
   <ion-content>
-    <div class="two-col">
 
-      <!-- Colonna principale -->
-      <div class="col timeline-manager-col">
-        
-        <app-timeline-manager
-        ></app-timeline-manager>
+    <app-timeline-manager>
+      
+    </app-timeline-manager>
 
-      </div>
 
-      <!-- Colonna secondaria -->
-      <div class="col">
-        <div class="timeline-container">
-          <ion-list lines="none">
-            <div class="timeline-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
-              <!-- Date outside the card -->
-              <div class="date-container" [ngClass]="{'today-date': bit.milestone.id === todayMilestoneId}">
-                <span class="date-text">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</span>
-              </div>
-              
-              <!-- Line and dot -->
-              <div class="timeline-line">
-                <div class="timeline-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
-              </div>
-              
-              <!-- Content card -->
-              <ion-card class="timeline-card" [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}">
-                <ion-card-content>
-                  <div class="milestone-content">
-                    <strong class="milestone-title">{{ bit.milestone.note }}</strong>
-                    <ion-note class="time-diff">
-                      Anni: {{ bit.diff.years }} | Mesi: {{ bit.diff.months }} | Giorni: {{ bit.diff.days }}
-                    </ion-note>
-                  </div>
-                  
-                  <!-- Action buttons -->
-                  <div class="action-buttons" *ngIf="bit.milestone.id !== todayMilestoneId">
-                    <ion-button shape="round" class="edit-button" (click)="editBitOfMyLife(bit)">
-                      <ion-icon slot="icon-only" name="pencil"></ion-icon>
-                    </ion-button>
-                    <ion-button shape="round" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)">
-                      <ion-icon slot="icon-only" name="trash"></ion-icon>
-                    </ion-button>
-                  </div>
-                </ion-card-content>
-              </ion-card>
+    <div>
+      <div class="timeline-container">
+        <ion-list lines="none">
+          <div class="timeline-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
+            <!-- Date outside the card -->
+            <div class="date-container" [ngClass]="{'today-date': bit.milestone.id === todayMilestoneId}">
+              <span class="date-text">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</span>
             </div>
-          </ion-list>
-        </div> 
-      </div>
-
+            
+            <!-- Line and dot -->
+            <div class="timeline-line">
+              <div class="timeline-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
+            </div>
+            
+            <!-- Content card -->
+            <ion-card class="timeline-card" [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}">
+              <ion-card-content>
+                <div class="milestone-content">
+                  <strong class="milestone-title">{{ bit.milestone.note }}</strong>
+                  <ion-note class="time-diff">
+                    Anni: {{ bit.diff.years }} | Mesi: {{ bit.diff.months }} | Giorni: {{ bit.diff.days }}
+                  </ion-note>
+                </div>
+                
+                <!-- Action buttons -->
+                <div class="action-buttons" *ngIf="bit.milestone.id !== todayMilestoneId">
+                  <ion-button shape="round" class="edit-button" (click)="editBitOfMyLife(bit)">
+                    <ion-icon slot="icon-only" name="pencil"></ion-icon>
+                  </ion-button>
+                  <ion-button shape="round" class="delete-button" (click)="deleteBitOfMyLife(bit.milestone.id)">
+                    <ion-icon slot="icon-only" name="trash"></ion-icon>
+                  </ion-button>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-list>
+      </div> 
     </div>
+
   </ion-content>
 </ion-app>

@@ -1,11 +1,10 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
   OnInit,
-  QueryList,
   ViewChild,
-  ViewChildren
 } from '@angular/core';
 import { NgFor, NgIf, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +17,7 @@ import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer
 import { selectSelectedTimelineId, selectTimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
 import { Store } from '@ngrx/store';
-import { deleteTimelineById, updateTimeline, selectTimelineById, addMilestone, addTimeline } from '../../bits-of-my-life/bits-of-my-life.actions';
+import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } from '../../bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
     selector: 'app-timeline-manager',
@@ -29,8 +28,8 @@ import { deleteTimelineById, updateTimeline, selectTimelineById, addMilestone, a
     IonButton, IonInput, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent,
     IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel, IonFab, IonFabButton]})
 
-export class TimeliMngrComponent implements  OnInit, OnDestroy {
-
+export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
+ 
   @ViewChild('sliderContainer', { static: false }) sliderContainerRef?: ElementRef<HTMLDivElement>;
 
   formatedDate: string = '';
@@ -62,18 +61,28 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     if (this.timelinesMngr$) {
       this.subTimelinesMngr = this.timelinesMngr$.subscribe((data) => {
         this.timelinesMngr = data;
-        if (this.timelinesMngr.length > 0) {
-          this.selectCard(this.selectedTimelineId);
-        }
+                  const index = this.timelinesMngr.findIndex(t => t.id === this.selectedTimelineId);
+          if (index !== -1) {
+            this.currentIndex = index;
+            setTimeout(() => {
+              this.scrollCardToCenter(index);
+            });
+          }
       });
     }
     if (this.selectedTimelineId$) {
-      this.subselectedTimelineId = this.selectedTimelineId$.subscribe((id) => {
-        if (id) {
-          this.selectedTimelineId = id;
-          this.selectCard(id);
-        }
-      });
+        this.subselectedTimelineId = this.selectedTimelineId$.subscribe((id) => {
+          if (id) {
+            this.selectedTimelineId = id;
+            const index = this.timelinesMngr.findIndex(t => t.id === this.selectedTimelineId);
+            if (index !== -1) {
+              this.currentIndex = index;
+              setTimeout(() => {
+                this.scrollCardToCenter(index);
+              });
+            }
+          }
+        });
     }
   }
 
@@ -83,14 +92,11 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.updateCurrentIndex(), 0);
   }
 
   selectCard(timelineId: string) {
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
-      this.selectedTimelineId = timelineId;
-      this.currentIndex = index;
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
     }
   }
@@ -147,10 +153,7 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
   }
 
   onScroll(event: Event) {
-    this.updateCurrentIndex();
-  }
-
-  private updateCurrentIndex() {
+    /*
     if (!this.sliderContainerRef) return; // 🔥 fix dell'errore
 
     const container = this.sliderContainerRef.nativeElement;
@@ -173,6 +176,29 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy {
     });
 
     this.selectCard(this.timelinesMngr[closestIndex].id);
+    */
+  }
+
+  onCardClick(index: number) {
+    const timeline = this.timelinesMngr[index];
+    if (timeline) {
+      this.selectCard(timeline.id);
+    }
+  }
+
+  private scrollCardToCenter(index: number) {
+    if (!this.sliderContainerRef) return;
+    const container = this.sliderContainerRef.nativeElement;
+    const cardEl = document.getElementById(`timeline-${index}`);
+    if (!cardEl) return;
+
+    const containerCenter = container.clientWidth / 2;
+    const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
+    const scrollLeft = cardCenter - containerCenter;
+
+    container.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth',
+    });
   }
 }
-

@@ -5,9 +5,9 @@ import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { IonHeader, IonInput, IonApp } from '@ionic/angular/standalone';
-import { IonIcon, IonToolbar, IonTitle, IonContent, IonCard, IonCardSubtitle, IonCardContent, IonText, IonCardHeader, 
-  IonCardTitle, IonButton, IonItem, IonNote, IonList, IonLabel, IonModal, IonFab, IonFabButton, IonButtons, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/angular/standalone';
+import { IonApp } from '@ionic/angular/standalone';
+import { IonIcon, IonContent, IonCard, IonCardContent, 
+  IonButton,  IonNote, IonList } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  } from 'ionicons/icons';
 
@@ -26,10 +26,9 @@ import { TimeliMngrComponent } from './components/timeline-mngr.component/timeli
   selector: 'app-root',
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
-    IonHeader, IonToolbar, IonTitle, IonContent, IonCard, IonCardSubtitle, IonCardContent, IonText, IonButtons,
-    IonCardHeader, IonCardTitle, IonButton, IonItem, IonNote, IonInfiniteScroll, IonInfiniteScrollContent,
-    IonList, IonLabel, IonInput, IonIcon, IonModal, IonFab, IonFabButton,
-    PageTransitionComponent,
+    IonContent, IonCard, IonCardContent,
+    IonButton,  IonNote,
+    IonList, IonIcon,
     TimeliMngrComponent, IonApp],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']

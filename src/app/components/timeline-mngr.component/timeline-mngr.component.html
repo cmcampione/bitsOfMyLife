@@ -7,12 +7,13 @@
         class="slider-item"
         *ngFor="let timeline of timelinesMngr; let i = index"
         [id]="'timeline-' + i"
-        [class.active]="i === currentIndex">
+        [class.active]="timeline.id === selectedTimelineId"
+        (click)="onCardClick(i)"
+        >
         <ion-card
-          [class.selected]="timeline.id === selectedTimelineId"
-          (click)="selectCard(timeline.id)">
+          [class.selected]="timeline.id === selectedTimelineId">
           <ion-card-header>
-            <ion-card-title>{{ timeline.name }}</ion-card-title>
+            <ion-card-title>{{ timeline.id }} {{ timeline.name }}</ion-card-title>
             <ion-card-subtitle>
               {{ timeline.mainDate | date: 'dd/MM/yyyy' }}
             </ion-card-subtitle>

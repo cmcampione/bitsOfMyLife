@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life.models';
+import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit, TimelinesMngr } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class BitsOfMyLifeService {
     private deserializeBitsOfMyLifeState(json: string): BitsOfMyLifeState {
       const parsed = JSON.parse(json);
       try {
-        return {
+        let state: BitsOfMyLifeState = {
           version: parsed.version,
 
           milestonesMngr: parsed.milestonesMngr.map((milestones: Milestones) => ({
@@ -48,6 +48,26 @@ export class BitsOfMyLifeService {
           selectedTimelineId: parsed.selectedTimelineId,
           selectedTimelineIndex: parsed.selectedTimelineIndex
         };
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // azzera ore, minuti, secondi e millisecondi per confronto
+
+        const timelinesMngrUpdated = state.timelinesMngr.map(tl => {
+          if (tl.id === defaultTimelineId) {
+            const tlDate = new Date(tl.mainDate);
+            tlDate.setHours(0, 0, 0, 0);
+
+            // aggiorna solo se la data è diversa da oggi
+            return tlDate.getTime() !== today.getTime() ? { ...tl, mainDate: new Date() } : tl;
+          }
+          return tl;
+        });
+
+        state.timelinesMngr = timelinesMngrUpdated.sort(
+          (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
+        );
+
+        return state;
       }
       catch(error) {        
         throw new Error(String(error), {cause: 2});

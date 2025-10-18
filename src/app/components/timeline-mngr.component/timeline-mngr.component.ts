@@ -144,7 +144,7 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
   }
 
   onScroll(event: Event) {
-    /*
+
     if (!this.sliderContainerRef) return; // 🔥 fix dell'errore
 
     const container = this.sliderContainerRef.nativeElement;
@@ -153,8 +153,8 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
     let closestIndex = 0;
     let minDistance = Number.MAX_VALUE;
 
-    this.timelinesMngr.forEach((_, i) => {
-      const cardEl = document.getElementById(`timeline-${i}`);
+    this.timelinesMngr.forEach((timeline, i) => {
+      const cardEl = document.getElementById(timeline.id);
       if (!cardEl) return;
 
       const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
@@ -166,8 +166,10 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.selectCard(this.timelinesMngr[closestIndex].id);
-    */
+    const timelineId = this.timelinesMngr[closestIndex].id;
+
+    this.selectCard(timelineId);
+
   }
 
   onCardClick(timelineId: string) {

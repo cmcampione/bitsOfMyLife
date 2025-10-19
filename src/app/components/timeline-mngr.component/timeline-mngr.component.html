@@ -10,23 +10,45 @@
         [class.active]="timeline.id === selectedTimelineId"
         (click)="onCardClick(timeline.id)"
         >
-        <ion-card
-          [class.selected]="timeline.id === selectedTimelineId">
-          <ion-card-header>
-            <ion-card-title>{{ timeline.id }} {{ timeline.name }}</ion-card-title>
-            <ion-card-subtitle>
-              {{ timeline.mainDate | date: 'dd/MM/yyyy' }}
-            </ion-card-subtitle>
-          </ion-card-header>
-          <ion-card-content>
-              <ion-button shape="round" class="edit-button" *ngIf="timeline.id !== defaultTimelineId" (click)="editTimelineById(timeline.id)">
-                <ion-icon name="pencil" slot="icon-only"></ion-icon>
-              </ion-button>            
-              <ion-button shape="round" lass="delete-button" *ngIf="timeline.id !== defaultTimelineId" (click)="deleteTimelineById(timeline.id)">
-                <ion-icon name="trash" slot="icon-only"></ion-icon>
-              </ion-button>
+       <ion-card [class.selected]="timeline.id === selectedTimelineId" class="timeline-card">
+          <ion-card-content class="timeline-grid">
+            
+            <!-- Colonna sinistra: data -->
+            <div class="timeline-date">
+              <div class="day-name">{{ timeline.mainDate | date:'EEEE' }}</div>
+              <div class="day-month">
+                {{ timeline.mainDate | date:'dd' }} {{ timeline.mainDate | date:'MMM' }}
+              </div>
+              <div class="year">{{ timeline.mainDate | date:'yyyy' }}</div>
+            </div>
+
+            <!-- Colonna destra: titolo e icone -->
+            <div class="timeline-info">
+              <div class="timeline-title">
+                <ion-card-title class="long-text">{{ timeline.name }}</ion-card-title>
+              </div>
+              <div class="timeline-actions">
+                <ion-button
+                  fill="clear"
+                  class="edit-button"
+                  *ngIf="timeline.id !== defaultTimelineId"
+                  (click)="editTimelineById(timeline.id)">
+                  <ion-icon name="pencil" slot="icon-only"></ion-icon>
+                </ion-button>
+
+                <ion-button
+                  fill="clear"
+                  class="delete-button"
+                  *ngIf="timeline.id !== defaultTimelineId"
+                  (click)="deleteTimelineById(timeline.id)">
+                  <ion-icon name="trash" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+            </div>
+
           </ion-card-content>
         </ion-card>
+
       </div>
     </div>
 </div>

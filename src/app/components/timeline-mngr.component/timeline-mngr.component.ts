@@ -143,33 +143,45 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  private scrollTimeout: any;
+
   onScroll(event: Event) {
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+    }
 
-    if (!this.sliderContainerRef) return; // 🔥 fix dell'errore
+    this.scrollTimeout = setTimeout(() => {
+      this.handleScrollEnd();
+    },100); // ⏳ 100 ms dopo l’ultimo scroll
+  }
 
-    const container = this.sliderContainerRef.nativeElement;
-    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+  private handleScrollEnd() {
+    if (!this.sliderContainerRef) return;
+
+    const container = this.sliderContainerRef.nativeElement as HTMLElement;
+    const containerRect = container.getBoundingClientRect();
+    const containerCenter = containerRect.left + container.clientWidth / 2;
 
     let closestIndex = 0;
     let minDistance = Number.MAX_VALUE;
+    let timelineId = "";
 
     this.timelinesMngr.forEach((timeline, i) => {
       const cardEl = document.getElementById(timeline.id);
       if (!cardEl) return;
 
-      const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
+      const cardRect = cardEl.getBoundingClientRect();
+      const cardCenter = cardRect.left + cardRect.width / 2;
       const distance = Math.abs(containerCenter - cardCenter);
 
       if (distance < minDistance) {
         minDistance = distance;
         closestIndex = i;
+        timelineId = timeline.id;
       }
     });
 
-    const timelineId = this.timelinesMngr[closestIndex].id;
-
     this.selectCard(timelineId);
-
   }
 
   onCardClick(timelineId: string) {

@@ -9,18 +9,19 @@
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding: 0 10%;
-  gap: 1rem;
+  padding: 0 5%; /* aumenta il padding per nascondere parzialmente le card laterali */
+  gap: 0.5rem;
 }
 
 .slider-item {
-  flex: 0 0 80%;
+  flex: 0 0 90%; /* dimensione fissa delle card */
   scroll-snap-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 0.5rem;
 }
 
 .slider-item.active ion-card {
-  transform: scale(1.05);
+  transform: scale(1.05) translateY(6px); /* leggermente più basso */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
@@ -53,7 +54,7 @@ ion-card {
 }
 
 ion-card.selected {
-  transform: scale(1.02);
+  transform: scale(1.02) translateY(6px); /* sposta leggermente verso il basso */
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   opacity: 1;
   max-width: 95%;

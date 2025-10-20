@@ -1,0 +1,28 @@
+ion-fab {
+  margin-bottom: 2rem;
+  margin-right: 1rem;
+}
+
+ion-fab-button {
+  --box-shadow: none;
+  --border-radius: 50%;
+}
+
+.fab-labels {
+  position: fixed;
+  bottom: 110px;
+  right: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: opacity 0.3s ease;
+}
+
+.fab-label {
+  background: #e6e6f8;
+  color: #1c1c54;
+  padding: 10px 14px;
+  border-radius: 20px;
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}

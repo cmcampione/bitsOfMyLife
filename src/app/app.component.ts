@@ -21,15 +21,16 @@ import { defaultTimelineId, defaultTimelineIndex } from './bits-of-my-life/bits-
 
 import { PageTransitionComponent } from './components/slide.component'
 import { TimeliMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
+import { FabMenuComponent } from "./components/fab-menu.component/fab-menu.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
     IonContent, IonCard, IonCardContent,
-    IonButton,  IonNote,
+    IonButton, IonNote,
     IonList, IonIcon,
-    TimeliMngrComponent, IonApp],
+    TimeliMngrComponent, IonApp, FabMenuComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

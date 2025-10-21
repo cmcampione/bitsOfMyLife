@@ -62,11 +62,12 @@ export class BitsOfMyLifeService {
           }
           return tl;
         });
-
+/*
         state.timelinesMngr = timelinesMngrUpdated.sort(
           (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
         );
-
+*/
+        state.timelinesMngr = timelinesMngrUpdated;
         return state;
       }
       catch(error) {        

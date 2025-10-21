@@ -29,7 +29,7 @@ export class BitsOfMyLifeService {
     private deserializeBitsOfMyLifeState(json: string): BitsOfMyLifeState {
       const parsed = JSON.parse(json);
       try {
-        let state: BitsOfMyLifeState = {
+          let state: BitsOfMyLifeState = {
           version: parsed.version,
 
           milestonesMngr: parsed.milestonesMngr.map((milestones: Milestones) => ({

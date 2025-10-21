@@ -194,7 +194,9 @@ export const bitsOfMyLifeReducer = createReducer(
         };
     }),
     on(BitsOfMyLifeActions.timelineAdded, (state, { newTimeline }) => {
-        const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];
+        const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline].sort(
+            (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
+        );
         const updatedState: BitsOfMyLifeState = {
             ...state,
             timelinesMngr: updatedTimelinesMngr,
@@ -204,16 +206,18 @@ export const bitsOfMyLifeReducer = createReducer(
         return updatedState;
     }),
     on(BitsOfMyLifeActions.timelineUpdated, (state, { updatedTimeline }) => {
+        const index = state.timelinesMngr.findIndex(t => t.id === updatedTimeline.id);
+        if (index === -1) return state;
 
-        const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
-            timeline.id === state.selectedTimelineId ? updatedTimeline : timeline
-        );
-        const updatedState: BitsOfMyLifeState = {
+        const updatedTimelinesMngr = [...state.timelinesMngr];
+        updatedTimelinesMngr[index] = updatedTimeline;
+
+        return {
             ...state,
-            timelinesMngr: updatedTimelinesMngr,
+            timelinesMngr: updatedTimelinesMngr.sort(
+            (a, b) => new Date(a.mainDate).getTime() - new Date(b.mainDate).getTime()
+            ),
         };
-        
-        return updatedState;
     }),
     on(BitsOfMyLifeActions.timelineDeleted, (state, { timelineIdToRemove }) => {
         const updatedTimelinesMngr = state.timelinesMngr.filter((timeline) => timeline.id !== timelineIdToRemove);

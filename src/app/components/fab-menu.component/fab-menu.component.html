@@ -1,22 +1,17 @@
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <!-- Pulsante principale -->
   <ion-fab-button color="primary" (click)="toggleFab()">
     <ion-icon [name]="isOpen ? 'close' : 'add'"></ion-icon>
   </ion-fab-button>
 
+  <!-- Lista icone: sempre presente -->
   <ion-fab-list side="top">
-    <ion-fab-button color="light" (click)="onNewTimeline()">
+    <ion-fab-button color="light" (click)="onNewTimeline()" data-desc="Sales">
       <ion-icon name="gift-outline"></ion-icon>
     </ion-fab-button>
 
-    <ion-fab-button color="light" (click)="onNewBitOfMyLife()">
+    <ion-fab-button color="light" (click)="onNewBitOfMyLife()" data-desc="Sales">
       <ion-icon name="checkmark-circle-outline"></ion-icon>
     </ion-fab-button>
-
   </ion-fab-list>
 </ion-fab>
-
-<!-- Etichette visibili solo quando isOpen = true -->
-<div class="fab-labels" *ngIf="isOpen">
-  <div class="fab-label" (click)="onNewTimeline()">Grande evento</div>
-  <div class="fab-label" (click)="onNewBitOfMyLife()">Data importante</div>
-</div>

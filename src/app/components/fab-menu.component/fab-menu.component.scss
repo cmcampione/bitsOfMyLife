@@ -8,21 +8,19 @@ ion-fab-button {
   --border-radius: 50%;
 }
 
-.fab-labels {
-  position: fixed;
-  bottom: 110px;
-  right: 80px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  transition: opacity 0.3s ease;
+ion-fab-button[data-desc] {
+    position: relative;
 }
 
-.fab-label {
-  background: #e6e6f8;
-  color: #1c1c54;
-  padding: 10px 14px;
-  border-radius: 20px;
-  font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+ion-fab-button[data-desc]::after {
+    position: absolute;
+    content: attr(data-desc);
+    z-index: 1;
+    right: 50px;
+    bottom: 7px;
+    color: var(--ion-color-contrast, #fff);
+    background-color: var(--ion-color-base, #fff);
+    padding: 5px 10px;
+    border-radius: 10px;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12);
 }

@@ -9,7 +9,7 @@ import {
 import { NgFor, NgIf, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonFab, IonFabButton } from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, trash, create, pencil } from 'ionicons/icons';
 import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
@@ -26,7 +26,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } 
     standalone: true,
     imports: [NgFor, NgIf, DatePipe, FormsModule,
     IonButton, IonInput, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent,
-    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel, IonFab, IonFabButton]})
+    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 
 export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
  

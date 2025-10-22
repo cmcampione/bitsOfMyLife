@@ -58,6 +58,7 @@ export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
   ngOnInit() {
     if (this.timelinesMngr$) {
       this.subTimelinesMngr = this.timelinesMngr$.subscribe((data) => {
+        console.log('TimelinesMngr updated:', data);
         this.timelinesMngr = data;
         setTimeout(() => {
           this.scrollCardToCenter(this.selectedTimelineId);

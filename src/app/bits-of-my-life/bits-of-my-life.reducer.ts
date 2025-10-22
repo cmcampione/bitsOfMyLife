@@ -194,9 +194,13 @@ export const bitsOfMyLifeReducer = createReducer(
         };
     }),
     on(BitsOfMyLifeActions.timelineAdded, (state, { newTimeline }) => {
+        /*
+        // Info: il sort lo fa il selector
         const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline].sort(
             (a, b) => a.mainDate.getTime() - b.mainDate.getTime()
         );
+        */
+        const updatedTimelinesMngr = [...state.timelinesMngr, newTimeline];
         const updatedState: BitsOfMyLifeState = {
             ...state,
             timelinesMngr: updatedTimelinesMngr,
@@ -214,9 +218,13 @@ export const bitsOfMyLifeReducer = createReducer(
 
         return {
             ...state,
+            /*
+            // Info: il sort lo fa il selector
             timelinesMngr: updatedTimelinesMngr.sort(
-            (a, b) => new Date(a.mainDate).getTime() - new Date(b.mainDate).getTime()
+                (a, b) => new Date(a.mainDate).getTime() - new Date(b.mainDate).getTime()
             ),
+            */
+           timelinesMngr: updatedTimelinesMngr
         };
     }),
     on(BitsOfMyLifeActions.timelineDeleted, (state, { timelineIdToRemove }) => {

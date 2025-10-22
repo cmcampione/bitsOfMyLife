@@ -358,7 +358,7 @@ export class BitsOfMyLifeService {
     async updateTimeline(state: BitsOfMyLifeState, timelineToEdit: Timeline): Promise<Timeline> {
       
       const updatedTimelinesMngr = state.timelinesMngr.map((timeline) =>
-        timeline.id === state.selectedTimelineId ? timelineToEdit : timeline
+        timeline.id === timelineToEdit.id ? timelineToEdit : timeline
       );
 
       const updatedState: BitsOfMyLifeState = {
@@ -378,7 +378,6 @@ export class BitsOfMyLifeService {
       }
 
       const timelineIndex = state.timelinesMngr.findIndex(t => t.id === timelineId);
-
       if (timelineIndex === -1) {
         throw new Error('Timeline ID not found. Unable to delete the timeline.', { cause: 15 });
       }

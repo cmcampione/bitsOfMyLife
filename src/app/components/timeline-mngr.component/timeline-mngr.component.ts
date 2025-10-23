@@ -20,7 +20,7 @@ import { Store } from '@ngrx/store';
 import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } from '../../bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
-    selector: 'app-timeline-manager',
+    selector: 'app-timeline-mngr',
     templateUrl: './timeline-mngr.component.html',
     styleUrls: ['./timeline-mngr.component.scss'],
     standalone: true,
@@ -28,7 +28,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } 
     IonButton, IonInput, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent,
     IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 
-export class TimeliMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
+export class TimelinesMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
  
   @ViewChild('sliderContainer', { static: false }) sliderContainerRef?: ElementRef<HTMLDivElement>;
 

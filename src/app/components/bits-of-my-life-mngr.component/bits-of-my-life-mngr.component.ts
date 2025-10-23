@@ -1,47 +1,38 @@
-import { Component, isDevMode, signal, ViewChild } from '@angular/core';
+import { Component, isDevMode, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { AsyncPipe, NgFor, NgIf} from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { IonApp } from '@ionic/angular/standalone';
-import { IonContent } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { trash, create, pencil, add } from 'ionicons/icons';
+import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  } from 'ionicons/icons';
 
-import { AppState, selectAppState } from './global/globalMng';
-
-import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life/bits-of-my-life.models';
-import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
-import { todayMilestoneId, selectSelectedBitsOfMyLife, selectTimelinesMngr } from './bits-of-my-life/bits-of-my-life.selectors';
-import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
-
-import { PageTransitionComponent } from './components/slide.component'
-import { TimelinesMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
-import { BitsOfMyLifeMngrComponent } from "./components/bits-of-my-life-mngr.component/bits-of-my-life-mngr.component";
-import { FabMenuComponent } from "./components/fab-menu.component/fab-menu.component";
+import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit} from '../../bits-of-my-life/bits-of-my-life.models';
+import * as BitsOfMyLifeActions from '../../bits-of-my-life/bits-of-my-life.actions';
+import { todayMilestoneId, selectSelectedBitsOfMyLife } from '../../bits-of-my-life/bits-of-my-life.selectors';
+import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
+import { IonList, IonCardContent, IonNote, IonButton, IonIcon } from "@ionic/angular/standalone";
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-bits-of-my-live-mngr',
   standalone: true,
-  imports: [CommonModule, FormsModule,
-    IonContent,
-    TimelinesMngrComponent, IonApp, FabMenuComponent, BitsOfMyLifeMngrComponent],
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule, IonList, IonCardContent, IonNote, IonButton, IonIcon],
+  templateUrl: './bits-of-my-life-mngr.component.html',
+  styleUrls: ['./bits-of-my-life-mngr.component.scss']
 })
-export class AppComponent {
+export class BitsOfMyLifeMngrComponent {
+
+  backIcon = chevronBackOutline;
+  forwardIcon = chevronForwardOutline;
 
   isDev = signal(isDevMode());
   //isDev = signal(false);
 
-  title = 'bitsOfMyLife';
-  
-  appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
-
+  
   todayMilestoneId = todayMilestoneId;
-
+  
   formatedDate: string = '';
 
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
@@ -50,10 +41,7 @@ export class AppComponent {
   editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
   isEditBitOfMyLifeModalOpen = false;
 
-  @ViewChild('pageTransition') pageTransition!: PageTransitionComponent;
-  
-  constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
-    private appStateStore: Store<AppState>) {
+  constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
       addIcons({ trash, create, pencil, add });
   }
 
@@ -123,12 +111,5 @@ export class AppComponent {
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
     }
   }
-
-  prevTimeline() {
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddPrevTimeline());
-  }
-
-  nextTimeline() {
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.selectOrAddNextTimeline());
-  }
 }
+

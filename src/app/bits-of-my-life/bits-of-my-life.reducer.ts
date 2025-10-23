@@ -85,7 +85,7 @@ export const bitsOfMyLifeReducer = createReducer(
             milestonesMngr: updatedMilestonesMngr,
         };
     }),    
-    on(BitsOfMyLifeActions.milestoneEdited, (state, { updatedMilestone }) => {
+    on(BitsOfMyLifeActions.milestoneUpdated, (state, { updatedMilestone }) => {
         // Get the selected milestones
         const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
         if (!selectedMilestones) {

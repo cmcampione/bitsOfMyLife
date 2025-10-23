@@ -102,7 +102,7 @@ export class AppComponent {
       return
     }
     this.editingMilestone.date = new Date(this.formatedDate);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: this.editingMilestone }));
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.updateMilestone({ milestoneToEdit: this.editingMilestone }));
     this.editingMilestone = { id: "", date: new Date(), note: '' };  // Reset after update
     this.isEditBitOfMyLifeModalOpen = false;
   }

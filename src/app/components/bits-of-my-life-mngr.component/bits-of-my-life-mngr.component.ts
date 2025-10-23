@@ -1,4 +1,4 @@
-import { Component, isDevMode, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AsyncPipe, NgFor, NgIf} from '@angular/common';
@@ -21,13 +21,10 @@ import { IonList, IonCardContent, IonNote, IonButton, IonIcon } from "@ionic/ang
   templateUrl: './bits-of-my-life-mngr.component.html',
   styleUrls: ['./bits-of-my-life-mngr.component.scss']
 })
-export class BitsOfMyLifeMngrComponent {
+export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
 
   backIcon = chevronBackOutline;
   forwardIcon = chevronForwardOutline;
-
-  isDev = signal(isDevMode());
-  //isDev = signal(false);
 
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectBitsOfMyLifeMngr);
   
@@ -46,11 +43,9 @@ export class BitsOfMyLifeMngrComponent {
   }
 
   ngOnInit() {
+  }
 
-    this.selectedBitsOfMyLifeState$.subscribe(state => {
-    });
-
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
+  ngOnDestroy() {
   }
 
   addBitOfMyLife(): void {
@@ -90,7 +85,7 @@ export class BitsOfMyLifeMngrComponent {
       return
     }
     this.editingMilestone.date = new Date(this.formatedDate);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.editMilestone({ milestoneToEdit: this.editingMilestone }));
+    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.updateMilestone({ milestoneToEdit: this.editingMilestone }));
     this.editingMilestone = { id: "", date: new Date(), note: '' };  // Reset after update
     this.isEditBitOfMyLifeModalOpen = false;
   }

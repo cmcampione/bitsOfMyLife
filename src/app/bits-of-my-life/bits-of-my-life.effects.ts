@@ -4,7 +4,7 @@ import { catchError, from, map, of, switchMap, combineLatest, withLatestFrom } f
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, 
-    milestoneAdded, deleteMilestone, milestoneDeleted, editMilestone, milestoneEdited, 
+    milestoneAdded, deleteMilestone, milestoneDeleted, updateMilestone, milestoneUpdated, 
     selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline, 
     updateTimeline,
     timelineUpdated,
@@ -93,11 +93,11 @@ export class BitsOfMyLifeEffects {
 
     editMilestone$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(editMilestone),
+        ofType(updateMilestone),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
         switchMap(([{ milestoneToEdit }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.editMilestone(currentState, milestoneToEdit)).pipe(
-            map((updatedMilestone) => milestoneEdited({ updatedMilestone })),
+            map((updatedMilestone) => milestoneUpdated({ updatedMilestone })),
             catchError((error) => {
                 return of(updateAppState({
                     state: {
@@ -240,7 +240,7 @@ export class BitsOfMyLifeEffects {
         this.actions$.pipe(
         ofType(deleteTimelineById),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
-        switchMap(([{ timelineId }, currentState, appState]) =>
+        switchMap(([{ timelineIdToRemove: timelineId }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.deleteTimelineById(currentState, timelineId)).pipe(
             map((timelineIdToRemove) => timelineDeleted({ timelineIdToRemove })),
             catchError((error) => {

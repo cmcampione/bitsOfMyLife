@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   OnDestroy,
@@ -28,7 +27,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } 
     IonButton, IonInput, IonIcon, IonCard, IonCardTitle, IonCardContent,
     IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 
-export class TimelinesMngrComponent implements  OnInit, OnDestroy, AfterViewInit {
+export class TimelinesMngrComponent implements OnInit, OnDestroy {
  
   @ViewChild('sliderContainer', { static: false }) sliderContainerRef?: ElementRef<HTMLDivElement>;
 
@@ -81,9 +80,6 @@ export class TimelinesMngrComponent implements  OnInit, OnDestroy, AfterViewInit
   ngOnDestroy() {
     this.subselectedTimelineId?.unsubscribe();
     this.subTimelinesMngr?.unsubscribe();
-  }
-
-  ngAfterViewInit() {
   }
 
   private selectCard(timelineId: string) {
@@ -140,7 +136,7 @@ export class TimelinesMngrComponent implements  OnInit, OnDestroy, AfterViewInit
     }
     const userConfirmed = confirm('Sei sicuro di voler cancellare questa Timeline?');// ToDo: To localize
     if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(deleteTimelineById({ timelineId }));
+      this.bitsOfMyLifeStore.dispatch(deleteTimelineById({ timelineIdToRemove: timelineId }));
     }
   }
 

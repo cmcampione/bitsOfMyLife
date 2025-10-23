@@ -6,10 +6,10 @@ export type BitsOfMyLifeState = {
     milestonesMngr: MilestonesMngr;
     timelinesMngr: TimelinesMngr;
     
-    // SelectedMilestonesId: string;
+    // SelectedMilestonesId: string; //Todo: to check, don't know if useful
     selectedMilestonesIndex: number;
 
-    selectedTimelineId: string;
+    selectedTimelineId: string; //TODO: to check if useful
     selectedTimelineIndex: number;
 }
 

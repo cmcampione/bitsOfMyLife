@@ -15,7 +15,6 @@ export type MilestoneToAdd = {
     date: Date;
     note: string
 }
-
 export type MilestoneToEdit = {
     id: string;
     date: Date;

@@ -10,13 +10,13 @@ import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardContent, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { add, trash, create, pencil } from 'ionicons/icons';
+import { trash, pencil } from 'ionicons/icons';
 import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
 import { defaultTimelineId } from '../../bits-of-my-life/bits-of-my-life.reducer';
 import { selectSelectedTimelineId, selectTimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
 import { Store } from '@ngrx/store';
-import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } from '../../bits-of-my-life/bits-of-my-life.actions';
+import { deleteTimelineById, updateTimeline, selectTimelineById, } from '../../bits-of-my-life/bits-of-my-life.actions';
 
 @Component({
     selector: 'app-timeline-mngr',
@@ -48,7 +48,7 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   isEditTimelineModalOpen = false;
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
-      addIcons({ trash, create, pencil, add });
+      addIcons({ trash, pencil});
   }
   
   ngOnInit() {

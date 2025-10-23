@@ -6,9 +6,9 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { addIcons } from 'ionicons';
-import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  } from 'ionicons/icons';
+import { trash, pencil, add } from 'ionicons/icons';
 
-import { BitOfMyLife, MilestoneToAdd, MilestoneToUpdate} from '../../bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, MilestoneToUpdate} from '../../bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from '../../bits-of-my-life/bits-of-my-life.actions';
 import { todayMilestoneId, selectBitsOfMyLifeMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
@@ -25,23 +25,17 @@ import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardContent, IonM
 })
 export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
 
-  backIcon = chevronBackOutline;
-  forwardIcon = chevronForwardOutline;
-
   selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectBitsOfMyLifeMngr);
   
   todayMilestoneId = todayMilestoneId;
   
   formatedDate: string = '';
 
-  newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
-  isAddBitOfMyLifeModalOpen = false;
-
   editingMilestone: MilestoneToUpdate = { id: "", date: new Date(), note: '' };
   isEditBitOfMyLifeModalOpen = false;
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
-      addIcons({ trash, create, pencil, add });
+      addIcons({ trash, pencil, add });
   }
 
   ngOnInit() {
@@ -50,23 +44,6 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
   ngOnDestroy() {
   }
 
-  addBitOfMyLife(): void {
-    this.newMilestone.date = new Date();
-    this.formatedDate = this.newMilestone.date.toISOString().split('T')[0];
-    this.isAddBitOfMyLifeModalOpen = true;
-  }
-
-  addedBitOfMyLife(): void {
-    this.newMilestone.date = new Date(this.formatedDate);
-    this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.addMilestone({ milestoneToAdd: this.newMilestone }));
-    this.newMilestone = { date: new Date(), note: '' };
-    this.isAddBitOfMyLifeModalOpen = false;
-  }
-
-  closeAddBitOfMyLifeDialog() {
-    this.isAddBitOfMyLifeModalOpen = false;
-  }
-  
   editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
     if (bitOfMyLife.milestone.id === todayMilestoneId) {
       // Not necessary to raise an error, but just to report in console

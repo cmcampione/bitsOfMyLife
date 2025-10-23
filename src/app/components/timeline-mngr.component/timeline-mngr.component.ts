@@ -8,7 +8,7 @@ import {
 import { NgFor, NgIf, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardSubtitle, IonCardContent, IonCardHeader, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardContent, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add, trash, create, pencil } from 'ionicons/icons';
 import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
@@ -43,9 +43,6 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
 
   private subTimelinesMngr?: Subscription;
   private subselectedTimelineId?: Subscription;
-
-  newTimeline: Timeline = { id: '', name: '', mainDate: new Date()};
-  isAddTimelineModalOpen = false;
 
   editingTimeline: Timeline = {id: '', name: '', mainDate: new Date() };
   isEditTimelineModalOpen = false;
@@ -87,23 +84,6 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
     }
-  }
-
-  closeAddTimelineDialog() {
-    this.isAddTimelineModalOpen = false;
-  }
-
-  addedTimeline(): void {
-      this.newTimeline.mainDate = new Date(this.formatedDate);
-      this.bitsOfMyLifeStore.dispatch(addTimeline({ timelineToAdd: this.newTimeline }));
-      this.newTimeline = { id: '', mainDate: new Date(), name: '' };
-      this.isAddTimelineModalOpen = false;
-  }
-
-  addTimeline(): void {
-    this.newTimeline.mainDate = new Date();
-    this.formatedDate = this.newTimeline.mainDate.toISOString().split('T')[0];
-    this.isAddTimelineModalOpen = true;
   }
 
   closeEditTimelineDialog() {

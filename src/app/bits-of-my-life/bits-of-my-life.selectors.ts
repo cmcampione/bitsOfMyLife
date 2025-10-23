@@ -2,7 +2,7 @@ import moment from 'moment';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { BitOfMyLife, Elapse, Milestone } from './bits-of-my-life.models';
 import { BitsOfMyLifeState as BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life.state';
-import { defaultMilestonesName, defaultTimelineId, defaultTimelineName } from './bits-of-my-life.reducer';
+import { defaultTimelineId } from './bits-of-my-life.reducer';
 
 function diffDate(data1: Date, data2: Date): Elapse {
   // Create moment objects for the two dates
@@ -38,7 +38,7 @@ export const selectSelectedTimelineId = createSelector(
   (state: BitsOfMyLifeState) => state.selectedTimelineId
 );
 
-export const selectSelectedBitsOfMyLife = createSelector(
+export const selectBitsOfMyLifeMngr = createSelector(
   selectBitsOfMyLifeState,
   (state: BitsOfMyLifeState): SelectedBitsOfMyLifeState => {
     const now = new Date();
@@ -51,10 +51,14 @@ export const selectSelectedBitsOfMyLife = createSelector(
     };
 
     const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
-    
-    const selectedTimeline = state.timelinesMngr[state.selectedTimelineIndex];
+
+    const selectedTimelineIndex = state.timelinesMngr.findIndex(t => t.id === state.selectedTimelineId);
+    if (selectedTimelineIndex === -1) 
+      return {
+        bitsOfMyLife: []
+      };
+    const selectedTimeline = state.timelinesMngr[selectedTimelineIndex];
     const timelineMainDate = (state.selectedTimelineId === defaultTimelineId) ? now : (selectedTimeline?.mainDate ?? now);
-    const timelineName = selectedTimeline?.name || defaultTimelineName;
 
     const todayBitOfMyLife: BitOfMyLife = {
       milestone: todayMilestone,
@@ -64,13 +68,6 @@ export const selectSelectedBitsOfMyLife = createSelector(
     // If there are no selected milestones, return only today's bit
     if (!selectedMilestones) {
       return {
-        milestonesIndex: state.selectedMilestonesIndex,        
-        milestonesName: defaultMilestonesName,
-        timelineId: selectedTimeline.id,
-        timelineIndex: state.selectedTimelineIndex,
-        timelineName: defaultTimelineName,
-        timelineMainDate: timelineMainDate,
-        timelinesLength: state.timelinesMngr.length,
         bitsOfMyLife: [todayBitOfMyLife],
       };
     }
@@ -88,13 +85,6 @@ export const selectSelectedBitsOfMyLife = createSelector(
       );
 
     return {
-      milestonesIndex: state.selectedMilestonesIndex,
-      milestonesName: selectedMilestones.name,
-      timelineId: selectedTimeline.id,
-      timelineIndex: state.selectedTimelineIndex,
-      timelineMainDate,
-      timelineName,
-      timelinesLength: state.timelinesMngr.length,
       bitsOfMyLife,
     };
   }

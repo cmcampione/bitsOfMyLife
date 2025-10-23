@@ -13,7 +13,7 @@ import { AppState, selectAppState } from './global/globalMng';
 
 import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit } from './bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
-import { todayMilestoneId, selectSelectedBitsOfMyLife, selectTimelinesMngr } from './bits-of-my-life/bits-of-my-life.selectors';
+import { todayMilestoneId, selectBitsOfMyLifeMngr, selectTimelinesMngr } from './bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 
 import { PageTransitionComponent } from './components/slide.component'
@@ -38,7 +38,7 @@ export class AppComponent {
   title = 'bitsOfMyLife';
   
   appState$: Observable<AppState> = this.appStateStore.select(selectAppState);
-  selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
+  selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectBitsOfMyLifeMngr);
 
   todayMilestoneId = todayMilestoneId;
 

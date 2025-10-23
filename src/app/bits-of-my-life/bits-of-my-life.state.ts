@@ -14,16 +14,5 @@ export type BitsOfMyLifeState = {
 }
 
 export type SelectedBitsOfMyLifeState = {
-    // milestonesId: string;
-    milestonesIndex: number;
-    milestonesName: string;
-
-    timelineId: string;
-    timelineIndex: number
-    timelineName: string;
-    timelineMainDate: Date;
-    
-    timelinesLength: number;
-    
     bitsOfMyLife: ReadonlyArray<BitOfMyLife>
 }

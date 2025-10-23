@@ -25,7 +25,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById,  addTimeline } 
     styleUrls: ['./timeline-mngr.component.scss'],
     standalone: true,
     imports: [NgFor, NgIf, DatePipe, FormsModule,
-    IonButton, IonInput, IonIcon, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent,
+    IonButton, IonInput, IonIcon, IonCard, IonCardTitle, IonCardContent,
     IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 
 export class TimelinesMngrComponent implements  OnInit, OnDestroy, AfterViewInit {

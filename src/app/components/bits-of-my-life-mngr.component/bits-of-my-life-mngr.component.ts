@@ -10,7 +10,7 @@ import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  
 
 import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit} from '../../bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from '../../bits-of-my-life/bits-of-my-life.actions';
-import { todayMilestoneId, selectSelectedBitsOfMyLife } from '../../bits-of-my-life/bits-of-my-life.selectors';
+import { todayMilestoneId, selectBitsOfMyLifeMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
 import { IonList, IonCardContent, IonNote, IonButton, IonIcon } from "@ionic/angular/standalone";
 
@@ -29,7 +29,7 @@ export class BitsOfMyLifeMngrComponent {
   isDev = signal(isDevMode());
   //isDev = signal(false);
 
-  selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectSelectedBitsOfMyLife);
+  selectedBitsOfMyLifeState$: Observable<SelectedBitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectBitsOfMyLifeMngr);
   
   todayMilestoneId = todayMilestoneId;
   

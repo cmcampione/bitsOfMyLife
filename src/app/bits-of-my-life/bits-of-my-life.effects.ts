@@ -4,7 +4,7 @@ import { catchError, from, map, of, switchMap, combineLatest, withLatestFrom } f
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { BitsOfMyLifeService } from "./bits-of-my-life.service";
 import { loadState, stateLoaded, saveState, clearState, stateSaved, addMilestone, 
-    milestoneAdded, deleteMilestone, milestoneDeleted, updateMilestone, milestoneUpdated, 
+    milestoneAdded, deleteMilestoneById, milestoneDeleted, updateMilestone, milestoneUpdated, 
     selectOrAddNextTimeline, timelineSelectedOrAdded, selectOrAddPrevTimeline, 
     updateTimeline,
     timelineUpdated,
@@ -111,7 +111,7 @@ export class BitsOfMyLifeEffects {
 
     deleteMilestone$ = createEffect(() =>
         this.actions$.pipe(
-        ofType(deleteMilestone),
+        ofType(deleteMilestoneById),
         withLatestFrom(this.store.select(selectBitsOfMyLifeState), this.store.select(selectAppState)),
         switchMap(([{ milestoneIdToRemove }, currentState, appState]) =>
             from(this.bitsOfMyLifeService.deleteMilestone(currentState, milestoneIdToRemove)).pipe(

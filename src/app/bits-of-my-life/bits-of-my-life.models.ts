@@ -15,7 +15,7 @@ export type MilestoneToAdd = {
     date: Date;
     note: string
 }
-export type MilestoneToEdit = {
+export type MilestoneToUpdate = {
     id: string;
     date: Date;
     note: string
@@ -27,6 +27,16 @@ export type Timeline = {
     mainDate: Date;
 }
 export type TimelinesMngr = ReadonlyArray<Timeline>;
+
+export type TimelineToAdd = {
+    name: string;
+    mainDate: Date;
+}
+export type TimelineToEdit = {
+    id: string;
+    name: string;
+    mainDate: Date;
+}
 
 export type Elapse = {
     years: number;

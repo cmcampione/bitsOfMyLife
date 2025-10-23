@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 import { defaultTimelineId, defaultTimelineIndex, initialBitsOfMyLifeState } from './bits-of-my-life.reducer';
-import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToEdit, TimelinesMngr } from './bits-of-my-life.models';
+import { Milestones, Milestone, MilestonesMngr, Timeline, MilestoneToAdd, MilestoneToUpdate, TimelinesMngr } from './bits-of-my-life.models';
 
 @Injectable({
   providedIn: 'root'
@@ -141,7 +141,7 @@ export class BitsOfMyLifeService {
       return newMilestone;
     }
 
-    async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToEdit): Promise<Milestone> {
+    async editMilestone(state: BitsOfMyLifeState, milestoneToEdit: MilestoneToUpdate): Promise<Milestone> {
       // Get the selected milestones
       const selectedMilestones = state.milestonesMngr[state.selectedMilestonesIndex];
       if (!selectedMilestones) {

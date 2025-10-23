@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { addIcons } from 'ionicons';
 import { trash, create, pencil, add, chevronBackOutline, chevronForwardOutline  } from 'ionicons/icons';
 
-import { BitOfMyLife, MilestoneToAdd, MilestoneToEdit} from '../../bits-of-my-life/bits-of-my-life.models';
+import { BitOfMyLife, MilestoneToAdd, MilestoneToUpdate} from '../../bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from '../../bits-of-my-life/bits-of-my-life.actions';
 import { todayMilestoneId, selectBitsOfMyLifeMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
@@ -35,7 +35,7 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
   newMilestone: MilestoneToAdd = { date: new Date(), note: '' };
   isAddBitOfMyLifeModalOpen = false;
 
-  editingMilestone: MilestoneToEdit = { id: "", date: new Date(), note: '' };
+  editingMilestone: MilestoneToUpdate = { id: "", date: new Date(), note: '' };
   isEditBitOfMyLifeModalOpen = false;
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
@@ -103,7 +103,7 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
     }
     const userConfirmed = confirm('Sei sicuro di voler cancellare questo elemento?');// ToDo: To localize
     if (userConfirmed) {
-      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestone({ milestoneIdToRemove: id }));
+      this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestoneById({ milestoneIdToRemove: id }));
     }
   }
 }

@@ -1,20 +1,16 @@
 <ion-app>
-  <!--
   <ion-header>
     <ion-toolbar>
-      <ion-title>Layout a due colonne</ion-title>
+      <!-- Timeline manager rimane fisso in alto -->
+      <app-timeline-mngr></app-timeline-mngr>
     </ion-toolbar>
   </ion-header>
-  -->
 
   <ion-content>
-    <app-timeline-mngr>      
-    </app-timeline-mngr>
+    <!-- Contenuto scrollabile -->
+    <app-bits-of-my-live-mngr></app-bits-of-my-live-mngr>
 
-    <app-bits-of-my-live-mngr>
-    </app-bits-of-my-live-mngr>
-
-    <app-fab-menu>      
-    </app-fab-menu>
+    <!-- FAB rimane in basso a destra (usa slot fixed internamente) -->
+    <app-fab-menu></app-fab-menu>
   </ion-content>
 </ion-app>

@@ -6,6 +6,8 @@ import { Store } from '@ngrx/store';
 
 import { IonApp } from '@ionic/angular/standalone';
 import { IonContent } from '@ionic/angular/standalone';
+import { IonHeader } from '@ionic/angular/standalone';
+import { IonToolbar } from '@ionic/angular/standalone';
 
 import { AppState, selectAppState } from './global/globalMng';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
@@ -20,8 +22,9 @@ import { FabMenuComponent } from "./components/fab-menu.component/fab-menu.compo
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule,
-    IonContent,
-    TimelinesMngrComponent, IonApp, FabMenuComponent, BitsOfMyLifeMngrComponent],
+  IonContent,
+  IonHeader, IonToolbar,
+  TimelinesMngrComponent, IonApp, FabMenuComponent, BitsOfMyLifeMngrComponent],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

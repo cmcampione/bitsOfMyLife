@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { addIcons } from 'ionicons';
-import { trash, pencil, add } from 'ionicons/icons';
+import { trash, pencil } from 'ionicons/icons';
 
 import { BitOfMyLife, MilestoneToUpdate} from '../../bits-of-my-life/bits-of-my-life.models';
 import * as BitsOfMyLifeActions from '../../bits-of-my-life/bits-of-my-life.actions';
@@ -35,7 +35,7 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
   isEditBitOfMyLifeModalOpen = false;
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
-      addIcons({ trash, pencil, add });
+      addIcons({ trash, pencil });
   }
 
   ngOnInit() {

@@ -1,19 +1,19 @@
 <div>
-  <div class="timeline-container">
+  <div class="bit-of-my-life-container">
     <ion-list lines="none">
-      <div class="timeline-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
+      <div class="bit-of-my-life-item" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife" [ngClass]="{'today-item': bit.milestone.id !== todayMilestoneId}">
         <!-- Date outside the card -->
         <div class="date-container" [ngClass]="{'today-date': bit.milestone.id === todayMilestoneId}">
           <span class="date-text">{{ bit.milestone.date | date:'dd/MM/yyyy' }}</span>
         </div>
         
         <!-- Line and dot -->
-        <div class="timeline-line">
-          <div class="timeline-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
+        <div class="bit-of-my-life-line">
+          <div class="bit-of-my-life-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
         </div>
         
         <!-- Content card -->
-        <ion-card class="timeline-card" [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}">
+        <ion-card class="bit-of-my-life-card" [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}">
           <ion-card-content>
             <div class="milestone-content">
               <strong class="milestone-title">{{ bit.milestone.note }}</strong>

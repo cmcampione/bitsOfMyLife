@@ -50,7 +50,27 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>) {
       addIcons({ trash, pencil});
   }
-  
+
+  private scrollCardToCenter(timelineId: string) {
+    if (!this.sliderContainerRef) return;
+    
+    const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
+    if (index === -1) return;
+
+    const container = this.sliderContainerRef.nativeElement;
+    const cardEl = document.getElementById(timelineId);
+    if (!cardEl) return;
+
+    const containerCenter = container.clientWidth / 2;
+    const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
+    const scrollLeft = cardCenter - containerCenter;
+
+    container.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth',
+    });
+  }
+
   ngOnInit() {
     if (this.timelinesMngr$) {
       this.subTimelinesMngr = this.timelinesMngr$.subscribe((data) => {
@@ -80,6 +100,8 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   }
 
   private selectCard(timelineId: string) {
+    if (defaultTimelineId === timelineId)
+      return;
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));
@@ -94,12 +116,18 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
       this.editingTimeline.mainDate = new Date(this.formatedDate);
       this.bitsOfMyLifeStore.dispatch(updateTimeline({ timelineToEdit: this.editingTimeline }));
       this.editingTimeline = {id: '', mainDate: new Date(), name: '' };  // Reset after update
-      this.isEditTimelineModalOpen = false;
+      this.closeEditTimelineDialog();
   }
   
   editTimelineById(timelineId: string): void {
+    // Not necessary to raise an error, but just to report in console
+    // UI should not allow to delete default timeline
+    if (timelineId === defaultTimelineId) {
+      console.error('Invalid ID for delete Timeline');
+      return;
+    }
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
-    if (index !== -1 && defaultTimelineId !== timelineId) {
+    if (index !== -1) {
       const timeline = this.timelinesMngr[index];
       this.editingTimeline = {id: timeline.id, mainDate: timeline.mainDate, name: timeline.name};
       this.formatedDate = this.editingTimeline.mainDate.toISOString().split('T')[0];
@@ -118,19 +146,7 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(deleteTimelineById({ timelineIdToRemove: timelineId }));
     }
-    this.isEditTimelineModalOpen = false;
-  }
-
-  private scrollTimeout: any;
-
-  onScroll(event: Event) {
-    if (this.scrollTimeout) {
-      clearTimeout(this.scrollTimeout);
-    }
-
-    this.scrollTimeout = setTimeout(() => {
-      this.handleScrollEnd();
-    },100); // ⏳ 100 ms dopo l’ultimo scroll
+    this.closeEditTimelineDialog();
   }
 
   private handleScrollEnd() {
@@ -162,33 +178,22 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
     this.selectCard(timelineId);
   }
 
+  private scrollTimeout: any;
+  onScroll(event: Event) {
+    if (this.scrollTimeout) {
+      clearTimeout(this.scrollTimeout);
+    }
+    this.scrollTimeout = setTimeout(() => {
+      this.handleScrollEnd();
+    },100); // ⏳ 100 ms dopo l’ultimo scroll
+  }
+
   onCardClick(timelineId: string) {
-    if (this.selectedTimelineId === timelineId) {
+    if (timelineId !== defaultTimelineId && this.selectedTimelineId === timelineId) {
       this.editTimelineById(timelineId);
       return;
     }
-    
     this.selectCard(timelineId);
-  }
-
-  private scrollCardToCenter(timelineId: string) {
-    if (!this.sliderContainerRef) return;
-    
-    const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
-    if (index === -1) return;
-
-    const container = this.sliderContainerRef.nativeElement;
-    const cardEl = document.getElementById(timelineId);
-    if (!cardEl) return;
-
-    const containerCenter = container.clientWidth / 2;
-    const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
-    const scrollLeft = cardCenter - containerCenter;
-
-    container.scrollTo({
-      left: scrollLeft,
-      behavior: 'smooth',
-    });
   }
 
   trackById(index: number, item: any): any {

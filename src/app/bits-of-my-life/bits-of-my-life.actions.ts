@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
-import { Milestone, MilestoneToAdd, MilestoneToUpdate, Timeline } from './bits-of-my-life.models';
+import { Milestone, MilestoneToAdd, MilestoneToUpdate as MilestoneToUpdate, Timeline } from './bits-of-my-life.models';
 import { BitsOfMyLifeState } from './bits-of-my-life.state';
 
 // Load/Save/Clear State Actions
 
 export const loadState = createAction('[BitsOfMyLife] Load State');
-export const stateLoaded = createAction('[BitsOfMyLife] Load Success', props<{ state: BitsOfMyLifeState }>());
+export const stateLoaded = createAction('[BitsOfMyLife] State Loaded', props<{ state: BitsOfMyLifeState }>());
 
 // Milestone Actions
 
@@ -26,7 +26,7 @@ export const selectedTimelineDeleted = createAction('[BitsOfMyLife] Delete Selec
 
 export const selectOrAddNextTimeline = createAction('[BitsOfMyLife] Select or Add Next Timeline');
 export const selectOrAddPrevTimeline = createAction('[BitsOfMyLife] Select or Add Prev Timeline');
-export const timelineSelectedOrAdded = createAction('[BitsOfMyLife] Select or Added Timeline Success', props<{ isSelected: boolean; timelineIndex: number; timeline: Timeline}>());
+export const timelineSelectedOrAdded = createAction('[BitsOfMyLife] Selected or Added Timeline', props<{ isSelected: boolean; timelineIndex: number; timeline: Timeline}>());
 
 //
 export const selectTimelineById = createAction('[BitsOfMyLife] Select Timeline by Id', props<{ timelineId: string}>());
@@ -50,3 +50,7 @@ export const stateSaved = createAction('[BitsOfMyLife] State Loaded',  props<{ s
 
 // Todo: To check, don't know if useful
 export const clearState = createAction('[BitsOfMyLife] Clear State');
+
+
+
+

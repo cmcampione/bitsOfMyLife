@@ -118,6 +118,7 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
     if (userConfirmed) {
       this.bitsOfMyLifeStore.dispatch(deleteTimelineById({ timelineIdToRemove: timelineId }));
     }
+    this.isEditTimelineModalOpen = false;
   }
 
   private scrollTimeout: any;

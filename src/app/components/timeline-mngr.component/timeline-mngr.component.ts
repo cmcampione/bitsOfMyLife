@@ -162,7 +162,12 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   }
 
   onCardClick(timelineId: string) {
-      this.selectCard(timelineId);
+    if (this.selectedTimelineId === timelineId) {
+      this.editTimelineById(timelineId);
+      return;
+    }
+    
+    this.selectCard(timelineId);
   }
 
   private scrollCardToCenter(timelineId: string) {
@@ -183,5 +188,9 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
       left: scrollLeft,
       behavior: 'smooth',
     });
+  }
+
+  trackById(index: number, item: any): any {
+    return item.id;
   }
 }

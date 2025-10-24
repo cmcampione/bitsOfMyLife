@@ -100,8 +100,6 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   }
 
   private selectCard(timelineId: string) {
-    if (defaultTimelineId === timelineId)
-      return;
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1 && this.selectedTimelineId !== timelineId) {      
       this.bitsOfMyLifeStore.dispatch(selectTimelineById({ timelineId }));

@@ -1,0 +1,18 @@
+:host {
+  --background: transparent;
+}
+
+/* HEADER + TOOLBAR completamente trasparenti e piatti */
+:host ::ng-deep ion-header {
+  background: rgba(255, 255, 255, 0.25); /* trasparente e chiaro */
+  backdrop-filter: blur(8px); /* effetto glass */
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Rimuove il piccolo distacco visivo tra header e content */
+:host ::ng-deep ion-content {
+  --background: transparent;
+  margin-top: 0;
+  padding-top: 0;
+}

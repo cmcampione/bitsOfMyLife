@@ -6,11 +6,19 @@
 .slider-container {
   display: flex;
   flex-direction: row;
-  overflow-x: hidden;
+  overflow-x: auto; /* <— abilita lo scroll orizzontale */
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding: 0 5%; /* aumenta il padding per nascondere parzialmente le card laterali */
+  -webkit-overflow-scrolling: touch; /* scroll fluido su iOS */
+  padding: 0 5%; /* margini laterali per effetto "card parzialmente visibili" */
   gap: 0.5rem;
+
+  /* Nasconde la scrollbar su tutti i browser principali */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer e Edge vecchi */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
 }
 
 .slider-item {

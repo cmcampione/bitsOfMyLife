@@ -1,18 +1,46 @@
 :host {
-  --background: transparent;
+  /* Sfumatura verde di base */
+  --background: linear-gradient(
+    180deg,
+    rgba(46, 204, 113, 0.6) 0%,    /* verde chiaro in alto */
+    rgba(39, 174, 96, 0.5) 50%,    /* verde medio a metà */
+    rgba(22, 160, 133, 0.3) 100%   /* verde acqua trasparente in basso */
+  );
 }
 
-/* HEADER completamente trasparenti e piatti */
+/* App intera: gradiente verde visibile */
+ion-app {
+  background: var(--background);
+}
+
+/* Header: vetro trasparente */
 :host ::ng-deep ion-header {
-  background: rgba(255, 255, 255, 0.25); /* trasparente e chiaro */
-  backdrop-filter: blur(8px); /* effetto glass */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   box-shadow: none !important;
   border: none !important;
 }
 
-/* Rimuove il piccolo distacco visivo tra header e content */
+/* Content completamente trasparente */
 :host ::ng-deep ion-content {
-  --background: transparent;
+  --background: transparent !important;
+  background: transparent !important;
   margin-top: 0;
   padding-top: 0;
+}
+
+/* Mantieni effetto vetro */
+ion-header {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Ion content trasparente */
+ion-content {
+  --background: transparent !important;
+  background: transparent !important;
 }

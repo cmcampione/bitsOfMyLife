@@ -49,6 +49,10 @@ ion-card.selected {
   margin: 0 auto;
 }
 
+ion-card.default {
+  background: linear-gradient(135deg, #54565a 0%, #858686 100%);
+}
+
 /* ============================
    TIMELINE CARD
 ============================ */

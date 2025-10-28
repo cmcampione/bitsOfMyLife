@@ -8,22 +8,15 @@
   );
 }
 
-/* Header: vetro trasparente */
-ion-header {
-  //--background: transparent !important;
-  background: transparent !important;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: none !important;
-  border: none !important;
-}
 
 /* Content completamente trasparente */
 ion-content {
   --background: transparent !important;
-  background: transparent !important;
-  margin-top: 0;
-  padding-top: 0;
+  --padding-top: 0px;
+}
+// Potrebbe essere necessario puntare ad una classe interna
+.ion-content-scroll-host {
+  margin-top: 0 !important;
 }
 
 /* App intera: gradiente verde visibile */

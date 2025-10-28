@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { IonApp } from '@ionic/angular/standalone';
+import { IonApp, IonMenu, IonButtons, IonMenuButton } from '@ionic/angular/standalone';
 import { IonContent } from '@ionic/angular/standalone';
 import { IonHeader } from '@ionic/angular/standalone';
 import { IonToolbar } from '@ionic/angular/standalone';
@@ -23,9 +23,9 @@ import { FabMenuComponent } from "./components/fab-menu.component/fab-menu.compo
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule,
-  IonContent, IonTitle,
-  IonHeader, IonToolbar,
-  TimelinesMngrComponent, IonApp, FabMenuComponent, BitsOfMyLifeMngrComponent],
+    IonContent, IonTitle,
+    IonHeader, IonToolbar,
+    TimelinesMngrComponent, IonApp, FabMenuComponent, BitsOfMyLifeMngrComponent, IonMenu, IonButtons, IonMenuButton],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })

@@ -8,6 +8,7 @@ import { IonApp } from '@ionic/angular/standalone';
 import { IonContent } from '@ionic/angular/standalone';
 import { IonHeader } from '@ionic/angular/standalone';
 import { IonToolbar } from '@ionic/angular/standalone';
+import { IonTitle } from '@ionic/angular/standalone';
 
 import { AppState, selectAppState } from './global/globalMng';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
@@ -22,7 +23,7 @@ import { FabMenuComponent } from "./components/fab-menu.component/fab-menu.compo
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, FormsModule,
-  IonContent,
+  IonContent, IonTitle,
   IonHeader, IonToolbar,
   TimelinesMngrComponent, IonApp, FabMenuComponent, BitsOfMyLifeMngrComponent],
   templateUrl: './app.component.html',

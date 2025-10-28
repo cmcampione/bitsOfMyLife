@@ -8,6 +8,9 @@
   );
 }
 
+ion-toolbar {
+  --background: transparent !important;  
+}
 
 /* Content completamente trasparente */
 ion-content {

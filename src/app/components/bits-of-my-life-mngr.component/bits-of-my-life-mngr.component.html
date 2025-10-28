@@ -1,7 +1,6 @@
-<ion-list class="bit-of-my-life-container" lines="none">
+<div class="bit-of-my-life-container" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
   <ion-card
-    class="bit-of-my-life-card"
-    *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife"
+    class="bit-of-my-life-card"    
     [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}"
   >
     <ion-card-content class="bit-of-my-life-card-content">
@@ -38,7 +37,7 @@
 
     </ion-card-content>
   </ion-card>
-</ion-list>
+</div>
 
 
 <ion-modal [isOpen]="isEditBitOfMyLifeModalOpen" [canDismiss]="!isEditBitOfMyLifeModalOpen">

@@ -8,6 +8,10 @@
   );
 }
 
+ion-header {
+  --background: transparent !important;
+}
+
 ion-toolbar {
   --background: transparent !important;  
 }
@@ -16,28 +20,34 @@ ion-toolbar {
 ion-content {
   --background: transparent !important;
 }
-// Potrebbe essere necessario puntare ad una classe interna
-.ion-content-scroll-host {
-  margin-top: 0 !important;
+
+/* contenitore principale: colonna */
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: transparent;
+}
+
+/* parte fissa in alto */
+.fixed-area {
+  flex: 0 0 auto;
+  position: sticky;   /* o fixed se vuoi anche sopra il toolbar */
+  top: 0;
+  z-index: 10;
+  background: transparent;
+}
+
+/* parte scrollabile */
+.scrollable-area {
+  flex: 1 1 auto;
+  overflow-y: auto;   /* scroll solo in questa parte */
+  background: transparent;
 }
 
 /* App intera: gradiente verde visibile */
 ion-app {
   background: var(--background);
-}
-
-.fixed-timeline {
-  position: fixed;
-  top: 56px; /* altezza della toolbar */
-  left: 0;
-  right: 0;
-  z-index: 10;
-  background: var(--ion-background-color);
-}
-
-/* Aggiusta il padding superiore del contenuto scrollabile */
-ion-content {
-  --padding-top: 120px; /* spazio per la timeline fissa */
 }
 
 /* FAB fisso (puoi cambiare posizione) */

@@ -1,14 +1,14 @@
 <div class="slider-wrapper">
     <!-- sfumature ai bordi -->
     <div class="slider-container" #sliderContainer *ngIf="timelinesMngr?.length" (scroll)="onScroll($event)">
-      <div
-        class="slider-item"
+      <div class="slider-item"
+      [class.active]="timeline.id === selectedTimelineId"
         *ngFor="let timeline of timelinesMngr; trackBy: trackById"
-        [id]="timeline.id"
-        [class.active]="timeline.id === selectedTimelineId">
-       <ion-card [class.selected]="timeline.id === selectedTimelineId" [class.default]="timeline.id === defaultTimelineId" 
-          (click)="onCardClick(timeline.id)"
-          class="timeline-card">
+        [id]="timeline.id">
+        <ion-card class="timeline-card"
+          [class.selected]="timeline.id === selectedTimelineId" 
+          [class.default]="timeline.id === defaultTimelineId" 
+          (click)="onCardClick(timeline.id)">
           <ion-card-content class="timeline-grid">            
             <!-- Colonna sinistra: data -->
             <div class="timeline-date">

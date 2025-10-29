@@ -32,7 +32,7 @@ ion-content {
 /* parte fissa in alto */
 .fixed-area {
   flex: 0 0 auto;
-  position: sticky;   /* o fixed se vuoi anche sopra il toolbar */
+  position: sticky;
   top: 0;
   z-index: 10;
   background: transparent;
@@ -57,4 +57,3 @@ ion-app {
   right: 20px;
   z-index: 20;
 }
-

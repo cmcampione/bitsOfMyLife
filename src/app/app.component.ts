@@ -1,10 +1,10 @@
-import { Component, isDevMode, signal } from '@angular/core';
+import { Component, ViewChild, isDevMode, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
-import { IonApp, IonMenu, IonButtons, IonMenuButton, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel } from '@ionic/angular/standalone';
+import { IonApp, IonMenu, IonButtons, IonMenuButton, IonList, IonMenuToggle, IonItem, IonIcon, IonLabel, MenuController } from '@ionic/angular/standalone';
 import { IonContent } from '@ionic/angular/standalone';
 import { IonHeader } from '@ionic/angular/standalone';
 import { IonToolbar } from '@ionic/angular/standalone';
@@ -40,10 +40,28 @@ export class AppComponent {
   selectedBitsOfMyLifeState$: Observable<BitsOfMyLifeState> = this.bitsOfMyLifeStore.select(selectBitsOfMyLifeState);
 
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
-    private appStateStore: Store<AppState>) {
+    private appStateStore: Store<AppState>,
+    private menuCtrl: MenuController) {
   }
 
   ngOnInit() {
     this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.loadState());
+  }
+
+  async ngAfterViewInit() {
+    // Disabilita swipe all’avvio → non si può aprire con swipe
+    await this.menuCtrl.swipeGesture(false, 'mainMenu');
+
+    const menu = await this.menuCtrl.get('mainMenu');
+    if (!menu) return;
+
+    // ✅ Usa addEventListener invece di .ionDidOpen / .ionDidClose
+    menu.addEventListener('ionDidOpen', async () => {
+      await this.menuCtrl.swipeGesture(true, 'mainMenu'); // resta disabilitato per apertura
+    });
+
+    menu.addEventListener('ionDidClose', async () => {
+      await this.menuCtrl.swipeGesture(false, 'mainMenu'); // abilita swipe per chiusura
+    });
   }
 }

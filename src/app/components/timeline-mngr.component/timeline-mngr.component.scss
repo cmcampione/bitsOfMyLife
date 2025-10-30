@@ -1,8 +1,3 @@
-.slider-wrapper {
-  overflow: hidden;
-  position: relative;
-}
-
 .slider-container {
   display: flex;
   flex-direction: row;
@@ -24,13 +19,6 @@
 .slider-item {
   flex: 0 0 90%; /* dimensione fissa delle card */
   scroll-snap-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 0.5rem;
-}
-
-.slider-item.active ion-card {
-  transform: scale(1.05) translateY(6px); /* leggermente più basso */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* ============================
@@ -39,6 +27,12 @@
 
 ion-card {
   width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  margin: 8px 0;
+  padding: 0;
+  background: grayscale($color: #e4e2e2);
+  color: black;
 }
 
 ion-card.selected {
@@ -51,19 +45,6 @@ ion-card.selected {
 
 ion-card.default {
   background: linear-gradient(135deg, #54565a 0%, #858686 100%);
-}
-
-/* ============================
-   TIMELINE CARD
-============================ */
-
-.timeline-card {
-  border-radius: 14px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  margin: 8px 0;
-  padding: 0;
-  background: linear-gradient(135deg, #0d6efd 0%, #00bcd4 100%);
-  color: #ffffff;
 }
 
 /* ============================
@@ -92,19 +73,19 @@ ion-card.default {
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: capitalize;
-  color: #ffffff;
+//  color: #ffffff;
 }
 
 .timeline-date .day-month {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffffff;
+//  color: #ffffff;
 }
 
 .timeline-date .year {
   font-size: 0.9rem;
   font-weight: 700;
-  color: #ffffff;
+//  color: #ffffff;
   margin-top: 2px;
 }
 
@@ -122,7 +103,7 @@ ion-card.default {
   font-size: 1rem;
   font-weight: 600;
   font-family: 'Inter', 'Segoe UI', sans-serif;
-  color: #ffffff;
+//  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

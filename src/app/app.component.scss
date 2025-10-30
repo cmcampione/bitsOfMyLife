@@ -1,19 +1,18 @@
 :host {
   /* Sfumatura verde di base */
-  --background: linear-gradient(
-    180deg,
-    rgba(46, 204, 113, 0.6) 0%,    /* verde chiaro in alto */
-    rgba(39, 174, 96, 0.5) 50%,    /* verde medio a metà */
-    rgba(22, 160, 133, 0.3) 100%   /* verde acqua trasparente in basso */
-  );
+  --background: white;
 }
 
 ion-header {
   --background: transparent !important;
+  --ion-color-base: transparent;  /* Rimuove il colore di base */
+  --border-width: 0;              /* Nessun bordo */
+  box-shadow: none;               /* Rimuove l’ombra */
+  border: none;
 }
 
 ion-toolbar {
-  --background: transparent !important;  
+  --background: transparent !important;
 }
 
 /* Content completamente trasparente */
@@ -45,15 +44,15 @@ ion-content {
   background: transparent;
 }
 
-/* App intera: gradiente verde visibile */
-ion-app {
-  background: var(--background);
-}
-
 /* FAB fisso (puoi cambiare posizione) */
 .fixed-fab {
   position: fixed;
   bottom: 20px;
   right: 20px;
   z-index: 20;
+}
+
+/* App intera: gradiente verde visibile */
+ion-app {
+  background: var(--background);
 }

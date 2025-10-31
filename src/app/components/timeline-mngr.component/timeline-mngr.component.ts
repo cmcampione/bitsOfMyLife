@@ -53,24 +53,34 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
 
   private scrollCardToCenter(timelineId: string) {
     if (!this.sliderContainerRef) return;
-    
-    const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
-    if (index === -1) return;
-
-    const container = this.sliderContainerRef.nativeElement;
+  
+    const container = this.sliderContainerRef.nativeElement as HTMLElement;
     const cardEl = document.getElementById(timelineId);
     if (!cardEl) return;
-
+  
+    // Leggi padding sinistro per compensarlo nel calcolo
+    const style = window.getComputedStyle(container);
+    const paddingLeft = parseFloat(style.paddingLeft) || 0;
+  
     const containerCenter = container.clientWidth / 2;
     const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
-    const scrollLeft = cardCenter - containerCenter;
-
+    let scrollLeft = cardCenter - containerCenter + paddingLeft;
+  
     const maxScroll = container.scrollWidth - container.clientWidth;
-container.scrollTo({
-  left: Math.min(Math.max(scrollLeft, 0), maxScroll),
-  behavior: 'smooth',
-});
+    scrollLeft = Math.min(Math.max(scrollLeft, 0), maxScroll);
+  
+    // Evita interferenze con scroll-snap
+    const oldSnap = container.style.scrollSnapType;
+    container.style.scrollSnapType = 'none';
+  
+    container.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth',
+    });
+  
+    setTimeout(() => (container.style.scrollSnapType = oldSnap || 'x mandatory'), 600);
   }
+  
 
   ngOnInit() {
     if (this.timelinesMngr$) {

@@ -1,33 +1,39 @@
 .slider-container {
   display: flex;
   flex-direction: row;
-  overflow-x: auto; /* <— abilita lo scroll orizzontale */
+  overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch; /* scroll fluido su iOS */
-  padding: 0 5%; /* margini laterali per effetto "card parzialmente visibili" */
+  -webkit-overflow-scrolling: touch;
   gap: 0.5rem;
 
-  /* Nasconde la scrollbar su tutti i browser principali */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* Internet Explorer e Edge vecchi */
+  /* Nessun padding orizzontale */
+  padding: 0;
+
+  /* Scrollbar nascosta */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Edge */
+    display: none;
   }
-  border: solid red;
+
+  border: solid red; /* solo per debug */
 }
 
 .slider-item {  
-  flex: 0 0 90%; /* dimensione fissa delle card */
+  flex: 0 0 90%;
   scroll-snap-align: center;
   border: solid;
+
+  /* Aggiungiamo margini laterali alle estremità */
+  &:first-child {
+    margin-left: 5%;
+  }
+  &:last-child {
+    margin-right: 5%;
+  }
 }
-.slider-item:first-child {
-  margin-left: 5%;
-}
-.slider-item:last-child {
-  margin-right: 5%;
-}
+
 
 /* ============================
    CARD BASE E STATO SELEZIONATO

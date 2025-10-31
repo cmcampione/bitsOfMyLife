@@ -14,11 +14,19 @@
   &::-webkit-scrollbar {
     display: none; /* Chrome, Safari, Edge */
   }
+  border: solid red;
 }
 
-.slider-item {
+.slider-item {  
   flex: 0 0 90%; /* dimensione fissa delle card */
   scroll-snap-align: center;
+  border: solid;
+}
+.slider-item:first-child {
+  margin-left: 5%;
+}
+.slider-item:last-child {
+  margin-right: 5%;
 }
 
 /* ============================
@@ -31,12 +39,12 @@ ion-card {
   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
   margin: 8px 0;
   padding: 0;
-  background: grayscale($color: #e4e2e2);
+  background: red;
   color: black;
 }
 
 ion-card.selected {
-  transform: scale(1.02) translateY(6px); /* sposta leggermente verso il basso */
+  transform: scale(1.02);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
   opacity: 1;
   max-width: 95%;

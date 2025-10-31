@@ -65,10 +65,11 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
     const cardCenter = cardEl.offsetLeft + cardEl.clientWidth / 2;
     const scrollLeft = cardCenter - containerCenter;
 
-    container.scrollTo({
-      left: scrollLeft,
-      behavior: 'smooth',
-    });
+    const maxScroll = container.scrollWidth - container.clientWidth;
+container.scrollTo({
+  left: Math.min(Math.max(scrollLeft, 0), maxScroll),
+  behavior: 'smooth',
+});
   }
 
   ngOnInit() {

@@ -5,7 +5,7 @@
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  gap: 0.5rem;
+  // gap: 0.5rem;
 
   /* Nessun padding orizzontale */
   padding: 0 5%;
@@ -17,13 +17,13 @@
     display: none;
   }
 
-  border: solid red; /* solo per debug */
+  border: solid black; /* solo per debug */
 }
 
 .slider-item {  
-  flex: 0 0 90%;
+  flex: 0 0 100%;
   scroll-snap-align: center;
-  border: solid;
+  //border: solid;
 
   /* Aggiungiamo margini laterali alle estremità */
   &:first-child {

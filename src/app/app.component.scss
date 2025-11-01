@@ -1,23 +1,20 @@
 :host {
   /* Sfumatura verde di base */
-  --background: white;
+  //--background: white;
 }
 
 ion-header {
-  --background: transparent !important;
-  --ion-color-base: transparent;  /* Rimuove il colore di base */
-  --border-width: 0;              /* Nessun bordo */
-  box-shadow: none;               /* Rimuove l’ombra */
-  border: none;
+  //--background: transparent !important;
+  //--ion-color-base: transparent;  /* Rimuove il colore di base */
 }
 
 ion-toolbar {
-  --background: transparent !important;
+  //--background: transparent !important;
 }
 
 /* Content completamente trasparente */
 ion-content {
-  --background: transparent !important;
+  //--background: transparent !important;
 }
 
 /* contenitore principale: colonna */
@@ -25,7 +22,7 @@ ion-content {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: transparent;
+  //background: transparent;
 }
 
 /* parte fissa in alto */
@@ -34,14 +31,14 @@ ion-content {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: transparent;
+  //background: transparent;
 }
 
 /* parte scrollabile */
 .scrollable-area {
   flex: 1 1 auto;
   overflow-y: auto;   /* scroll solo in questa parte */
-  background: transparent;
+  //background: transparent;
 }
 
 /* FAB fisso (puoi cambiare posizione) */
@@ -54,5 +51,5 @@ ion-content {
 
 /* App intera: gradiente verde visibile */
 ion-app {
-  background: var(--background);
+  //background: var(--background);
 }

@@ -71,14 +71,14 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   
     // Evita interferenze con scroll-snap
     const oldSnap = container.style.scrollSnapType;
-    container.style.scrollSnapType = 'none';
+    //container.style.scrollSnapType = 'none';
   
     container.scrollTo({
       left: scrollLeft,
       behavior: 'smooth',
     });
   
-    setTimeout(() => (container.style.scrollSnapType = oldSnap || 'x mandatory'), 600);
+    //setTimeout(() => (container.style.scrollSnapType = oldSnap || 'x mandatory'), 600);
   }
   
 

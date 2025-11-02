@@ -24,12 +24,15 @@ ion-content {
   position: sticky;
   top: 0;
   z-index: 10;
+
+  border: solid green; /* solo per debug */
 }
 
 /* parte scrollabile */
 .scrollable-area {
   //flex: 1 1 auto;
   overflow-y: auto;   /* scroll solo in questa parte */
+  border: solid red; /* solo per debug */
 }
 
 /* FAB fisso (puoi cambiare posizione) */

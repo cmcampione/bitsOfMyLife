@@ -16,8 +16,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
+  background: transparent;
 
-  //border: solid black; /* solo per debug */
+  border: solid black; /* solo per debug */
 }
 
 .slider-item {  
@@ -32,6 +33,8 @@
   &:last-child {
     margin-right: 5%;
   }
+
+  background: transparent;
 }
 
 

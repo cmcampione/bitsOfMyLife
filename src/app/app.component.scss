@@ -2,6 +2,7 @@
 }
 
 ion-header {
+  border: solid burlywood; /* solo per debug */
 }
 
 ion-toolbar {
@@ -9,18 +10,11 @@ ion-toolbar {
 
 /* Content completamente trasparente */
 ion-content {
-}
-
-/* contenitore principale: colonna */
-.page-container {
-  //display: flex;
-  //flex-direction: column;
-  height: 100%;
+  border: solid orange; /* solo per debug */
 }
 
 /* parte fissa in alto */
 .fixed-area {
-  //flex: 0 0 auto;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -30,8 +24,8 @@ ion-content {
 
 /* parte scrollabile */
 .scrollable-area {
-  //flex: 1 1 auto;
   overflow-y: auto;   /* scroll solo in questa parte */
+
   border: solid red; /* solo per debug */
 }
 
@@ -45,5 +39,5 @@ ion-content {
 
 /* App intera: gradiente verde visibile */
 ion-app {
-
+  border: solid blue; /* solo per debug */
 }

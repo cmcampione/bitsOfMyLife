@@ -34,22 +34,14 @@
     margin-right: 5%;
   }
 
-  background: transparent;
+  border: solid green; /* solo per debug */
 }
-
 
 /* ============================
    CARD BASE E STATO SELEZIONATO
 ============================ */
 
 ion-card {
-  width: 100%;
-  border-radius: 14px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-  margin: 8px 0;
-  padding: 0;
-  background: red;
-  color: black;
 }
 
 ion-card.selected {
@@ -120,7 +112,7 @@ ion-card.default {
   font-size: 1rem;
   font-weight: 600;
   font-family: 'Inter', 'Segoe UI', sans-serif;
-//  color: #ffffff;
+  //color: black;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

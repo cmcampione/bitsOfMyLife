@@ -2,7 +2,7 @@
 }
 
 ion-header {
-  border: solid burlywood; /* solo per debug */
+  //border: solid burlywood; /* solo per debug */
 }
 
 ion-toolbar {
@@ -10,7 +10,7 @@ ion-toolbar {
 
 /* Content completamente trasparente */
 ion-content {
-  border: solid orange; /* solo per debug */
+  //border: solid orange; /* solo per debug */
 }
 
 /* parte fissa in alto */
@@ -19,14 +19,14 @@ ion-content {
   top: 0;
   z-index: 10;
 
-  border: solid green; /* solo per debug */
+  //border: solid green; /* solo per debug */
 }
 
 /* parte scrollabile */
 .scrollable-area {
   overflow-y: auto;   /* scroll solo in questa parte */
 
-  border: solid red; /* solo per debug */
+  // border: solid red; /* solo per debug */
 }
 
 /* FAB fisso (puoi cambiare posizione) */
@@ -39,5 +39,5 @@ ion-content {
 
 /* App intera: gradiente verde visibile */
 ion-app {
-  border: solid blue; /* solo per debug */
+  //border: solid blue; /* solo per debug */
 }

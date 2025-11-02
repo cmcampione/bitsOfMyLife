@@ -1,5 +1,6 @@
-import { ApplicationConfig, provideZoneChangeDetection, isDevMode } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, isDevMode, LOCALE_ID } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import localeIt from '@angular/common/locales/it';
 
 import { routes } from './app.routes';
 import { provideState, provideStore } from '@ngrx/store';
@@ -9,6 +10,9 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { BitsOfMyLifeEffects } from './bits-of-my-life/bits-of-my-life.effects';
 import { appReducer } from './global/globalMng';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeIt);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,6 +35,7 @@ export const appConfig: ApplicationConfig = {
           map: true
         }
       }
-    })
+    }),
+    { provide: LOCALE_ID, useValue: 'it' }
   ]
 };

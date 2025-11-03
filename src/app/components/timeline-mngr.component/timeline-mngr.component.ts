@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { NgFor, NgIf, DatePipe} from '@angular/common';
+import { CommonModule, NgFor, NgIf, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardContent, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
@@ -23,7 +23,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById, } from '../../b
     templateUrl: './timeline-mngr.component.html',
     styleUrls: ['./timeline-mngr.component.scss'],
     standalone: true,
-    imports: [NgFor, NgIf, DatePipe, FormsModule,
+    imports: [CommonModule, NgFor, NgIf, DatePipe, FormsModule,
     IonButton, IonInput, IonIcon, IonCard, IonCardTitle, IonCardContent,
     IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 

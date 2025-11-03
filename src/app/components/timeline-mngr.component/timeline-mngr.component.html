@@ -4,12 +4,12 @@
     [class.active]="timeline.id === selectedTimelineId"
     *ngFor="let timeline of timelinesMngr; trackBy: trackById"
     [id]="timeline.id">
-    <ion-card [class.selected]="timeline.id === selectedTimelineId" 
-      [class.default]="timeline.id === defaultTimelineId" 
-      (click)="onCardClick(timeline.id)">
-      <ion-card-content class="timeline-grid">            
+    <ion-card [class.selected]="timeline.id === selectedTimelineId"
+      (click)="onCardClick(timeline.id)">      
+      <ion-card-content class="timeline-grid">
         <!-- Colonna sinistra: data -->
         <div class="timeline-date">
+          <div [hidden]="timeline.id !== defaultTimelineId" class="timeline-default-dot" [ngClass]="{'today-dot': timeline.id === defaultTimelineId}"></div>
           <div class="day-name">{{ timeline.mainDate | date:'EEEE' }}</div>
           <div class="day-month">
             {{ timeline.mainDate | date:'dd' }} {{ timeline.mainDate | date:'MMM' }}

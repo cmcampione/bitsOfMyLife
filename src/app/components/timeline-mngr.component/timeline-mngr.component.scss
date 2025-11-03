@@ -72,6 +72,19 @@ ion-card.default {
    DATA
 ============================ */
 
+.timeline-default-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #888;
+  //position: absolute;
+  top: 10px; /* posizione del puntino */
+}
+
+.today-dot {
+  background: #007bff;
+}
+
 .timeline-date {
   text-align: left;
   font-family: 'Inter', 'Segoe UI', sans-serif;

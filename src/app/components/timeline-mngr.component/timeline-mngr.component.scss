@@ -47,9 +47,9 @@ ion-card {
 ion-card.selected {
   //transform: scale(1.02);
   //box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  opacity: 1;
-  max-width: 95%;
-  margin: 0 auto;
+  //opacity: 1;
+  //max-width: 95%;
+  //margin: 0 auto;
 }
 
 ion-card.default {
@@ -77,8 +77,8 @@ ion-card.default {
   height: 12px;
   border-radius: 50%;
   background: #888;
-  //position: absolute;
-  top: 10px; /* posizione del puntino */
+  position: absolute;
+  top: 0px; /* posizione del puntino */
 }
 
 .today-dot {

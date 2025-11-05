@@ -8,7 +8,7 @@ import {
 import { CommonModule, NgFor, NgIf, DatePipe} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
-import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardContent, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonButtons, IonCard, IonCardContent, IonCardTitle, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trash, pencil } from 'ionicons/icons';
 import { Timeline, TimelinesMngr } from '../../bits-of-my-life/bits-of-my-life.models';
@@ -24,7 +24,7 @@ import { deleteTimelineById, updateTimeline, selectTimelineById, } from '../../b
     styleUrls: ['./timeline-mngr.component.scss'],
     standalone: true,
     imports: [CommonModule, NgFor, NgIf, DatePipe, FormsModule,
-    IonButton, IonInput, IonIcon, IonCard, IonCardTitle, IonCardContent,
+    IonButton, IonInput, IonCard, IonCardTitle, IonCardContent,
     IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel]})
 
 export class TimelinesMngrComponent implements OnInit, OnDestroy {

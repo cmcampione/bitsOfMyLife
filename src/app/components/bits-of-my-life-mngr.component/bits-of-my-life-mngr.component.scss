@@ -1,8 +1,3 @@
-:host {
-  display: block;
-}
-
-
 /* Contenitore principale */
 .bit-of-my-life-container {
   padding: 1rem;
@@ -25,13 +20,8 @@
   backdrop-filter: blur(4px);
   border-radius: 12px;
 
-  /* Larghezza leggermente più piccola */
-  width: 90%;
+  width: 100%;
   margin: 0 auto; /* centra la card */
-
-  /* Spazio verticale tra le card */
-  margin-top: 6px;
-  margin-bottom: 6px;
 
   color: #ffffff; /* testo leggibile sul verde */
 }

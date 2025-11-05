@@ -3,8 +3,8 @@ name: Build and Deploy Main Branch to FTP
 on:
   push:
     branches:
-      - main  # Cambia il branch se necessario
-  # workflow_dispatch:  # Permette l'avvio manuale
+      - main
+  # workflow_dispatch:  # Scommenta se vuoi avvio manuale
 
 jobs:
   build:
@@ -17,24 +17,28 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 22.18.0  # Cambia alla versione richiesta dal tuo progetto
+          node-version: 22.18.0
 
       - name: Install dependencies
-        run: npm install --force
+        run: npm ci --force
 
       - name: Build Angular App
         run: npx ng build --configuration=production --base-href=/bitsOfMyLife/browser/ --deploy-url=/bitsOfMyLife/browser/
 
-      - name: Upload to FTP
+      - name: Upload via FTPS (secure)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: /home/runner/work/bitsOfMyLife/bitsOfMyLife/dist/bits-of-my-life/  # Cambia con il nome della cartella di build
+          local-dir: dist/bits-of-my-life/
           server-dir: ${{ secrets.FTP_TARGET_DIR }}
+          protocol: ftps
+          port: 21
+          retries: 3
+          retry-delay: 20
+          timeout: 60000
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            **/dist/**

@@ -1,31 +1,14 @@
 :host {
   display: block;
-  background: transparent !important;
 }
 
-:host ::ng-deep ion-content {
-  --background: transparent !important;
-  background: transparent !important;
-}
 
 /* Contenitore principale */
 .bit-of-my-life-container {
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 12px; /* distanza verticale tra le card */
-  background: transparent; /* trasparente, lascia vedere il gradiente dell'app */
-}
-
-/* Lista interna */
-ion-list {
-  --background: transparent;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 12px; /* distanza verticale tra le card */
+  gap: 5px; /* distanza verticale tra le card */
 }
 
 /* Card personalizzate */
@@ -33,9 +16,9 @@ ion-list {
   /* Stesso sfondo dell'app */
   background: linear-gradient(
     180deg,
-    rgba(46, 204, 113, 0.6) 0%,    /* verde chiaro in alto */
-    rgba(39, 174, 96, 0.5) 50%,    /* verde medio a metà */
-    rgba(22, 160, 133, 0.3) 100%   /* verde acqua trasparente in basso */
+    rgba(46, 204, 113, 0.6) 0%,
+    rgba(39, 174, 96, 0.5) 50%,
+    rgba(22, 160, 133, 0.3) 100%
   ) !important;
 
   /* Effetto vetro leggero */

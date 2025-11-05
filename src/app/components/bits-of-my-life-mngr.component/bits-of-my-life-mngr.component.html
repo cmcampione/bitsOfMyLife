@@ -1,6 +1,7 @@
-<div class="bit-of-my-life-container" *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife">
+<div class="bit-of-my-life-container">
   <ion-card
-    class="bit-of-my-life-card"    
+    class="bit-of-my-life-card"
+    *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife"
     [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}"
   >
     <ion-card-content class="bit-of-my-life-card-content">

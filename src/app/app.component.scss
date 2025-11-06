@@ -1,35 +1,3 @@
-:host {
-}
-
-ion-header {
-  //border: solid burlywood; /* solo per debug */
-}
-
-ion-toolbar {
-}
-
-/* Content completamente trasparente */
-ion-content {
-  //border: solid orange; /* solo per debug */
-}
-
-/* parte fissa in alto */
-.fixed-area {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-
-  border: solid green; /* solo per debug */
-}
-
-/* parte scrollabile */
-.scrollable-area {
-  overflow-y: auto;   /* scroll solo in questa parte */
-
-  // border: solid red; /* solo per debug */
-}
-
-/* FAB fisso (puoi cambiare posizione) */
 .fixed-fab {
   position: fixed;
   bottom: 20px;
@@ -37,7 +5,24 @@ ion-content {
   z-index: 20;
 }
 
-/* App intera: gradiente verde visibile */
-ion-app {
-  //border: solid blue; /* solo per debug */
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.fixed-area {
+  flex: 0 0 auto;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  border: solid green; /* solo per debug */
+}
+
+.scrollable-area {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  
+  border: solid red; /* solo per debug */
 }

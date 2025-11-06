@@ -22,7 +22,6 @@
       </ion-list>
     </ion-content>
   </ion-menu>
-  <!-- CONTENUTO PRINCIPALE -->
   <div class="ion-page" id="main-content">
     <ion-header class="ion-no-border">
       <ion-toolbar>
@@ -32,17 +31,12 @@
         <ion-title>Home</ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-content>
-        <!-- AREA FISSA -->
-        <div class="fixed-area">
-          <app-timeline-mngr></app-timeline-mngr>
-        </div>
-        <!-- AREA SCROLLABILE -->
-        <div class="scrollable-area">
-          <app-bits-of-my-live-mngr></app-bits-of-my-live-mngr>
-        </div>      
+    <ion-content [scrollY]="false">
+      <div class="container">
+          <app-timeline-mngr class="fixed-area"></app-timeline-mngr>
+          <app-bits-of-my-live-mngr class="scrollable-area"></app-bits-of-my-live-mngr>
+      </div>
     </ion-content>
-    <!-- FAB MENU FISSO IN BASSO A DESTRA -->
     <app-fab-menu class="fixed-fab"></app-fab-menu>
   </div>
 </ion-app>

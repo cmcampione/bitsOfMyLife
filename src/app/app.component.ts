@@ -9,6 +9,7 @@ import { IonContent } from '@ionic/angular/standalone';
 import { IonHeader } from '@ionic/angular/standalone';
 import { IonToolbar } from '@ionic/angular/standalone';
 import { IonTitle } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
 
 import { AppState, selectAppState } from './global/globalMng';
 import * as BitsOfMyLifeActions from './bits-of-my-life/bits-of-my-life.actions';
@@ -18,6 +19,7 @@ import { BitsOfMyLifeState } from './bits-of-my-life/bits-of-my-life.state';
 import { TimelinesMngrComponent } from './components/timeline-mngr.component/timeline-mngr.component';
 import { BitsOfMyLifeMngrComponent } from "./components/bits-of-my-life-mngr.component/bits-of-my-life-mngr.component";
 import { FabMenuComponent } from "./components/fab-menu.component/fab-menu.component";
+import { homeOutline, informationCircleOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -42,6 +44,7 @@ export class AppComponent {
   constructor(private bitsOfMyLifeStore: Store<BitsOfMyLifeState>,
     private appStateStore: Store<AppState>,
     private menuCtrl: MenuController) {
+      addIcons({ homeOutline, informationCircleOutline });
   }
 
   ngOnInit() {

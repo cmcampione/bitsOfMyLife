@@ -1,4 +1,4 @@
-<div class="slider-container" #sliderContainer *ngIf="timelinesMngr?.length" (scroll)="onScroll($event)">
+<div class="slider-container" #sliderContainer *ngIf="timelinesMngr.length" (scroll)="onScroll($event)">
   <div class="slider-item"
     [class.active]="timeline.id === selectedTimelineId"
     *ngFor="let timeline of timelinesMngr; trackBy: trackById"

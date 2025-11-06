@@ -3,7 +3,7 @@
     [class.active]="timeline.id === selectedTimelineId"
     *ngFor="let timeline of timelinesMngr; trackBy: trackById"
     [id]="timeline.id">
-    <ion-card [class.selected]="timeline.id === selectedTimelineId"
+    <ion-card class="pastel-green"
       (click)="onCardClick(timeline.id)">      
       <ion-card-content class="timeline-grid">
         <!-- Colonna sinistra: data -->

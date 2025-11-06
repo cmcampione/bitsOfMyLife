@@ -1,3 +1,33 @@
+:host {
+    ion-card.pastel-green {
+    --ion-color-base: #b8e6b8; /* verde pastello base */
+    --ion-color-contrast: #1f3d1f; /* testo verde scuro */
+    --ion-color-shade: #a3d4a3;
+    --ion-color-tint: #c4ebc4;
+
+    /* 💧 Effetto acqua pastello traslucido */
+    --background: linear-gradient(
+        135deg,
+        rgba(184, 230, 184, 0.55),
+        rgba(201, 240, 201, 0.35)
+      );
+    --color: var(--ion-color-contrast);
+
+    backdrop-filter: blur(10px) saturate(120%);
+    -webkit-backdrop-filter: blur(10px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  ion-card.pastel-green:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
+  }
+}
+
 .slider-container {
   display: flex;
   flex-direction: row;
@@ -25,19 +55,6 @@
   scroll-snap-align: center;
 
   //border: solid green; /* solo per debug */
-}
-
-/* ============================
-   CARD BASE E STATO SELEZIONATO
-============================ */
-
-ion-card {
-}
-
-ion-card.selected {
-}
-
-ion-card.default {
 }
 
 /* ============================
@@ -79,19 +96,16 @@ ion-card.default {
   font-size: 0.75rem;
   font-weight: 500;
   text-transform: capitalize;
-//  color: #ffffff;
 }
 
 .timeline-date .day-month {
   font-size: 0.95rem;
   font-weight: 600;
-//  color: #ffffff;
 }
 
 .timeline-date .year {
   font-size: 0.9rem;
   font-weight: 700;
-//  color: #ffffff;
   margin-top: 2px;
 }
 
@@ -109,7 +123,6 @@ ion-card.default {
   font-size: 1rem;
   font-weight: 600;
   font-family: 'Inter', 'Segoe UI', sans-serif;
-  //color: black;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

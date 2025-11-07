@@ -165,11 +165,10 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
     const containerRect = container.getBoundingClientRect();
     const containerCenter = containerRect.left + container.clientWidth / 2;
 
-    let closestIndex = 0;
     let minDistance = Number.MAX_VALUE;
     let timelineId = "";
 
-    this.timelinesMngr.forEach((timeline, i) => {
+    this.timelinesMngr.forEach((timeline) => {
       const cardEl = document.getElementById(timeline.id);
       if (!cardEl) return;
 
@@ -179,7 +178,6 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
 
       if (distance < minDistance) {
         minDistance = distance;
-        closestIndex = i;
         timelineId = timeline.id;
       }
     });

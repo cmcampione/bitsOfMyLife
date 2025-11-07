@@ -5,6 +5,18 @@
   //z-index: 20;
 }
 
+ion-header {
+  --background: transparent !important;
+}
+
+ion-toolbar {
+  --background: transparent !important;
+}
+
+ion-content {
+  --background: transparent !important;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -17,12 +29,12 @@
   //top: 0;
   //z-index: 10;
 
-  border: solid green; /* solo per debug */
+  //border: solid green; /* solo per debug */
 }
 
 .scrollable-area {
   flex: 1 1 auto;
   overflow-y: auto;
   
-  border: solid red; /* solo per debug */
+  //border: solid red; /* solo per debug */
 }

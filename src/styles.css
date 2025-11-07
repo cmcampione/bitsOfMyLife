@@ -1,6 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
-body, ion-app, ion-header, ion-toolbar, ion-content {
-  --background: transparent !important;
+ion-app {
   background-image: url('/main-backgroud.png');
   background-size: cover;
   background-position: center;

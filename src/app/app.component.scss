@@ -5,6 +5,13 @@
   //z-index: 20;
 }
 
+ion-app {
+  background-image: url('/main-backgroud.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 ion-header {
   --background: transparent !important;
 }
@@ -36,5 +43,5 @@ ion-content {
   flex: 1 1 auto;
   overflow-y: auto;
   
-  //border: solid red; /* solo per debug */
+  //border: solid red; /* solo per debug */  
 }

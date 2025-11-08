@@ -1,31 +1,30 @@
-:host {
-    ion-card.pastel-green {
-    --ion-color-base: #b8e6b8; /* verde pastello base */
-    --ion-color-contrast: #1f3d1f; /* testo verde scuro */
-    --ion-color-shade: #a3d4a3;
-    --ion-color-tint: #c4ebc4;
 
-    /* 💧 Effetto acqua pastello traslucido */
-    --background: linear-gradient(
-        135deg,
-        rgba(184, 230, 184, 0.55),
-        rgba(201, 240, 201, 0.35)
-      );
-    --color: var(--ion-color-contrast);
+ion-card.pastel-green {
+  --ion-color-base: #b8e6b8; /* verde pastello base */
+  --ion-color-contrast: #1f3d1f; /* testo verde scuro */
+  --ion-color-shade: #a3d4a3;
+  --ion-color-tint: #c4ebc4;
 
-    backdrop-filter: blur(10px) saturate(120%);
-    -webkit-backdrop-filter: blur(10px) saturate(120%);
-    border: 1px solid rgba(255, 255, 255, 0.4);
-    border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  /* 💧 Effetto acqua pastello traslucido */
+  --background: linear-gradient(
+      135deg,
+      rgba(184, 230, 184, 0.55),
+      rgba(201, 240, 201, 0.35)
+    );
+  --color: var(--ion-color-contrast);
 
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-  }
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 
-  ion-card.pastel-green:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
-  }
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+ion-card.pastel-green:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
 }
 
 .slider-container {

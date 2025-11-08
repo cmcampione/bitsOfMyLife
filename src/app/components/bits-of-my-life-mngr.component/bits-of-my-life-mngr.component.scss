@@ -1,29 +1,29 @@
-/* Contenitore principale */
-.bit-of-my-life-container {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 5px; /* distanza verticale tra le card */
+ion-card.pastel-green {
+  --ion-color-base: #b8e6b8; /* verde pastello base */
+  --ion-color-contrast: #1f3d1f; /* testo verde scuro */
+  --ion-color-shade: #a3d4a3;
+  --ion-color-tint: #c4ebc4;
+
+  /* 💧 Effetto acqua pastello traslucido */
+  --background: linear-gradient(
+      135deg,
+      rgba(184, 230, 184, 0.55),
+      rgba(201, 240, 201, 0.35)
+    );
+  --color: var(--ion-color-contrast);
+
+  backdrop-filter: blur(10px) saturate(120%);
+  -webkit-backdrop-filter: blur(10px) saturate(120%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-/* Card personalizzate */
-.bit-of-my-life-card {
-  /* Stesso sfondo dell'app */
-  background: linear-gradient(
-    180deg,
-    rgba(46, 204, 113, 0.6) 0%,
-    rgba(39, 174, 96, 0.5) 50%,
-    rgba(22, 160, 133, 0.3) 100%
-  ) !important;
-
-  /* Effetto vetro leggero */
-  backdrop-filter: blur(4px);
-  border-radius: 12px;
-
-  width: 100%;
-  margin: 0 auto; /* centra la card */
-
-  color: #ffffff; /* testo leggibile sul verde */
+ion-card.pastel-green:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.15);
 }
 
 /* Card "oggi" */

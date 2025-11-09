@@ -85,5 +85,9 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
       this.bitsOfMyLifeStore.dispatch(BitsOfMyLifeActions.deleteMilestoneById({ milestoneIdToRemove: id }));
     }
   }
+
+  trackById(index: number, item: any): any {
+    return item.milestone.id;
+  }
 }
 

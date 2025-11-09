@@ -6,7 +6,8 @@
 }
 
 ion-app {
-  background-image: url('../assets/main-background.png');
+  //background-image: url('../assets/main-background.png');
+  background-image: url('../assets/main-background.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -14,10 +15,13 @@ ion-app {
 
 ion-header {
   --background: transparent !important;
+  //border: solid green; /* solo per debug */
 }
 
 ion-toolbar {
   --background: transparent !important;
+ 
+  //border: solid red; /* solo per debug */
 }
 
 ion-content {

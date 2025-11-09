@@ -1,7 +1,7 @@
 <div>
   <ion-card
     class="pastel-green"
-    *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife"
+    *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife; trackBy: trackById"
     [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}"
   >
     <ion-card-content class="bit-of-my-life-card-content">

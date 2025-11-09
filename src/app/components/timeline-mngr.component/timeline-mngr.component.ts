@@ -129,12 +129,6 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   }
   
   editTimelineById(timelineId: string): void {
-    // Not necessary to raise an error, but just to report in console
-    // UI should not allow to delete default timeline
-    if (timelineId === defaultTimelineId) {
-      console.error('Invalid ID for delete Timeline');
-      return;
-    }
     const index = this.timelinesMngr.findIndex(t => t.id === timelineId);
     if (index !== -1) {
       const timeline = this.timelinesMngr[index];
@@ -196,7 +190,7 @@ export class TimelinesMngrComponent implements OnInit, OnDestroy {
   }
 
   onCardClick(timelineId: string) {
-    if (timelineId !== defaultTimelineId && this.selectedTimelineId === timelineId) {
+     if (this.selectedTimelineId === timelineId) {
       this.editTimelineById(timelineId);
       return;
     }

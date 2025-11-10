@@ -3,7 +3,7 @@
     [class.active]="timeline.id === selectedTimelineId"
     *ngFor="let timeline of timelinesMngr; trackBy: trackById"
     [id]="timeline.id">
-    <ion-card class="pastel-green"
+    <ion-card
       (click)="onCardClick(timeline.id)">      
       <ion-card-content class="timeline-grid">
         <!-- Colonna sinistra: data -->
@@ -67,7 +67,7 @@
         <ion-input type="text" [(ngModel)]="editingTimeline.name"></ion-input>
       </ion-item>
       <ion-button expand="full" (click)="updateTimeline()">Update</ion-button>
-      <ion-button expand="full" (click)="deleteTimelineById(editingTimeline.id)">Delete</ion-button>
+      <ion-button [disabled]="editingTimeline.id === defaultTimelineId" expand="full" (click)="deleteTimelineById(editingTimeline.id)">Delete</ion-button>
     </ion-content>
   </ng-template>
 </ion-modal>

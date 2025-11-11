@@ -1,5 +1,5 @@
 <div>
-  <ion-card
+  <ion-card class="soft-card"
     *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife; trackBy: trackById"
     [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}"
   >

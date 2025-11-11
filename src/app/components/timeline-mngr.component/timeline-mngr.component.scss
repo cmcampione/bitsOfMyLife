@@ -1,24 +1,6 @@
 
 .soft-card {
-  /* blu vivo, un po' più trasparente */
-  background: rgba(30, 144, 255, 0.45); /* base blu semi-trasparente */
-  //border: 1px solid rgba(30, 144, 255, 0.65);
-  //border-radius: 14px;
-  //padding: 16px;
-  //box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
-
-  /* effetto vetro/glass */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
-  color: #fff; /* testo chiaro */
-  
-  /* gradient leggero per profondità */
-  background: linear-gradient(
-    180deg,
-    rgba(30, 144, 255, 0.5),
-    rgba(30, 144, 255, 0.4)
-  );
+ --background: transparent !important;
 }
 
 .slider-container {

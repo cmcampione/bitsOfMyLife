@@ -7,16 +7,16 @@
 
 ion-app {
   //background-image: url('../assets/main-background.png');
-  //background-image: url('../assets/main-background.jpg');
-  /* sfondo generale dell'app */
-  background: radial-gradient(
-    circle at center,  /* parte dal centro */
-    #d8dde6,           /* colore centrale */
-    #f34545            /* colore ai bordi */
-  );
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: url('../assets/main-background.jpg');
+  
+  //background: radial-gradient(
+    //circle at center,  /* parte dal centro */
+    //#d8dde6,           /* colore centrale */
+    //#f34545            /* colore ai bordi */
+  //);
+  //background-size: cover;
+  //background-position: center;
+  //background-repeat: no-repeat;
 }
 
 ion-header {

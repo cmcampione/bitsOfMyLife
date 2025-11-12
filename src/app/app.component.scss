@@ -1,3 +1,4 @@
+
 .fixed-fab {
   position: fixed;
   bottom: 20px;
@@ -7,7 +8,7 @@
 
 ion-app {
   //background-image: url('../assets/main-background.png');
-  background-image: url('../assets/main-background.jpg');
+  //background-image: url('../assets/main-background.jpg');
   
   //background: radial-gradient(
     //circle at center,  /* parte dal centro */
@@ -20,18 +21,18 @@ ion-app {
 }
 
 ion-header {
-  --background: transparent !important;
+  //--background: transparent !important;
   //border: solid green; /* solo per debug */
 }
 
 ion-toolbar {
-  --background: transparent !important;
+  //--background: transparent !important;
  
   //border: solid red; /* solo per debug */
 }
 
 ion-content {
-  --background: transparent !important;
+  //--background: transparent !important;
 }
 
 .container {

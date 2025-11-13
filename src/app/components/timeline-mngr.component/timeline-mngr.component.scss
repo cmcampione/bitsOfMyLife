@@ -25,19 +25,24 @@
   flex: 0 0 100%;
   scroll-snap-align: center;
 
-  //border: solid green; /* solo per debug */
+  //border: solid red; /* solo per debug */
 }
 
 /* ============================
    GRIGLIA INTERNA
 ============================ */
 
-.timeline-grid {
+.timeline-content {
   display: grid;
   grid-template-columns: 1fr 2.5fr;
   gap: 12px;
   padding: 14px 16px;
   min-height: 80px;
+
+  //border-right: solid red; /* solo per debug */
+  //border-bottom: solid red; /* solo per debug */
+
+  border: solid red; /* solo per debug */
 }
 
 /* ============================

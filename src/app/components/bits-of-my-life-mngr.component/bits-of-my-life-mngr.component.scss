@@ -1,25 +1,3 @@
-.soft-card {
-  /* verde vivo, leggermente trasparente */
-  background: rgba(34, 177, 76, 0.45); /* base verde semi-trasparente */
-  //border: 1px solid rgba(34, 177, 76, 0.65);
-  //border-radius: 14px;
-  //padding: 16px;
-  //box-shadow: 0 8px 22px rgba(0, 0, 0, 0.12);
-
-  /* effetto vetro/glass */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-
-  color: #fff; /* testo chiaro */
-  
-  /* gradient leggero per profondità */
-  background: linear-gradient(
-    180deg,
-    rgba(34, 177, 76, 0.5),
-    rgba(34, 177, 76, 0.4)
-  );
-}
-
 /* Card "oggi" */
 .today-card {
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -42,19 +20,27 @@
 .bit-of-my-life-card-content {
   display: flex;
   align-items: flex-start;
+
+  //border-right: solid red; /* spessore, stile e colore del bordo */
+  border-bottom: solid red; /* spessore, stile e colore del bordo */
+  //border: solid red; /* solo per debug */
 }
 
-.timeline {
+.milestone {
   position: relative;
   width: 40px; /* spazio per linea + puntino */
   display: flex;
   justify-content: center;
+
+  // border: solid red; /* solo per debug */
 }
 
 .bit-of-my-life-line {
   width: 2px;
   background: #ccc;
   flex-grow: 1;
+
+  //border: solid red; /* solo per debug */
 }
 
 .bit-of-my-life-dot {
@@ -73,4 +59,10 @@
 .milestone-info {
   flex: 1;
   padding-left: 16px;
+
+  //border: solid yellow; /* solo per debug */
+}
+
+.bottom-border {
+  border-bottom: solid red; /* spessore, stile e colore del bordo */
 }

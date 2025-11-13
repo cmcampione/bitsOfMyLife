@@ -27,7 +27,9 @@ ion-header {
 ion-toolbar {
   //--background: transparent !important;
  
-  //border: solid red; /* solo per debug */
+  box-shadow: 0 6px 20px red;
+  
+  border: solid red; /* solo per debug */
 }
 
 ion-content {

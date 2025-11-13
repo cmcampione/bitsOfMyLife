@@ -1,4 +1,3 @@
-
 .slider-container {
   display: flex;
   flex-direction: row;
@@ -28,9 +27,11 @@
   //border: solid red; /* solo per debug */
 }
 
-/* ============================
-   GRIGLIA INTERNA
-============================ */
+ion-card {
+  box-shadow: 0 6px 20px red;
+
+  border: solid red; /* solo per debug */
+}
 
 .timeline-content {
   display: grid;
@@ -42,7 +43,7 @@
   //border-right: solid red; /* solo per debug */
   //border-bottom: solid red; /* solo per debug */
 
-  border: solid red; /* solo per debug */
+  //border: solid red; /* solo per debug */
 }
 
 /* ============================
@@ -84,10 +85,6 @@
   font-weight: 700;
   margin-top: 2px;
 }
-
-/* ============================
-   TITOLO E TESTO
-============================ */
 
 .timeline-info {
   display: flex;

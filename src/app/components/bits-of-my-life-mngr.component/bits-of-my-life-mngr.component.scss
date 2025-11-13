@@ -1,12 +1,22 @@
+ion-card {
+  box-shadow: 0 6px 20px red;
+
+  border: solid red; /* solo per debug */
+}
+
 /* Card "oggi" */
 .today-card {
   border: 1px solid rgba(255, 255, 255, 0.3);
+
+  //border: solid blue; /* solo per debug */
 }
 
 /* Linea e punto */
 .bit-of-my-life-line {
   position: relative;
   margin-left: 16px;
+
+  //border: solid blue; /* solo per debug */
 }
 
 .bit-of-my-life-dot {
@@ -15,15 +25,17 @@
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.7);
   margin: 0 auto;
+
+  //border: solid green; /* solo per debug */
 }
 
 .bit-of-my-life-card-content {
   display: flex;
   align-items: flex-start;
 
-  //border-right: solid red; /* spessore, stile e colore del bordo */
-  border-bottom: solid red; /* spessore, stile e colore del bordo */
-  //border: solid red; /* solo per debug */
+  //border-bottom: solid red; /* spessore, stile e colore del bordo */
+
+  //border: solid violet; /* solo per debug */
 }
 
 .milestone {
@@ -32,7 +44,7 @@
   display: flex;
   justify-content: center;
 
-  // border: solid red; /* solo per debug */
+  //border: solid black; /* solo per debug */
 }
 
 .bit-of-my-life-line {
@@ -50,10 +62,14 @@
   background: #888;
   position: absolute;
   top: 10px; /* posizione del puntino */
+
+  //border: solid red; /* solo per debug */
 }
 
 .today-dot {
   background: #007bff;
+
+  //border: solid red; /* solo per debug */
 }
 
 .milestone-info {
@@ -61,8 +77,4 @@
   padding-left: 16px;
 
   //border: solid yellow; /* solo per debug */
-}
-
-.bottom-border {
-  border-bottom: solid red; /* spessore, stile e colore del bordo */
 }

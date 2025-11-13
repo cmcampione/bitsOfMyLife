@@ -8,8 +8,7 @@
 
 ion-app {
   //background-image: url('../assets/main-background.png');
-  //background-image: url('../assets/main-background.jpg');
-  
+  //background-image: url('../assets/main-background.jpg');  
   //background: radial-gradient(
     //circle at center,  /* parte dal centro */
     //#d8dde6,           /* colore centrale */
@@ -33,12 +32,16 @@ ion-toolbar {
 
 ion-content {
   //--background: transparent !important;
+
+  // border: solid green; /* solo per debug */
 }
 
 .container {
   display: flex;
   flex-direction: column;
   height: 100%;
+
+  //border: solid green; /* solo per debug */
 }
 
 .fixed-area {
@@ -46,6 +49,9 @@ ion-content {
   //position: sticky;
   //top: 0;
   //z-index: 10;
+
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2), 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+  box-sizing: border-box;
 
   //border: solid green; /* solo per debug */
 }

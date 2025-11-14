@@ -28,7 +28,6 @@
 }
 
 ion-card {
-  box-shadow: 0 6px 20px red;
 
   border: solid red; /* solo per debug */
 }
@@ -45,10 +44,6 @@ ion-card {
 
   //border: solid red; /* solo per debug */
 }
-
-/* ============================
-   DATA
-============================ */
 
 .timeline-default-dot {
   width: 12px;

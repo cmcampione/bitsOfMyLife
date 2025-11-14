@@ -1,37 +1,22 @@
 
 .fixed-fab {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 5px;
+  right: 5px;
   //z-index: 20;
 }
 
-ion-app {
-  //background-image: url('../assets/main-background.png');
-  //background-image: url('../assets/main-background.jpg');  
-  //background: radial-gradient(
-    //circle at center,  /* parte dal centro */
-    //#d8dde6,           /* colore centrale */
-    //#f34545            /* colore ai bordi */
-  //);
-  //background-size: cover;
-  //background-position: center;
-  //background-repeat: no-repeat;
-}
-
 ion-header {
-  //--background: transparent !important;
+
   //border: solid green; /* solo per debug */
 }
 
 ion-toolbar {
-  //--background: transparent !important;
   
   //border: solid red; /* solo per debug */
 }
 
 ion-content {
-  //--background: transparent !important;
 
   // border: solid green; /* solo per debug */
 }
@@ -46,9 +31,6 @@ ion-content {
 
 .fixed-area {
   flex: 0 0 auto;
-  //position: sticky;
-  //top: 0;
-  //z-index: 10;
 
   //border: solid green; /* solo per debug */
 }

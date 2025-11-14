@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AsyncPipe, NgFor, NgIf} from '@angular/common';
+import { AsyncPipe, NgFor } from '@angular/common';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 
@@ -12,14 +12,14 @@ import { BitOfMyLife, MilestoneToUpdate} from '../../bits-of-my-life/bits-of-my-
 import * as BitsOfMyLifeActions from '../../bits-of-my-life/bits-of-my-life.actions';
 import { todayMilestoneId, selectBitsOfMyLifeMngr } from '../../bits-of-my-life/bits-of-my-life.selectors';
 import { BitsOfMyLifeState, SelectedBitsOfMyLifeState } from '../../bits-of-my-life/bits-of-my-life.state';
-import { IonInput, IonButton, IonButtons, IonIcon, IonCard, IonCardContent, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonNote } from '@ionic/angular/standalone';
+import { IonInput, IonButton, IonButtons, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, IonContent, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonList, IonItemSliding } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-bits-of-my-live-mngr',
   standalone: true,
-  imports: [AsyncPipe, NgFor, NgIf, CommonModule, FormsModule,
-    IonButton, IonInput, IonIcon, IonCard, IonCardContent,
-    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel, IonNote],
+  imports: [AsyncPipe, NgFor, CommonModule, FormsModule,
+    IonButton, IonInput, IonIcon, 
+    IonModal, IonHeader, IonToolbar, IonTitle, IonButtons, IonContent, IonItem, IonLabel, IonNote, IonItemOptions, IonItemOption, IonList, IonItemSliding],
   templateUrl: './bits-of-my-life-mngr.component.html',
   styleUrls: ['./bits-of-my-life-mngr.component.scss']
 })
@@ -44,7 +44,9 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
   ngOnDestroy() {
   }
 
-  editBitOfMyLife(bitOfMyLife: BitOfMyLife): void {
+  editBitOfMyLife(bitOfMyLife: BitOfMyLife, slidingItem: IonItemSliding): void {
+    slidingItem.close();
+
     if (bitOfMyLife.milestone.id === todayMilestoneId) {
       // Not necessary to raise an error, but just to report in console
       // UI should not allow to edit today milestone
@@ -73,7 +75,8 @@ export class BitsOfMyLifeMngrComponent implements OnInit, OnDestroy{
     this.isEditBitOfMyLifeModalOpen = false;
   }
 
-  deleteBitOfMyLife(id: string) {
+  deleteBitOfMyLife(id: string, slidingItem: IonItemSliding) {
+    slidingItem.close();
     // Not necessary to raise an error, but just to report in console
     // UI should not allow to delete today milestone
     if (id === todayMilestoneId) {

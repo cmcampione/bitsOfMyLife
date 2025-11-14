@@ -1,46 +1,26 @@
-ion-card {
-
-  border-bottom: solid red; /* solo per debug */
-}
-
-/* Card "oggi" */
-.today-card {
-
-  //border: solid blue; /* solo per debug */
-}
-
-/* Linea e punto */
-.bit-of-my-life-line {
-  position: relative;
-  margin-left: 16px;
-
-  //border: solid blue; /* solo per debug */
-}
-
-.bit-of-my-life-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.7);
-  margin: 0 auto;
-
-  //border: solid green; /* solo per debug */
-}
-
 .bit-of-my-life-card-content {
   display: flex;
   align-items: flex-start;
 
   //border-bottom: solid red; /* spessore, stile e colore del bordo */
 
+  //
+  align-items: flex-start;
+  padding: 10px 0;
+
   //border: solid violet; /* solo per debug */
 }
 
 .milestone {
+  display: flex;
   position: relative;
   width: 40px; /* spazio per linea + puntino */
-  display: flex;
   justify-content: center;
+
+  //
+  flex-direction: column;
+  align-items: center;
+  margin-right: 10px;
 
   //border: solid black; /* solo per debug */
 }
@@ -49,6 +29,10 @@ ion-card {
   width: 2px;
   background: #ccc;
   flex-grow: 1;
+
+  //
+  margin-top: 5px;
+  margin-bottom: 5px;
 
   //border: solid red; /* solo per debug */
 }
@@ -60,6 +44,9 @@ ion-card {
   background: #888;
   position: absolute;
   top: 10px; /* posizione del puntino */
+
+  //
+  margin-bottom: 5px;
 
   //border: solid red; /* solo per debug */
 }
@@ -74,5 +61,40 @@ ion-card {
   flex: 1;
   padding-left: 16px;
 
+  //
+  display: flex;
+  flex-direction: column;
+
   //border: solid yellow; /* solo per debug */
+}
+
+.date-container {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.today-date {
+  font-weight: bold;
+  color: #3880ff;
+}
+
+.milestone-title {
+  font-size: 1rem;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.time-diff {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.today-card {
+  background-color: rgba(56, 128, 255, 0.1);
+  border-radius: 6px;
+}
+
+/* Pulsanti swipe (opzionali se vuoi spaziarli) */
+ion-item-option ion-icon {
+  font-size: 1.2rem;
 }

@@ -17,17 +17,11 @@ ion-app {
 	/*
   	background-image: url('../assets/main-background.png');
 	*/
-  
-	background: linear-gradient(
-  to bottom,
-  #48c5e5,
-  #3ab2d3
-);
 }
 
 ion-header {
   box-shadow: none !important;
-  border-radius: 0; /* bordi spigolosi */
+  border-radius: 0;
 
   --background: transparent;
 }
@@ -47,7 +41,7 @@ ion-content {
 ion-card {
   --box-shadow: none !important;
   box-shadow: none !important;
-  border-radius: 0; /* bordi spigolosi */
+  border-radius: 0;
 
     /*--background: transparent !important;*/
 }

@@ -23,19 +23,35 @@
 .slider-item {  
   flex: 0 0 100%;
   scroll-snap-align: center;
+  position: relative;
+
+  //border-left: solid green; /* solo per debug */
 
   //border: solid red; /* solo per debug */
 }
 
+.slider-item:first-child {
+  border-left: none;
+}
+
+.slider-item:first-child::before {
+  content: none;
+}
+
+.slider-item:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 50%;           /* metà altezza */
+  width: 2px;            /* spessore del bordo */
+  background-color: violet; /* colore del "border-left" */
+  transform: translateY(-50%);
+}
+
 ion-card {
 
-  --background: linear-gradient(
-  to bottom,
-  #ffe98a,
-  #F9E17D
-);
-
-  border: solid green; /* solo per debug */
+  //border-left: solid green; /* solo per debug */
 }
 
 .timeline-content {
@@ -44,9 +60,6 @@ ion-card {
   gap: 12px;
   padding: 14px 16px;
   min-height: 80px;
-
-  //border-right: solid red; /* solo per debug */
-  //border-bottom: solid red; /* solo per debug */
 
   //border: solid red; /* solo per debug */
 }

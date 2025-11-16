@@ -2,42 +2,12 @@
   display: flex;
   align-items: flex-start;
 
-  background: transparent !important;
-
-  //border-bottom: solid red; /* spessore, stile e colore del bordo */
+  border-bottom: solid red; /* spessore, stile e colore del bordo */
 
   //
   padding: 10px 0;
 
   //border: solid violet; /* solo per debug */
-}
-
-.milestone {
-  display: flex;
-  position: relative;
-  width: 40px; /* spazio per linea + puntino */
-  justify-content: center;
-
-  background: transparent !important;
-
-  //
-  flex-direction: column;
-  align-items: center;
-  margin-right: 10px;
-
-  //border: solid black; /* solo per debug */
-}
-
-.bit-of-my-life-line {
-  width: 2px;
-  background: #ccc;
-  flex-grow: 1;
-
-  //
-  margin-top: 5px;
-  margin-bottom: 5px;
-
-  //border: solid red; /* solo per debug */
 }
 
 .bit-of-my-life-dot {
@@ -63,9 +33,6 @@
 .milestone-info {
   flex: 1;
   padding-left: 16px;
-
-  background: transparent !important;
-
   //
   display: flex;
   flex-direction: column;
@@ -74,39 +41,18 @@
 }
 
 .date-container {
-  font-size: 0.9rem;
-  color: #666;
-
-  background: transparent !important;
 }
 
 .today-date {
-  font-weight: bold;
-  color: #3880ff;
-
-  background: transparent !important;
 }
 
 .milestone-title {
-  font-size: 1rem;
-  margin-top: 2px;
-  margin-bottom: 2px;
-
-  background: transparent !important;
 }
 
 .time-diff {
-  font-size: 0.85rem;
-  color: #999;
-
-  background: transparent !important;
 }
 
 .today-card {
-  background-color: rgba(56, 128, 255, 0.1);
-  border-radius: 6px;
-
-  background: transparent !important;
 }
 
 /* Pulsanti swipe (opzionali se vuoi spaziarli) */

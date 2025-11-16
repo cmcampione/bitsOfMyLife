@@ -8,11 +8,8 @@
     <ion-item [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}" lines="none" detail="false">
       <ion-label class="bit-of-my-life-card-content">
 
-        <div class="milestone">
-          <div class="bit-of-my-life-line"></div>
-          <div class="bit-of-my-life-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
-        </div>
-
+        <div class="bit-of-my-life-dot" [ngClass]="{'today-dot': bit.milestone.id === todayMilestoneId}"></div>
+        
         <!-- Contenuto principale -->
         <div class="milestone-info">
           <!-- Data -->

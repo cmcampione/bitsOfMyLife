@@ -5,7 +5,7 @@
     [id]="timeline.id"
     (click)="onCardClick(timeline.id)">
     <ion-card [class.active]="timeline.id === selectedTimelineId">
-      <ion-card-content class="timeline-content">
+      <ion-card-content class="timeline-content" [class.active]="timeline.id === selectedTimelineId">
         <!-- Colonna sinistra: data -->
         <div class="timeline-date">
           <div [hidden]="timeline.id !== defaultTimelineId" class="timeline-default-dot" [ngClass]="{'today-dot': timeline.id === defaultTimelineId}"></div>

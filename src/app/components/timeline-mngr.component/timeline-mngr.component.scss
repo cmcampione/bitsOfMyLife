@@ -99,6 +99,13 @@ ion-card.active {
   //border: solid red; /* solo per debug */
 }
 
+.timeline-content.active {
+  
+  border-bottom: solid blue;
+
+  //border: solid red; /* solo per debug */
+}
+
 .timeline-default-dot {
   width: 12px;
   height: 12px;

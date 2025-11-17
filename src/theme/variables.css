@@ -14,9 +14,9 @@
 }
 
 ion-app {
-	/*
-  	background-image: url('../assets/main-background.png');
-	*/
+	
+  	background-image: url('../assets/main-background-01.png');
+	
 }
 
 ion-header {
@@ -41,7 +41,6 @@ ion-content {
 ion-card {
   --box-shadow: none !important;
   box-shadow: none !important;
-  border-radius: 0;
 
     /*--background: transparent !important;*/
 }

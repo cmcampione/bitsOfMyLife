@@ -1,3 +1,4 @@
+
 .slider-container {
   display: flex;
   flex-direction: row;
@@ -25,33 +26,67 @@
   scroll-snap-align: center;
   position: relative;
 
-  //border-left: solid green; /* solo per debug */
-
   //border: solid red; /* solo per debug */
 }
 
-.slider-item:first-child {
-  border-left: none;
-}
-
-.slider-item:first-child::before {
-  content: none;
-}
-
-.slider-item:before {
+/* FRECCIA SINISTRA: mostrata su tutti tranne il primo */
+.slider-item:not(:first-child)::before {
   content: "";
   position: absolute;
-  left: 0;
+  left: 1px;               /* dentro l'item, non fuori */
   top: 50%;
-  height: 50%;           /* metà altezza */
-  width: 2px;            /* spessore del bordo */
-  background-color: violet; /* colore del "border-left" */
   transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  background-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>\
+      <polyline points='9 6 15 12 9 18'/>\
+    </svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* FRECCIA DESTRA: mostrata su tutti tranne l’ultimo */
+.slider-item:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 1px;              /* dentro l'item, non fuori */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  background-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>\
+      <polyline points='15 18 9 12 15 6'/>\
+    </svg>");    
+  background-size: contain;
+  background-repeat: no-repeat;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 5;
+}
+
+.slider-item.active {
+
+  //border: solid blue; /* solo per debug */
+}
+
+.slider-item.active::before,
+.slider-item.active::after {
+  content: none !important;
 }
 
 ion-card {
+  
+  //border: solid green; /* solo per debug */
+}
 
-  //border-left: solid green; /* solo per debug */
+ion-card.active {
+  
+  //border: solid green; /* solo per debug */
 }
 
 .timeline-content {

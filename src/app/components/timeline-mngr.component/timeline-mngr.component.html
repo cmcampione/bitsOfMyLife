@@ -2,9 +2,9 @@
   <div class="slider-item"
     [class.active]="timeline.id === selectedTimelineId"
     *ngFor="let timeline of timelinesMngr; trackBy: trackById"
-    [id]="timeline.id">
-    <ion-card
-      (click)="onCardClick(timeline.id)">      
+    [id]="timeline.id"
+    (click)="onCardClick(timeline.id)">
+    <ion-card [class.active]="timeline.id === selectedTimelineId">
       <ion-card-content class="timeline-content">
         <!-- Colonna sinistra: data -->
         <div class="timeline-date">

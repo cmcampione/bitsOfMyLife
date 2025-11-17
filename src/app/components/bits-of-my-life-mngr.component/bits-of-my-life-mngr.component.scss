@@ -1,13 +1,22 @@
+ion-list {
+  //border: solid yellow; /* solo per debug */
+}
+
+ion-item-sliding {
+
+  //border: solid red; /* solo per debug */
+}
+
+ion-item {
+ 
+  //border: solid blue; /* solo per debug */
+}
+
 .bit-of-my-life-card-content {
   display: flex;
   align-items: flex-start;
 
-  //border-bottom: solid red; /* spessore, stile e colore del bordo */
-
-  //
-  padding: 10px 0;
-
-  border: solid violet; /* solo per debug */
+  //border: solid violet; /* solo per debug */
 }
 
 .bit-of-my-life-dot {

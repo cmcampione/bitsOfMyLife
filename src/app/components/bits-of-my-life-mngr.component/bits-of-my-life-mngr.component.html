@@ -1,8 +1,7 @@
 <ion-list>  
   <ion-item-sliding #slidingItem 
     *ngFor="let bit of (selectedBitsOfMyLifeState$ | async)?.bitsOfMyLife; trackBy: trackById"
-    [disabled]="bit.milestone.id === todayMilestoneId"
-    >
+    [disabled]="bit.milestone.id === todayMilestoneId">
 
     <!-- Item principale -->
     <ion-item [ngClass]="{'today-card': bit.milestone.id === todayMilestoneId}" lines="none" detail="false">

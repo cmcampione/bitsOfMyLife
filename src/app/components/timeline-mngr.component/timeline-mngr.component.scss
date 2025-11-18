@@ -30,10 +30,11 @@
 }
 
 /* FRECCIA SINISTRA: mostrata su tutti tranne il primo */
+/*
 .slider-item:not(:first-child)::before {
   content: "";
   position: absolute;
-  left: 1px;               /* dentro l'item, non fuori */
+  left: 1px;
   top: 50%;
   transform: translateY(-50%);
   width: 22px;
@@ -48,12 +49,14 @@
   cursor: pointer;
   z-index: 5;
 }
+  */
 
 /* FRECCIA DESTRA: mostrata su tutti tranne l’ultimo */
+/*
 .slider-item:not(:last-child)::after {
   content: "";
   position: absolute;
-  right: 1px;              /* dentro l'item, non fuori */
+  right: 1px;
   top: 50%;
   transform: translateY(-50%);
   width: 22px;
@@ -68,15 +71,18 @@
   cursor: pointer;
   z-index: 5;
 }
+*/
+
+/*
+.slider-item.active::before,
+.slider-item.active::after {
+  content: none !important;
+}
+*/
 
 .slider-item.active {
 
   //border: solid blue; /* solo per debug */
-}
-
-.slider-item.active::before,
-.slider-item.active::after {
-  content: none !important;
 }
 
 ion-card {
@@ -95,18 +101,18 @@ ion-card {
   backdrop-filter: blur(10px);
 
   /* ombra delicata per staccare dalla background */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  //box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 
   ion-card-header, ion-card-content {
     background: transparent; /* assicurati che i contenuti non coprano il blur */
   }
   
-  //border: solid green; /* solo per debug */
+  border: solid green; /* solo per debug */
 }
 
 ion-card.active {
   
-  //border: solid green; /* solo per debug */
+  border: solid red; /* solo per debug */
 }
 
 .timeline-content {

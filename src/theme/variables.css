@@ -15,8 +15,10 @@
 
 ion-app {
 	
-  	background-image: url('../assets/main-background-05.png');
-	
+  	background-image: url('../assets/main-background-08.png');
+    background-position: center;      /* Centra l’immagine */
+    background-repeat: no-repeat;     /* Evita la ripetizione */
+    background-size: cover;           /* Adatta l’immagine allo schermo */
 }
 
 ion-header {

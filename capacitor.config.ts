@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'org.thingshub.bitsofmylife',
-  appName: 'bits-of-my-life',
+  appId: 'org.thingshub.mentamementa',
+  appName: 'Menta Mementa',
   webDir: 'dist/bits-of-my-life/browser',
 };
 

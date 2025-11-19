@@ -86,33 +86,13 @@
 }
 
 ion-card {
-  position: relative;
-  z-index: 1; /* sopra il layer di background */
-  margin-top: 24px;
-
-  /* sfondo semitrasparente: essenziale per vedere attraverso il backdrop-filter */
-  background: rgba(255, 255, 255, 0.22); /* per tema chiaro */
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 12px;
-  overflow: hidden;
-
-  /* effetto blur sul "backdrop" (elementi dietro la card) */
-  -webkit-backdrop-filter: blur(10px); /* Safari/iOS */
-  backdrop-filter: blur(10px);
-
-  /* ombra delicata per staccare dalla background */
-  //box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-
-  ion-card-header, ion-card-content {
-    background: transparent; /* assicurati che i contenuti non coprano il blur */
-  }
   
-  border: solid green; /* solo per debug */
+  //border: solid green; /* solo per debug */
 }
 
 ion-card.active {
   
-  border: solid red; /* solo per debug */
+  //border: solid red; /* solo per debug */
 }
 
 .timeline-content {

@@ -10,54 +10,49 @@
 @import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
-
+  
 }
 
 ion-app {
-	
-  	background-image: url('../assets/main-background-09.png');
-    background-position: center;      /* Centra l’immagine */
-    background-repeat: no-repeat;     /* Evita la ripetizione */
-    background-size: cover;           /* Adatta l’immagine allo schermo */
+  /* border: solid red; /* solo per debug */
 }
 
 ion-header {
-  box-shadow: none !important;
-  border-radius: 0;
+  /*--background: transparent;*/
 
-  --background: transparent;
+  /* border: solid red; /* solo per debug */
 }
 
 ion-toolbar {
-  --background: transparent;
+  /*--background: transparent;*/
   
   /* border: solid red; /* solo per debug */
 }
 
 ion-content {
-  --background: transparent;
+  /*--background: transparent;*/
 
   /* border: solid green; /* solo per debug */
 }
 
 ion-card {
-  --box-shadow: none !important;
-  box-shadow: none !important;
 
     /*--background: transparent !important;*/
 }
 
 ion-list {
-  --background: transparent !important; /* sembra non funzionare */
+  /*
+  --background: transparent !important;
   background: transparent !important;
+  */
 }
 
 ion-item-sliding {
-  --background: transparent;
+  /*--background: transparent;*/
 }
 
 ion-item {
-  --background: transparent;
+  /*--background: transparent;*/
 }
 
 ion-label {

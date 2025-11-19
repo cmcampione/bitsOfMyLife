@@ -10,8 +10,8 @@ ion-item-sliding {
 
 ion-item {
 
-  --inner-padding-top: 2px;
-  --inner-padding-bottom: 2px;
+  // --inner-padding-top: 2px;
+  // --inner-padding-bottom: 2px;
   //--padding-start: 0;
   //--padding-end: 0;
   
@@ -19,24 +19,6 @@ ion-item {
 }
 
 ion-label {
-  margin: 0 !important;
-  height: 90px;
-  
-  text-overflow: ellipsis;
-
-  /* sfondo semitrasparente: essenziale per vedere attraverso il backdrop-filter */
-  background: rgba(255, 255, 255, 0.22); /* per tema chiaro */
-  border-radius: 12px;
-  
-  /* effetto blur sul "backdrop" (elementi dietro la card) */
-  -webkit-backdrop-filter: blur(10px); /* Safari/iOS */
-  backdrop-filter: blur(10px);
-
-  /* ombra delicata per staccare dalla background */
-  //box-shadow: 0 6px 18px rgba(0,0,0,0.12);
- 
-  //border: 1px solid rgba(255,255,255,0.18);
-  border: solid green;
 
   //border: solid green; /* solo per debug */
 } 

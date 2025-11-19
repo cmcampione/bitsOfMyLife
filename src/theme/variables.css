@@ -10,26 +10,114 @@
 @import "@ionic/angular/css/palettes/dark.system.css";
 
 :root {
-  
+  /* -------------------------------------
+   * 1. VARIABILI CROMATICHE SEMANTICHE IONIC
+   * (Blu-Verde Dominante, Blu/Verde Armonia, Rosso-Arancio Accento)
+   * ------------------------------------- */
+
+  /** Primary: Blu-Verde (Ciano) - Il colore dominante dell'app */
+  --ion-color-primary: #008c95;         /* Tonalità ciano forte */
+  --ion-color-primary-rgb: 0, 140, 149;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #007c83;
+  --ion-color-primary-tint: #1a99a0;
+
+  /** Secondary: Blu - Uno dei colori analoghi per accenti secondari */
+  --ion-color-secondary: #005f95;
+  --ion-color-secondary-rgb: 0, 95, 149;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #005483;
+  --ion-color-secondary-tint: #1a70a0;
+
+  /** Success: Verde - L'altro colore analogo (vicino al Primary) per feedback positivo */
+  --ion-color-success: #26a665;
+  --ion-color-success-rgb: 38, 166, 101;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #229359;
+  --ion-color-success-tint: #3cae74;
+
+  /** Danger: Rosso-Arancio - Il colore complementare/split-complementare per l'azione critica (contrasto) */
+  --ion-color-danger: #e6522e; 
+  --ion-color-danger-rgb: 230, 82, 46;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cc4828;
+  --ion-color-danger-tint: #eb6343;
+
+  /** Warning: Giallo-Arancio - Un colore caldo per avvertimenti, bilancia il Danger */
+  --ion-color-warning: #ffb44c;
+  --ion-color-warning-rgb: 255, 180, 76;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e09f43;
+  --ion-color-warning-tint: #ffbd5e;
+
+  /** Light, Medium, Dark: Per le scale di grigi (toni neutri) */
+  --ion-color-light: #f4f5f8;
+  --ion-color-medium: #92949c;
+  --ion-color-dark: #222428;
+
+
+  /* -------------------------------------
+   * 2. VARIABILI DI BASE E LAYOUT
+   * ------------------------------------- */
+
+  /** Colori di Sfondo e Testo Predefiniti */
+  --ion-background-color: #ffffff;     /* Sfondo app pulito */
+  --ion-background-color-rgb: 255, 255, 255;
+  --ion-text-color: #222428;           /* Testo scuro (Dark) */
+  --ion-text-color-rgb: 34, 36, 40;
+
+  /** Colori di Bordi, Ombre e Placeholder */
+  --ion-border-color: #d1d1d1;         /* Bordo grigio chiaro */
+  --ion-box-shadow-color: rgba(0, 0, 0, 0.1);
+  --ion-placeholder-color: var(--ion-color-medium);
+
+  /* -------------------------------------
+   * 3. COMPONENTI DI NAVIGAZIONE
+   * ------------------------------------- */
+
+  /** Toolbar (Intestazione) */
+  --ion-toolbar-background: var(--ion-color-primary); /* Toolbar con colore Primary */
+  --ion-toolbar-color: #ffffff;                      /* Testo bianco in contrasto */
+  --ion-toolbar-border-color: var(--ion-color-primary-shade); /* Bordo scuro leggero */
+
+  /** Tab Bar (Navigazione Inferiore) */
+  --ion-tab-bar-background: #ffffff;
+  --ion-tab-bar-color: var(--ion-color-medium);      /* Icone non selezionate grigie */
+  --ion-tab-bar-color-selected: var(--ion-color-primary); /* Icona selezionata Primary */
+  --ion-tab-bar-border-color: var(--ion-border-color);
+
+  /** Items (Elementi di Lista) */
+  --ion-item-background: #ffffff;
+  --ion-item-color: var(--ion-text-color);
+  --ion-item-border-color: var(--ion-border-color);
 }
 
 ion-app {
+
   /* border: solid red; /* solo per debug */
 }
 
 ion-header {
+
   /*--background: transparent;*/
 
   /* border: solid red; /* solo per debug */
 }
 
 ion-toolbar {
+
   /*--background: transparent;*/
   
   /* border: solid red; /* solo per debug */
 }
 
 ion-content {
+  
   /*--background: transparent;*/
 
   /* border: solid green; /* solo per debug */
@@ -37,10 +125,47 @@ ion-content {
 
 ion-card {
 
-    /*--background: transparent !important;*/
+/* 1. Rimozione dell'Ombra - Variabile CSS di Ionic */
+  /* Deve essere forzata, anche se l'avevi già provata */
+  --box-shadow: none !important; 
+
+  /* 2. Rimozione dell'Ombra - Variabile Specifica Material Design/iOS */
+  /* Questa è cruciale: a volte l'ombra è gestita con lo z-index. */
+  --z-index: 0 !important;
+
+  /* 3. Bordo Evidente (consolidato) */
+  border: 1px solid var(--ion-border-color, #d1d1d1); 
+  
+  /* 4. Raggio d'Angolo (consolidato) */
+  /* border-radius: 8px; */
+
+  /* 5. Margine Esterno */
+  margin: 10px;
+
+  /*--background: transparent !important;*/
+
+  /* border: solid green; /* solo per debug */
 }
 
+.ion-page ion-card {
+  box-shadow: none !important;
+}
+
+/* Stile per l'intestazione e il contenuto per coerenza */
+ion-card-header,
+ion-card-content {
+  /* Assicurati che l'interno rispetti i margini */
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+
 ion-list {
+
+/* Elimina i margini interni della lista che potrebbero interferire */
+  padding: 0; 
+  background: transparent;
+
   /*
   --background: transparent !important;
   background: transparent !important;
@@ -48,15 +173,41 @@ ion-list {
 }
 
 ion-item-sliding {
+
+/* Elimina i margini interni della lista che potrebbero interferire */
+  padding: 0; 
+  background: transparent;
+
   /*--background: transparent;*/
 }
 
 ion-item {
+/* 1. Rimozione di ombre e innalzamento (se applicati) */
+  --box-shadow: none;
+
+  /* 2. Sfondo dell'item leggermente diverso dal background globale (opzionale) */
+  --background: var(--ion-color-light, #f4f5f8); 
+
+  /* 3. Bordo Completo Evidente */
+  border: 1px solid var(--ion-border-color, #d1d1d1);
+
+  /* 4. Raggio d'angolo per coerenza con ion-card */
+  --border-radius: 8px; 
+
+  /* 5. Eliminazione dei bordi interni/separatori di Ionic */
+  --border-width: 0;
+
+  /* 6. Margini Esterni (per separare l'item dal suo vicino) */
+  margin-top: 8px; 
+  margin-bottom: 8px;
+
   /*--background: transparent;*/
 }
 
 ion-label {
+  
 }
 
 ion-note {
+
 }

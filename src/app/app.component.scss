@@ -1,10 +1,4 @@
 
-.fixed-fab {
-  position: fixed;
-  bottom: 5px;
-  right: 5px;
-}
-
 ion-header {
 
   //border: solid green; /* solo per debug */
@@ -39,4 +33,10 @@ ion-content {
   overflow-y: auto;
   
   //border: solid red; /* solo per debug */  
+}
+
+.fixed-fab {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
 }

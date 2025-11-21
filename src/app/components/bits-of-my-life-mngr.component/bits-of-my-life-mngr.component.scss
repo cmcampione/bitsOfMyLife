@@ -12,8 +12,41 @@ ion-item-sliding {
 }
 
 ion-item {
+  --background: #fff;
+  margin: 12px 0;
+  border-radius: 14px;
+  padding: 12px;
+
+  /* Bordo fumetto */
+  border: 2px solid #000;
+  position: relative;
+
+  /* Ombra "cartoon" */
+  box-shadow: 4px 4px 0px #000;
   
   //border: solid blue; /* solo per debug */
+}
+ion-item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px dashed rgba(0,0,0,0.25);
+  border-radius: 14px;
+  pointer-events: none;
+
+  /* Movimento leggero per effetto matita */
+  animation: sketchy 1.8s infinite alternate ease-in-out;
+}
+
+@keyframes sketchy {
+  0% {
+    transform: translate(1px, 1px) rotate(0.2deg);
+    opacity: 0.3;
+  }
+  100% {
+    transform: translate(-1px, -1px) rotate(-0.2deg);
+    opacity: 0.45;
+  }
 }
 
 ion-label {
@@ -29,19 +62,16 @@ ion-label {
 .bit-of-my-life-dot {
   width: 12px;
   height: 12px;
+  background: #000;
   border-radius: 50%;
-  background: #888;
-  position: absolute;
-  top: 10px; /* posizione del puntino */
-
-  //
-  margin-bottom: 5px;
+  margin-right: 12px;
+  border: 2px solid #000;
 
   //border: solid red; /* solo per debug */
 }
 
 .today-dot {
-  background: #007bff;
+  background: #ff9800 !important;
 
   //border: solid red; /* solo per debug */
 }
@@ -62,13 +92,20 @@ ion-label {
 .today-date {
 }
 
-.milestone-title {
+.milestone-title, .time-diff {
+  font-family: "Comic Sans MS", "Marker Felt", "Chalkboard", sans-serif;
 }
 
 .time-diff {
 }
 
 .today-card {
+  background: #fff6c4 !important;
+  border-color: #444 !important;
+  box-shadow: 4px 4px 0px #444 !important;
+}
+.today-card::before {
+  border-color: rgba(0,0,0,0.25) !important;
 }
 
 /* Pulsanti swipe (opzionali se vuoi spaziarli) */

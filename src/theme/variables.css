@@ -21,8 +21,10 @@
 
   --card-item-gradient-background: linear-gradient(
     160deg,
-    #f0fcfa 0%,
-    #e6f7f0 100%
+    #d8f5e8 0%,
+    #b3ebd7 40%,
+    #94dfcb 75%,
+    #5fd1b5 100%
   );
 
   /* -------------------------------------
@@ -80,8 +82,8 @@
    * ------------------------------------- */
 
   /** Colori di Sfondo e Testo Predefiniti */
-  /* --ion-background-color: #e71414;     /* Sfondo app pulito */
-  --ion-background-color: var(--app-gradient-background);
+  --ion-background-color: #ffffff;     /* Sfondo app pulito */
+  /*--ion-background-color: var(--app-gradient-background);*/ /* Sfondo con gradiente personalizzato */
 
   --ion-background-color-rgb: 255, 255, 255;
 
@@ -98,9 +100,9 @@
    * ------------------------------------- */
 
   /** Toolbar (Intestazione) */
-  /*--ion-toolbar-background: var(--ion-color-primary); /* Toolbar con colore Primary */
-  --ion-toolbar-background: var(--app-gradient-background); /* Toolbar con gradiente personalizzato */
-  --ion-toolbar-color: green;                      /* Testo bianco in contrasto */
+  --ion-toolbar-background: var(--ion-color-primary); /* Toolbar con colore Primary */
+  /*--ion-toolbar-background: var(--app-gradient-background); */ /* Toolbar con gradiente personalizzato */
+  --ion-toolbar-color: var(--ion-text-color);                      /* Testo bianco in contrasto */
   --ion-toolbar-border-color: var(--ion-color-primary-shade); /* Bordo scuro leggero */
 
   /** Tab Bar (Navigazione Inferiore) */
@@ -110,8 +112,8 @@
   --ion-tab-bar-border-color: var(--ion-border-color);
 
   /** Items (Elementi di Lista) */
-  /*--ion-item-background: #ffffff;*/
-  --ion-item-background: var(--card-item-gradient-background);
+  --ion-item-background: #ffffff;
+  /*--ion-item-background: var(--card-item-gradient-background);*/
   
   --ion-item-color: var(--ion-text-color);
   --ion-item-border-color: var(--ion-border-color);
